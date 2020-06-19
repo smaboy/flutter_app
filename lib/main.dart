@@ -48,9 +48,44 @@ class RandWordsState extends State<RandomWords> {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('Startup Name Generator'),
+        actions: <Widget>[
+          new IconButton(icon: new Icon(Icons.list), onPressed: _pushSaved)
+        ],
       ),
       body: _buildSuggestions(),
     );
+  }
+
+  ///当用户点击导航栏中的列表图标时，建立一个路由并将其推入到导航管理器栈中。此操作会切换页面以显示新路由。
+  ///
+  ///新页面的内容在在MaterialPageRoute的builder属性中构建，builder是一个匿名函数。
+  //
+  ///添加Navigator.push调用，这会使路由入栈（以后路由入栈均指推入到导航管理器的栈）
+  void _pushSaved() {
+    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
+      final titles = _saved.map(
+        (pair) {
+          return new ListTile(
+            title: new Text(
+              pair.asPascalCase,
+              style: _biggerFont,
+            ),
+          );
+        },
+      );
+
+      final divided = ListTile.divideTiles(
+        context: context,
+        tiles: titles,
+      ).toList();
+
+      return new Scaffold(
+        appBar: new AppBar(
+          title: new Text('Saved Suggestions'),
+        ),
+        body: new ListView(children: divided),
+      );
+    }));
   }
 
   /// 此方法构建显示建议单词对的ListView
@@ -92,11 +127,11 @@ class RandWordsState extends State<RandomWords> {
         _alreadySaved ? Icons.favorite : Icons.favorite_border,
         color: _alreadySaved ? Colors.red : null,
       ),
-      onTap: (){
+      onTap: () {
         setState(() {
-          if(_alreadySaved){
+          if (_alreadySaved) {
             _saved.remove(pair);
-          }else{
+          } else {
             _saved.add(pair);
           }
         });
