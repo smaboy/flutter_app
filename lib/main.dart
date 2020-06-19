@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
 
+import 'HomePage.dart';
+
 void main() {
   runApp(new MyApp());
   if (Platform.isAndroid) {
@@ -30,10 +32,16 @@ class MyApp extends StatelessWidget {
 //      ),
 //    );
 
+//    return new MaterialApp(
+//      title: "Startup Name Generator",
+//      theme: new ThemeData(primarySwatch: Colors.blue),
+//      home: new HomePage(),
+//    );
     return new MaterialApp(
       title: "Startup Name Generator",
-      theme: new ThemeData(primaryColor: Colors.white),
-      home: new RandomWords(),
+      theme: new ThemeData(primaryColor: Colors.blue),
+//      home: new RandomWords(),
+      home: new HomePage(),
     );
   }
 }
@@ -149,4 +157,6 @@ class RandWordsState extends State<RandomWords> {
       },
     );
   }
+
+
 }
