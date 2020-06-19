@@ -11,7 +11,7 @@ class HomePage extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          new Icon(icon, color: color),
+          new Icon(icon, color: Colors.green),
           new Container(
             margin: const EdgeInsets.only(top: 8.0),
             child: new Text(
@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
               style: new TextStyle(
                 fontSize: 12.0,
                 fontWeight: FontWeight.w400,
-                color: color,
+                color: Colors.green,
               ),
             ),
           ),
