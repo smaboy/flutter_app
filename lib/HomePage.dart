@@ -1,31 +1,52 @@
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+
+    return new HomePageState();
+  }
+
+}
+
+class HomePageState extends State<HomePage>{
+  int num01 = 41;
+
+  /// 处理向下按压的手势
+  void _handleTapDown(TapDownDetails details) { //定义点击函数
+    setState(() {
+      num01++;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     /// 会创建一个颜色为primary color，包含一个Icon和Text的 Widget 列。
-    Column buildButtonColumn(IconData icon, String label) {
-      Color color = Theme.of(context).primaryColor;
+    Widget buildButtonColumn(IconData icon, String label) {
 
-      return new Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          new Icon(icon, color: Colors.green),
-          new Container(
-            margin: const EdgeInsets.only(top: 8.0),
-            child: new Text(
-              label,
-              style: new TextStyle(
-                fontSize: 12.0,
-                fontWeight: FontWeight.w400,
-                color: Colors.green,
+      return new GestureDetector(
+        child: new Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            new Icon(icon, color: Colors.green),
+            new Container(
+              margin: const EdgeInsets.only(top: 8.0),
+              child: new Text(
+                label,
+                style: new TextStyle(
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.green,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
+        onTapDown: _handleTapDown,
       );
     }
+
 
     //标题部分
     Widget titleSection = new Container(
@@ -34,30 +55,30 @@ class HomePage extends StatelessWidget {
         children: [
           new Expanded(
               child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              new Container(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: new Text(
-                  'Oeschinen Lake Campground',
-                  style: new TextStyle(
-                    fontWeight: FontWeight.bold,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  new Container(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: new Text(
+                      'Oeschinen Lake Campground',
+                      style: new TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              new Text(
-                'Kandersteg, Switzerland',
-                style: new TextStyle(
-                  color: Colors.grey[500],
-                ),
-              ),
-            ],
-          )),
+                  new Text(
+                    'Kandersteg, Switzerland',
+                    style: new TextStyle(
+                      color: Colors.grey[500],
+                    ),
+                  ),
+                ],
+              )),
           new Icon(
             Icons.star,
             color: Colors.red[500],
           ),
-          new Text('41'),
+          new Text(num01.toString()),
         ],
       ),
     );
@@ -102,4 +123,5 @@ class HomePage extends StatelessWidget {
       ]),
     );
   }
+
 }
