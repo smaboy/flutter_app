@@ -74,11 +74,7 @@ class HomePageState extends State<HomePage>{
                   ),
                 ],
               )),
-          new Icon(
-            Icons.star,
-            color: Colors.red[500],
-          ),
-          new Text(num01.toString()),
+          new FavoriteWidget(),
         ],
       ),
     );
@@ -122,6 +118,59 @@ class HomePageState extends State<HomePage>{
         textSection,
       ]),
     );
+  }
+
+}
+
+/// 创建星的可变状态控件，点击星星进行收藏或者取消收藏
+class FavoriteWidget extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+    return new FavoriteWidgetState();
+  }
+
+}
+
+class FavoriteWidgetState extends State<FavoriteWidget>{
+
+  int favoriteCount = 45;
+  bool isFavorite = true;
+  IconData _iconData = Icons.star;
+  @override
+  Widget build(BuildContext context) {
+    return new Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        new GestureDetector(
+          child: new Icon(
+            _iconData,
+            color: Colors.red[500],
+          ),
+          onTapDown: _toggleFavorite,
+        ),
+        new Text(
+          favoriteCount.toString(),
+          style: new TextStyle(
+            color: Colors.red[500]
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// 处理点击对收藏的影响
+  void _toggleFavorite(TapDownDetails downDetails){
+    setState(() {
+      if(isFavorite){
+        isFavorite = !isFavorite;
+        _iconData = Icons.star_border;
+        favoriteCount--;
+      }else{
+        isFavorite = !isFavorite;
+        _iconData = Icons.star;
+        favoriteCount++;
+      }
+    });
   }
 
 }
