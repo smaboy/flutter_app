@@ -135,23 +135,25 @@ class FavoriteWidgetState extends State<FavoriteWidget>{
 
   int favoriteCount = 45;
   bool isFavorite = true;
-  IconData _iconData = Icons.star;
   @override
   Widget build(BuildContext context) {
     return new Row(
       mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        new GestureDetector(
-          child: new Icon(
-            _iconData,
+      children: [
+        new Container(
+          padding: new EdgeInsets.all(0.0),
+          child: new IconButton(
+            icon: (isFavorite
+                ? new Icon(Icons.star)
+                : new Icon(Icons.star_border)),
             color: Colors.red[500],
+            onPressed: _toggleFavorite,
           ),
-          onTapDown: _toggleFavorite,
         ),
-        new Text(
-          favoriteCount.toString(),
-          style: new TextStyle(
-            color: Colors.red[500]
+        new SizedBox(
+          width: 18.0,
+          child: new Container(
+            child: new Text('$favoriteCount'),
           ),
         ),
       ],
@@ -159,15 +161,13 @@ class FavoriteWidgetState extends State<FavoriteWidget>{
   }
 
   /// 处理点击对收藏的影响
-  void _toggleFavorite(TapDownDetails downDetails){
+  void _toggleFavorite(){
     setState(() {
       if(isFavorite){
         isFavorite = !isFavorite;
-        _iconData = Icons.star_border;
         favoriteCount--;
       }else{
         isFavorite = !isFavorite;
-        _iconData = Icons.star;
         favoriteCount++;
       }
     });
