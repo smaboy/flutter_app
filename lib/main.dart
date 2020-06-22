@@ -40,8 +40,8 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
       title: "Startup Name Generator",
       theme: new ThemeData(primaryColor: Colors.white),
-//      home: new RandomWords(),
-      home: new HomePage(),
+      home: new RandomWords(),
+//      home: new HomePage(),
     );
   }
 }
@@ -75,6 +75,13 @@ class RandWordsState extends State<RandomWords> {
     );
   }
 
+  /// 跳转到home页面
+  void _push2HomePage(TapDownDetails downDetails){
+    Navigator.of(context).push(new MaterialPageRoute(builder: (context){
+      return new HomePage();
+    }));
+  }
+
   ///当用户点击导航栏中的列表图标时，建立一个路由并将其推入到导航管理器栈中。此操作会切换页面以显示新路由。
   ///
   ///新页面的内容在在MaterialPageRoute的builder属性中构建，builder是一个匿名函数。
@@ -85,9 +92,12 @@ class RandWordsState extends State<RandomWords> {
       final titles = _saved.map(
         (pair) {
           return new ListTile(
-            title: new Text(
-              pair.asPascalCase,
-              style: _biggerFont,
+            title: new GestureDetector(
+              child: new Text(
+                pair.asPascalCase,
+                style: _biggerFont,
+              ),
+              onTapDown: _push2HomePage,
             ),
           );
         },
