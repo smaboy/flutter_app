@@ -78,7 +78,7 @@ class RandWordsState extends State<RandomWords> {
   /// 跳转到home页面
   void _push2HomePage(TapDownDetails downDetails){
     Navigator.of(context).push(new MaterialPageRoute(builder: (context){
-      return new HomePage();
+      return new HomePage("我是详情页面啊");
     }));
   }
 

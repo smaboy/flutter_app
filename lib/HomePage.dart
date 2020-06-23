@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
+  final String title;
+
+  HomePage(this.title);
+
   @override
   State<StatefulWidget> createState() {
 
@@ -104,7 +108,7 @@ class HomePageState extends State<HomePage>{
 
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('Startup Name Generator'),
+        title: new Text(widget.title),
       ),
       body: new ListView(children: [
         new Image.asset(
