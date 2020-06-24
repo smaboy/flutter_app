@@ -109,6 +109,7 @@ class HomePageState extends State<HomePage>{
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(widget.title),
+        centerTitle: true,
       ),
       body: new ListView(children: [
         new Image.asset(
