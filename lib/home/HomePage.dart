@@ -8,17 +8,16 @@ class HomePage extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-
     return new HomePageState();
   }
-
 }
 
-class HomePageState extends State<HomePage>{
+class HomePageState extends State<HomePage> {
   int num01 = 41;
 
   /// 处理向下按压的手势
-  void _handleTapDown(TapDownDetails details) { //定义点击函数
+  void _handleTapDown(TapDownDetails details) {
+    //定义点击函数
     setState(() {
       num01++;
     });
@@ -28,7 +27,6 @@ class HomePageState extends State<HomePage>{
   Widget build(BuildContext context) {
     /// 会创建一个颜色为primary color，包含一个Icon和Text的 Widget 列。
     Widget buildButtonColumn(IconData icon, String label) {
-
       return new GestureDetector(
         child: new Column(
           mainAxisSize: MainAxisSize.min,
@@ -52,7 +50,6 @@ class HomePageState extends State<HomePage>{
       );
     }
 
-
     //标题部分
     Widget titleSection = new Container(
       padding: const EdgeInsets.all(32.0),
@@ -60,25 +57,25 @@ class HomePageState extends State<HomePage>{
         children: [
           new Expanded(
               child: new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  new Container(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: new Text(
-                      'Oeschinen Lake Campground',
-                      style: new TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              new Container(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: new Text(
+                  'Oeschinen Lake Campground',
+                  style: new TextStyle(
+                    fontWeight: FontWeight.bold,
                   ),
-                  new Text(
-                    'Kandersteg, Switzerland',
-                    style: new TextStyle(
-                      color: Colors.grey[500],
-                    ),
-                  ),
-                ],
-              )),
+                ),
+              ),
+              new Text(
+                'Kandersteg, Switzerland',
+                style: new TextStyle(
+                  color: Colors.grey[500],
+                ),
+              ),
+            ],
+          )),
           new FavoriteWidget(),
         ],
       ),
@@ -125,22 +122,20 @@ class HomePageState extends State<HomePage>{
       ]),
     );
   }
-
 }
 
 /// 创建星的可变状态控件，点击星星进行收藏或者取消收藏
-class FavoriteWidget extends StatefulWidget{
+class FavoriteWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return new FavoriteWidgetState();
   }
-
 }
 
-class FavoriteWidgetState extends State<FavoriteWidget>{
-
+class FavoriteWidgetState extends State<FavoriteWidget> {
   int favoriteCount = 45;
   bool isFavorite = true;
+
   @override
   Widget build(BuildContext context) {
     return new Row(
@@ -167,16 +162,15 @@ class FavoriteWidgetState extends State<FavoriteWidget>{
   }
 
   /// 处理点击对收藏的影响
-  void _toggleFavorite(){
+  void _toggleFavorite() {
     setState(() {
-      if(isFavorite){
+      if (isFavorite) {
         isFavorite = !isFavorite;
         favoriteCount--;
-      }else{
+      } else {
         isFavorite = !isFavorite;
         favoriteCount++;
       }
     });
   }
-
 }
