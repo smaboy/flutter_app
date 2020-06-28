@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/me/MePage.dart';
+import 'package:flutterapp/system/SystemPage.dart';
 
 import 'home/HomePage.dart';
+import 'item/ItemPage.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -10,6 +13,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   /// 当前页面
   int _currentPage = 0;
+
   ///标题
   String title = "";
 
@@ -17,12 +21,15 @@ class _MainPageState extends State<MainPage> {
   Color mainColor = Colors.white;
 
   ///主页面标题
-  static final pageTitles = ["首页","体系","项目","我的"];
+  static final pageTitles = ["首页", "体系", "项目", "我的"];
 
   ///所有主页面
-  final pages = [HomePage(pageTitles[0]),HomePage(pageTitles[1]),HomePage(pageTitles[2]),HomePage(pageTitles[3])];
-
-
+  final pages = [
+    HomePage(pageTitles[0]),
+    SystemPage(title: pageTitles[1],),
+    ItemPage(title: pageTitles[2],),
+    MePage(title: pageTitles[3],)
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +47,9 @@ class _MainPageState extends State<MainPage> {
         currentIndex: _currentPage,
         items: [
           const BottomNavigationBarItem(
-            icon: Icon(Icons.home,),
+            icon: Icon(
+              Icons.home,
+            ),
             title: Text("首页"),
           ),
           const BottomNavigationBarItem(
@@ -61,20 +70,19 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
+
   @override
   void initState() {
     super.initState();
-    _currentPage = 0 ;
+    _currentPage = 0;
   }
 
   /// 处理底部tab点击
   void _switchPage(int value) {
-    if(value != _currentPage){
+    if (value != _currentPage) {
       setState(() {
         _currentPage = value;
       });
     }
-
-
   }
 }
