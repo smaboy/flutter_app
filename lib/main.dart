@@ -1,10 +1,8 @@
-import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutterapp/MainPage.dart';
 
-import 'HomePage.dart';
 
 void main() {
   runApp(new MyApp());
