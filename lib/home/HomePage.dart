@@ -42,6 +42,7 @@ class HomePageState extends State<HomePage> {
                   fontWeight: FontWeight.w400,
                   color: Colors.green,
                 ),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],
@@ -96,11 +97,34 @@ class HomePageState extends State<HomePage> {
     /// 实现文本部分
     Widget textSection = new Container(
       padding: const EdgeInsets.all(32.0),
-      child: new Text(
-        '''
+      child: Column(
+        children: <Widget>[
+          new Text(
+            '''
         Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese Alps. Situated 1,578 meters above sea level, it is one of the larger Alpine Lakes. A gondola ride from Kandersteg, followed by a half-hour walk through pastures and pine forest, leads you to the lake, which warms to 20 degrees Celsius in the summer. Activities enjoyed here include rowing, and riding the summer toboggan run.
         ''',
-        softWrap: true,
+            softWrap: true,
+          ),
+          Wrap(
+            spacing: 8.0,
+            runSpacing: 4.0,
+            alignment: WrapAlignment.start,
+            children: <Widget>[
+              new Chip(
+                avatar: new CircleAvatar(backgroundColor: Colors.blue, child: Icon(Icons.person)),
+                label: new Text('Hamilton'),
+              ),
+              new Chip(
+                avatar: new CircleAvatar( child: Text('B')),
+                label: new Text('Hamilton'*10),
+              ),
+              new Chip(
+                avatar: new CircleAvatar(backgroundColor: Colors.blue, child: Text('A')),
+                label: new Text('Hamilton'),
+              ),
+            ],
+          )
+        ],
       ),
     );
 
@@ -152,7 +176,6 @@ class FavoriteWidgetState extends State<FavoriteWidget> {
           ),
         ),
         new SizedBox(
-          width: 18.0,
           child: new Container(
             child: new Text('$favoriteCount'),
           ),

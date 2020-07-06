@@ -66,7 +66,7 @@ class _MainPageState extends State<MainPage> {
           ),
         ],
         type: BottomNavigationBarType.fixed,
-        fixedColor: Colors.blue,
+//        fixedColor: Colors.blue,
       ),
     );
   }

@@ -19,7 +19,38 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
 //      title: "Startup Name Generator",
-      theme: new ThemeData(primaryColor: Colors.white),
+      theme: new ThemeData(
+        // 1.亮度
+          brightness: Brightness.light,
+          // 2.primarySwatch传入不是Color, 而是MaterialColor(包含了primaryColor和accentColor)
+          primarySwatch: Colors.indigo,
+          // 3.primaryColor: 单独设置导航和TabBar的颜色
+//          primaryColor: Colors.indigo,
+          // 4.accentColor: 单独设置FloatingActionButton\Switch
+          accentColor: Colors.green,
+          // 5.Button的主题
+          buttonTheme: ButtonThemeData(
+              height: 25,
+              minWidth: 10,
+              buttonColor: Colors.yellow
+          ),
+          // 6.Card的主题
+          cardTheme: CardTheme(
+              color: Colors.greenAccent,
+              elevation: 10
+          ),
+          // 7.Text的主题
+          textTheme: TextTheme(
+            bodyText1: TextStyle(fontSize: 16, color: Colors.red),
+            bodyText2: TextStyle(fontSize: 20),
+//
+            headline4: TextStyle(fontSize: 14),
+            headline3: TextStyle(fontSize: 16),
+            headline2: TextStyle(fontSize: 18),
+            headline1: TextStyle(fontSize: 20),
+          )
+      ),
+      darkTheme: ThemeData.dark(),
       home: new MainPage(),
     );
   }
