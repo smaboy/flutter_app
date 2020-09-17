@@ -26,77 +26,17 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var homeBannerDataList = _homeBannerEntity.data;
     return new Scaffold(
         appBar: new AppBar(
           title: new Text(widget.title),
           centerTitle: true,
         ),
-        body: Container(
-          padding: EdgeInsets.symmetric(vertical: 5.0),
-//          child: Swiper(
-//            itemBuilder: (BuildContext context, int index) {
-//              return Image.network(
-//                homeBannerDataList[index].imagePath,
-//                fit: BoxFit.fitWidth,
-//              );
-//            },
-//            itemCount: homeBannerDataList?.length  ?? 0,
-//            pagination: SwiperPagination(),
-//            control: SwiperControl(),
-//            autoplay: true,
-//            duration: 1500,
-//          ),
-        child:  Listener(
-          onPointerDown: (tapDown){
-            //手指按下
-            _swiperController.stopAutoplay();
-          },
-          onPointerUp: (tapUP){
-            //手指抬起
-            _swiperController.startAutoplay();
-          },
+        body: ListView.builder(
 
-          child: Swiper(
-            itemCount: homeBannerDataList?.length  ?? 0,
+            itemCount: 20,
             itemBuilder: (BuildContext context, int index) {
-              return Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular((10.0)), // 圆角度
-                  image: DecorationImage(
-                    image: NetworkImage(homeBannerDataList[index].imagePath),
-                    fit: BoxFit.fill,
-                  ),
-                ),
-              );
-            },
-            loop: true,
-            autoplay: false,
-            autoplayDelay: 3000,
-            //触发时是否停止播放
-            autoplayDisableOnInteraction: true,
-            duration: 600,
-            //默认分页按钮
-//        control: SwiperControl(),
-            controller: _swiperController,
-            //默认指示器
-            pagination: SwiperPagination(
-              // SwiperPagination.fraction 数字1/5，默认点
-              builder: DotSwiperPaginationBuilder(size: 6, activeSize: 9),
-            ),
-
-            //视图宽度，即显示的item的宽度屏占比
-            viewportFraction: 0.8,
-            //两侧item的缩放比
-            scale: 0.9,
-
-            onTap: (int index) {
-              //点击事件，返回下标
-              print("index-----" + index.toString());
-            },
-          ),
-        ),
-          height: 180.0,
+              return index == 0 ? getBannerWidget() : Padding(child: Text("当前序号为$index"),padding: EdgeInsets.all(10.0),);
+            }
         )
     );
   }
@@ -110,6 +50,8 @@ class HomePageState extends State<HomePage> {
     /// 初始化数据
     initDat();
 
+    print("initState");
+
   }
 
   @override
@@ -118,6 +60,7 @@ class HomePageState extends State<HomePage> {
 
     _swiperController.stopAutoplay();
     _swiperController.dispose();
+    print("dispose");
   }
 
   /// 初始化数据
@@ -125,6 +68,64 @@ class HomePageState extends State<HomePage> {
     ///获取轮播图数据
     initBannerData();
 
+  }
+
+  /// 获取banner组件
+  Widget getBannerWidget(){
+    var homeBannerDataList = _homeBannerEntity.data;
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 5.0),
+      child:  Listener(
+        onPointerDown: (tapDown){
+          //手指按下
+          _swiperController.stopAutoplay();
+        },
+        onPointerUp: (tapUP){
+          //手指抬起
+          _swiperController.startAutoplay();
+        },
+        child: Swiper(
+          itemCount: homeBannerDataList?.length  ?? 0,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular((10.0)), // 圆角度
+                image: DecorationImage(
+                  image: NetworkImage(homeBannerDataList[index].imagePath),
+                  fit: BoxFit.fill,
+                ),
+              ),
+            );
+          },
+          loop: false,
+          autoplay: false,
+          autoplayDelay: 3000,
+          //触发时是否停止播放
+          autoplayDisableOnInteraction: true,
+          duration: 1000,
+          //默认分页按钮
+//        control: SwiperControl(),
+          controller: _swiperController,
+          //默认指示器
+          pagination: SwiperPagination(
+            // SwiperPagination.fraction 数字1/5，默认点
+            builder: DotSwiperPaginationBuilder(size: 6, activeSize: 9),
+          ),
+
+          //视图宽度，即显示的item的宽度屏占比
+          viewportFraction: 0.8,
+          //两侧item的缩放比
+          scale: 0.9,
+
+          onTap: (int index) {
+            //点击事件，返回下标
+            Scaffold.of(context)
+                .showSnackBar(SnackBar(content: Text(homeBannerDataList[index].title)));
+          },
+        ),
+      ),
+      height: 180.0,
+    );
   }
 
   /// 从网络获取数据
