@@ -1,4 +1,10 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutterapp/entity/home_banner_entity.dart';
+import 'package:flutterapp/generated/json/home_banner_entity_helper.dart';
 
 /// 首页
 class HomePage extends StatefulWidget {
@@ -13,187 +19,71 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  int num01 = 41;
 
-  /// 处理向下按压的手势
-  void _handleTapDown(TapDownDetails details) {
-    //定义点击函数
-    setState(() {
-      num01++;
-    });
-  }
+  /// 轮播图数据
+  HomeBannerEntity _homeBannerEntity = HomeBannerEntity();
+
 
   @override
   Widget build(BuildContext context) {
-    /// 会创建一个颜色为primary color，包含一个Icon和Text的 Widget 列。
-    Widget buildButtonColumn(IconData icon, String label) {
-      return new GestureDetector(
-        child: new Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            new Icon(icon, color: Colors.green),
-            new Container(
-              margin: const EdgeInsets.only(top: 8.0),
-              child: new Text(
-                label,
-                style: new TextStyle(
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.green,
-                ),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ],
-        ),
-        onTapDown: _handleTapDown,
-      );
-    }
-
-    //标题部分
-    Widget titleSection = new Container(
-      padding: const EdgeInsets.all(32.0),
-      child: new Row(
-        children: [
-          new Expanded(
-              child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              new Container(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: new Text(
-                  'Oeschinen Lake Campground',
-                  style: new TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              new Text(
-                'Kandersteg, Switzerland',
-                style: new TextStyle(
-                  color: Colors.grey[500],
-                ),
-              ),
-            ],
-          )),
-          new FavoriteWidget(),
-        ],
-      ),
-    );
-
-    /// 实现按钮行
-    Widget buttonSection = new Container(
-      child: new Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          buildButtonColumn(Icons.call, 'CALL'),
-          buildButtonColumn(Icons.near_me, 'ROUTE'),
-          buildButtonColumn(Icons.share, 'SHARE'),
-        ],
-      ),
-    );
-
-    /// 实现文本部分
-    Widget textSection = new Container(
-      padding: const EdgeInsets.all(32.0),
-      child: Column(
-        children: <Widget>[
-          new Text(
-            '''
-        Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese Alps. Situated 1,578 meters above sea level, it is one of the larger Alpine Lakes. A gondola ride from Kandersteg, followed by a half-hour walk through pastures and pine forest, leads you to the lake, which warms to 20 degrees Celsius in the summer. Activities enjoyed here include rowing, and riding the summer toboggan run.
-        ''',
-            softWrap: true,
-          ),
-          Wrap(
-            spacing: 8.0,
-            runSpacing: 4.0,
-            alignment: WrapAlignment.start,
-            children: <Widget>[
-              new Chip(
-                avatar: new CircleAvatar(backgroundColor: Colors.blue, child: Icon(Icons.person)),
-                label: new Text('Hamilton'),
-              ),
-              new Chip(
-                avatar: new CircleAvatar( child: Text('B')),
-                label: new Text('Hamilton'*10),
-              ),
-              new Chip(
-                avatar: new CircleAvatar(backgroundColor: Colors.blue, child: Text('A')),
-                label: new Text('Hamilton'),
-              ),
-            ],
-          )
-        ],
-      ),
-    );
-
+    var homeBannerDataList = _homeBannerEntity.data;
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(widget.title),
-        centerTitle: true,
-      ),
-      body: new ListView(children: [
-        new Image.asset(
-          'images/lake.jpg',
-          width: 600.0,
-          height: 240.0,
-          fit: BoxFit.cover,
+        appBar: new AppBar(
+          title: new Text(widget.title),
+          centerTitle: true,
         ),
-        titleSection,
-        buttonSection,
-        textSection,
-      ]),
-    );
-  }
-}
-
-/// 创建星的可变状态控件，点击星星进行收藏或者取消收藏
-class FavoriteWidget extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return new FavoriteWidgetState();
-  }
-}
-
-class FavoriteWidgetState extends State<FavoriteWidget> {
-  int favoriteCount = 45;
-  bool isFavorite = true;
-
-  @override
-  Widget build(BuildContext context) {
-    return new Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        new Container(
-          padding: new EdgeInsets.all(0.0),
-          child: new IconButton(
-            icon: (isFavorite
-                ? new Icon(Icons.star)
-                : new Icon(Icons.star_border)),
-            color: Colors.red[500],
-            onPressed: _toggleFavorite,
+        body: Container(
+          child: Swiper(
+            itemBuilder: (BuildContext context, int index) {
+              return Image.network(
+                homeBannerDataList[index].imagePath,
+              );
+            },
+            itemCount: homeBannerDataList.length  ?? 0,
+            pagination: SwiperPagination(),
+            control: SwiperControl(),
           ),
-        ),
-        new SizedBox(
-          child: new Container(
-            child: new Text('$favoriteCount'),
-          ),
-        ),
-      ],
+        )
     );
   }
 
-  /// 处理点击对收藏的影响
-  void _toggleFavorite() {
+  @override
+  void initState() {
+    super.initState();
+
+    /// 初始化数据
+    initDat();
+
+  }
+
+  /// 初始化数据
+  void initDat() {
+    ///获取轮播图数据
+    initBannerData();
+
+  }
+
+  /// 从网络获取数据
+  void initBannerData() async {
+    var request = await HttpClient().getUrl(
+        Uri.parse("https://www.wanandroid.com/banner/json"));
+//    ///携带请求头
+//    request.headers.add(name, value);
+//    ///携带请求体
+//    request.add(data);
+//    request.addStream(stream);
+    var responses = await request.close();
+    String responsesBody = await responses.transform(utf8.decoder).join();
+    print("获取到的数据为:$responsesBody");
+
+
+    //设置数据
     setState(() {
-      if (isFavorite) {
-        isFavorite = !isFavorite;
-        favoriteCount--;
-      } else {
-        isFavorite = !isFavorite;
-        favoriteCount++;
-      }
+      _homeBannerEntity = homeBannerEntityFromJson(_homeBannerEntity, json.decode(responsesBody));
+      print("meBeanEntity转化的第一列的标题为:${_homeBannerEntity.data[0].title}");
     });
+
   }
 }
+
+

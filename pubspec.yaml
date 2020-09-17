@@ -31,6 +31,10 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.3
 
+  # https://github.com/best-flutter/flutter_swiper/blob/master/README-ZH.md 轮播图组件
+  flutter_swiper : ^1.1.6
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
