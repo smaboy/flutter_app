@@ -47,43 +47,54 @@ class HomePageState extends State<HomePage> {
 //            autoplay: true,
 //            duration: 1500,
 //          ),
-        child:  Swiper(
-          itemCount: homeBannerDataList?.length  ?? 0,
-          itemBuilder: (BuildContext context, int index) {
-            return Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular((10.0)), // 圆角度
-                image: DecorationImage(
-                  image: NetworkImage(homeBannerDataList[index].imagePath),
-                  fit: BoxFit.fill,
+        child:  Listener(
+          onPointerDown: (tapDown){
+            //手指按下
+            _swiperController.stopAutoplay();
+          },
+          onPointerUp: (tapUP){
+            //手指抬起
+            _swiperController.startAutoplay();
+          },
+
+          child: Swiper(
+            itemCount: homeBannerDataList?.length  ?? 0,
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular((10.0)), // 圆角度
+                  image: DecorationImage(
+                    image: NetworkImage(homeBannerDataList[index].imagePath),
+                    fit: BoxFit.fill,
+                  ),
                 ),
-              ),
-            );
-          },
-          loop: true,
-          autoplay: false,
-          autoplayDelay: 3000,
-          //触发时是否停止播放
-          autoplayDisableOnInteraction: true,
-          duration: 600,
-          //默认分页按钮
+              );
+            },
+            loop: true,
+            autoplay: false,
+            autoplayDelay: 3000,
+            //触发时是否停止播放
+            autoplayDisableOnInteraction: true,
+            duration: 600,
+            //默认分页按钮
 //        control: SwiperControl(),
-          controller: _swiperController,
-          //默认指示器
-          pagination: SwiperPagination(
-            // SwiperPagination.fraction 数字1/5，默认点
-            builder: DotSwiperPaginationBuilder(size: 6, activeSize: 9),
+            controller: _swiperController,
+            //默认指示器
+            pagination: SwiperPagination(
+              // SwiperPagination.fraction 数字1/5，默认点
+              builder: DotSwiperPaginationBuilder(size: 6, activeSize: 9),
+            ),
+
+            //视图宽度，即显示的item的宽度屏占比
+            viewportFraction: 0.8,
+            //两侧item的缩放比
+            scale: 0.9,
+
+            onTap: (int index) {
+              //点击事件，返回下标
+              print("index-----" + index.toString());
+            },
           ),
-
-          //视图宽度，即显示的item的宽度屏占比
-          viewportFraction: 0.8,
-          //两侧item的缩放比
-          scale: 0.9,
-
-          onTap: (int index) {
-            //点击事件，返回下标
-            print("index-----" + index.toString());
-          },
         ),
           height: 180.0,
         )
