@@ -37,12 +37,16 @@ class HomePageState extends State<HomePage> {
             itemBuilder: (BuildContext context, int index) {
               return Image.network(
                 homeBannerDataList[index].imagePath,
+                fit: BoxFit.fitWidth,
               );
             },
             itemCount: homeBannerDataList.length  ?? 0,
             pagination: SwiperPagination(),
             control: SwiperControl(),
+            autoplay: true,
+            duration: 1500,
           ),
+          height: 180.0,
         )
     );
   }
