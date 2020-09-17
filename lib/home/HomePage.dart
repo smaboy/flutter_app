@@ -33,6 +33,7 @@ class HomePageState extends State<HomePage> {
           centerTitle: true,
         ),
         body: Container(
+          padding: EdgeInsets.symmetric(vertical: 5.0),
 //          child: Swiper(
 //            itemBuilder: (BuildContext context, int index) {
 //              return Image.network(
