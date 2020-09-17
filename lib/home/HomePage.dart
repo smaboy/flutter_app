@@ -40,7 +40,7 @@ class HomePageState extends State<HomePage> {
                 fit: BoxFit.fitWidth,
               );
             },
-            itemCount: homeBannerDataList.length  ?? 0,
+            itemCount: homeBannerDataList?.length  ?? 0,
             pagination: SwiperPagination(),
             control: SwiperControl(),
             autoplay: true,
