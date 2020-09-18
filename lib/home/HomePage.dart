@@ -4,7 +4,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutterapp/common/webview_widget.dart';
+import 'package:flutterapp/entity/home_article_list_entity.dart';
 import 'package:flutterapp/entity/home_banner_entity.dart';
+import 'package:flutterapp/generated/json/home_article_list_entity_helper.dart';
 import 'package:flutterapp/generated/json/home_banner_entity_helper.dart';
 
 /// 首页
@@ -22,25 +24,28 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   /// 轮播图数据
   HomeBannerEntity _homeBannerEntity = HomeBannerEntity();
+
+  /// 文章列表数据
+  HomeArticleListEntity _homeArticleListEntity = HomeArticleListEntity();
   SwiperController _swiperController;
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: new AppBar(
-          title: new Text(widget.title),
-          centerTitle: true,
-        ),
-        body: ListView.builder(
-            itemCount: 20,
-            itemBuilder: (BuildContext context, int index) {
-              return index == 0
-                  ? getBannerWidget()
-                  : Padding(
-                      child: Text("当前序号为$index"),
-                      padding: EdgeInsets.all(10.0),
-                    );
-            }));
+      appBar: new AppBar(
+        title: new Text(widget.title),
+        centerTitle: true,
+      ),
+      body: ListView.builder(
+          itemCount: _homeArticleListEntity?.data?.datas?.length ?? 1,
+          itemBuilder: (BuildContext context, int index) {
+            var data = _homeArticleListEntity?.data?.datas[index];
+            return index == 0
+                ? getBannerWidget()
+                : getListViewItemWidget(
+                _homeArticleListEntity?.data?.datas[index]);
+          }),
+    );
   }
 
   @override
@@ -68,6 +73,7 @@ class HomePageState extends State<HomePage> {
   void initDat() {
     ///获取轮播图数据
     initBannerData();
+    initArticleListData();
   }
 
   /// 获取banner组件
@@ -133,7 +139,50 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  /// 从网络获取数据
+  Widget getListViewItemWidget(HomeArticleListDataData homeArticleListDataData) {
+    return GestureDetector(
+      child: Container(
+        padding: EdgeInsets.all(10.0),
+        child: Row(
+          children: <Widget>[
+            Center(
+              child: Padding(child: Icon(Icons.favorite_border),
+                  padding: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0)),
+            ),
+            Expanded(child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(homeArticleListDataData.title,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black,
+                      fontSize: 15.0
+                  ),),
+                Padding(
+                  child: Text("分享人:${homeArticleListDataData
+                      .shareUser}   分类: ${homeArticleListDataData
+                      .superChapterName}/${homeArticleListDataData
+                      .chapterName}  时间: ${homeArticleListDataData
+                      .niceShareDate}",
+                    style: TextStyle(
+                        fontSize: 12.0
+                    ),),
+                  padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 0.0),
+                )
+              ],))
+          ],
+        ),
+      ),
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return WebViewWidget(url: homeArticleListDataData.link,title: homeArticleListDataData.title,);
+        }));
+      },
+    );
+  }
+
+  /// 从网络获取轮播图数据
   void initBannerData() async {
     var request = await HttpClient()
         .getUrl(Uri.parse("https://www.wanandroid.com/banner/json"));
@@ -154,5 +203,27 @@ class HomePageState extends State<HomePage> {
     });
 
     _swiperController.startAutoplay();
+  }
+
+  /// 从网络获取文章列表数据
+  void initArticleListData() async {
+    var request = await HttpClient()
+        .getUrl(Uri.parse("https://www.wanandroid.com/article/list/0/json"));
+//    ///携带请求头
+//    request.headers.add(name, value);
+//    ///携带请求体
+//    request.add(data);
+//    request.addStream(stream);
+    var responses = await request.close();
+    String responsesBody = await responses.transform(utf8.decoder).join();
+    print("initArticleListData-获取到的数据为:$responsesBody");
+
+    //设置数据
+    setState(() {
+      _homeArticleListEntity = homeArticleListEntityFromJson(
+          _homeArticleListEntity, json.decode(responsesBody));
+      print("initArticleListData-meBeanEntity转化的第一列的标题为:${_homeArticleListEntity
+          .data.datas[0].title}");
+    });
   }
 }
