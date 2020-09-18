@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutterapp/common/webview_widget.dart';
 import 'package:flutterapp/entity/home_banner_entity.dart';
 import 'package:flutterapp/generated/json/home_banner_entity_helper.dart';
 
@@ -19,7 +20,6 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-
   /// 轮播图数据
   HomeBannerEntity _homeBannerEntity = HomeBannerEntity();
   SwiperController _swiperController;
@@ -32,13 +32,15 @@ class HomePageState extends State<HomePage> {
           centerTitle: true,
         ),
         body: ListView.builder(
-
             itemCount: 20,
             itemBuilder: (BuildContext context, int index) {
-              return index == 0 ? getBannerWidget() : Padding(child: Text("当前序号为$index"),padding: EdgeInsets.all(10.0),);
-            }
-        )
-    );
+              return index == 0
+                  ? getBannerWidget()
+                  : Padding(
+                      child: Text("当前序号为$index"),
+                      padding: EdgeInsets.all(10.0),
+                    );
+            }));
   }
 
   @override
@@ -51,7 +53,6 @@ class HomePageState extends State<HomePage> {
     initDat();
 
     print("initState");
-
   }
 
   @override
@@ -67,25 +68,24 @@ class HomePageState extends State<HomePage> {
   void initDat() {
     ///获取轮播图数据
     initBannerData();
-
   }
 
   /// 获取banner组件
-  Widget getBannerWidget(){
+  Widget getBannerWidget() {
     var homeBannerDataList = _homeBannerEntity.data;
     return Container(
       padding: EdgeInsets.symmetric(vertical: 5.0),
-      child:  Listener(
-        onPointerDown: (tapDown){
+      child: Listener(
+        onPointerDown: (tapDown) {
           //手指按下
           _swiperController.stopAutoplay();
         },
-        onPointerUp: (tapUP){
+        onPointerUp: (tapUP) {
           //手指抬起
           _swiperController.startAutoplay();
         },
         child: Swiper(
-          itemCount: homeBannerDataList?.length  ?? 0,
+          itemCount: homeBannerDataList?.length ?? 0,
           itemBuilder: (BuildContext context, int index) {
             return Container(
               decoration: BoxDecoration(
@@ -119,8 +119,13 @@ class HomePageState extends State<HomePage> {
 
           onTap: (int index) {
             //点击事件，返回下标
-            Scaffold.of(context)
-                .showSnackBar(SnackBar(content: Text(homeBannerDataList[index].title)));
+            Navigator.of(context)
+              ..push(MaterialPageRoute(builder: (context) {
+                return WebViewWidget(
+                  url: homeBannerDataList[index].url,
+                  title: homeBannerDataList[index].title,
+                );
+              }));
           },
         ),
       ),
@@ -130,8 +135,8 @@ class HomePageState extends State<HomePage> {
 
   /// 从网络获取数据
   void initBannerData() async {
-    var request = await HttpClient().getUrl(
-        Uri.parse("https://www.wanandroid.com/banner/json"));
+    var request = await HttpClient()
+        .getUrl(Uri.parse("https://www.wanandroid.com/banner/json"));
 //    ///携带请求头
 //    request.headers.add(name, value);
 //    ///携带请求体
@@ -141,16 +146,13 @@ class HomePageState extends State<HomePage> {
     String responsesBody = await responses.transform(utf8.decoder).join();
     print("获取到的数据为:$responsesBody");
 
-
     //设置数据
     setState(() {
-      _homeBannerEntity = homeBannerEntityFromJson(_homeBannerEntity, json.decode(responsesBody));
+      _homeBannerEntity = homeBannerEntityFromJson(
+          _homeBannerEntity, json.decode(responsesBody));
       print("meBeanEntity转化的第一列的标题为:${_homeBannerEntity.data[0].title}");
     });
 
     _swiperController.startAutoplay();
-
   }
 }
-
-
