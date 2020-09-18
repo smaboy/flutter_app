@@ -143,6 +143,11 @@ class HomePageState extends State<HomePage> {
     return GestureDetector(
       child: Container(
         padding: EdgeInsets.all(10.0),
+        margin: EdgeInsets.symmetric(vertical: 5.0,horizontal: 10.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          color: Colors.grey[300]
+        ),
         child: Row(
           children: <Widget>[
             Center(
