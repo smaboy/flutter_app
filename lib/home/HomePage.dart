@@ -31,19 +31,19 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    List<HomeArticleListDataData> listData = _homeArticleListEntity?.data?.datas ?? <HomeArticleListDataData>[];
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(widget.title),
         centerTitle: true,
       ),
       body: ListView.builder(
-          itemCount: _homeArticleListEntity?.data?.datas?.length ?? 1,
+          itemCount: listData.length+1,
           itemBuilder: (BuildContext context, int index) {
-            var data = _homeArticleListEntity?.data?.datas[index];
             return index == 0
                 ? getBannerWidget()
                 : getListViewItemWidget(
-                _homeArticleListEntity?.data?.datas[index]);
+                listData[index-1]);
           }),
     );
   }
