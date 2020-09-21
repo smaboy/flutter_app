@@ -312,18 +312,18 @@ class HomePageState extends State<HomePage> {
     }
 
     ///作者
-    if (listDataData.shareUser != null && listDataData.shareUser.isNotEmpty) {
+    if (listDataData.author != null && listDataData.author.isNotEmpty) {
       desc += " 作者: ${listDataData.author}";
     }
 
     ///分类
-    if (listDataData.shareUser != null && listDataData.shareUser.isNotEmpty) {
+    if (listDataData.superChapterName != null && listDataData.superChapterName.isNotEmpty && listDataData.chapterName != null && listDataData.chapterName.isNotEmpty) {
       desc +=
           " 分类: ${listDataData.superChapterName}/${listDataData.chapterName}";
     }
 
     ///时间
-    if (listDataData.shareUser != null && listDataData.shareUser.isNotEmpty) {
+    if (listDataData.niceDate != null && listDataData.niceDate.isNotEmpty) {
       desc += " 时间: ${listDataData.niceDate}";
     }
     Widget tempDes = Expanded(child: Text(desc.trim(), style: TextStyle(fontSize: 10.0, color: Colors.grey),overflow: TextOverflow.ellipsis,),);
