@@ -35,20 +35,23 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    List<HomeArticleListDataData> listData = _homeArticleListEntity?.data?.datas ?? <HomeArticleListDataData>[];
+    List<HomeArticleListDataData> listData =
+        _homeArticleListEntity?.data?.datas ?? <HomeArticleListDataData>[];
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(widget.title),
         centerTitle: true,
       ),
-      body: ListView.builder(
-          itemCount: listData.length+1,
-          itemBuilder: (BuildContext context, int index) {
-            return index == 0
-                ? getBannerWidget()
-                : getListViewItemWidget(
-                listData[index-1]);
-          }),
+      body: Container(
+        color: Colors.grey[100],
+        child: ListView.builder(
+            itemCount: listData.length + 1,
+            itemBuilder: (BuildContext context, int index) {
+              return index == 0
+                  ? getBannerWidget()
+                  : getListViewItemWidget(listData[index - 1]);
+            }),
+      ),
     );
   }
 
@@ -143,52 +146,195 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  Widget getListViewItemWidget(HomeArticleListDataData homeArticleListDataData) {
+  Widget getListViewItemWidget(
+      HomeArticleListDataData homeArticleListDataData) {
     return GestureDetector(
       child: Container(
         padding: EdgeInsets.all(10.0),
-        margin: EdgeInsets.symmetric(vertical: 5.0,horizontal: 10.0),
+        margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-          color: Colors.grey[300]
-        ),
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            boxShadow: [ //阴影
+              BoxShadow(
+                  color:Colors.grey[300],
+                  offset: Offset(2.0,2.0),
+                  blurRadius: 2.0
+              )
+            ],
+            color: Colors.white),
         child: Row(
           children: <Widget>[
             Center(
-              child: Padding(child: Icon(Icons.favorite_border),
+              child: Padding(
+                  child: Icon(Icons.favorite_border),
                   padding: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0)),
             ),
-            Expanded(child: Column(
+            Expanded(
+                child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(homeArticleListDataData.title,
+                Text(
+                  homeArticleListDataData.title,
                   style: TextStyle(
                       fontWeight: FontWeight.w700,
                       color: Colors.black,
-                      fontSize: 15.0
-                  ),),
+                      fontSize: 15.0),
+                ),
                 Padding(
-                  child: Text("分享人:${homeArticleListDataData
-                      .shareUser}   分类: ${homeArticleListDataData
-                      .superChapterName}/${homeArticleListDataData
-                      .chapterName}  时间: ${homeArticleListDataData
-                      .niceShareDate}",
-                    style: TextStyle(
-                        fontSize: 12.0
-                    ),),
+                  child: Row(
+                    children:
+                        getListViewItemBottomWidget(homeArticleListDataData),
+                  ),
                   padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 0.0),
                 )
-              ],))
+              ],
+            ))
           ],
         ),
       ),
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return WebViewWidget(url: homeArticleListDataData.link,title: homeArticleListDataData.title,);
+          return WebViewWidget(
+            url: homeArticleListDataData.link,
+            title: homeArticleListDataData.title,
+          );
         }));
       },
     );
+  }
+
+  /// 获取ListView的子view布局中底部的详情组件（如:作者、分类、时间等）
+  List<Widget> getListViewItemBottomWidget(
+      HomeArticleListDataData listDataData) {
+    Widget tag = DecoratedBox(
+      child: Text("新"),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(3.0),
+        border: Border.all(color: Colors.red, width: 0.5),
+        color: Colors.white,
+        shape: BoxShape.rectangle,
+      ),
+    );
+    var tags = <Widget>[];
+    var spaceWidget = Container(
+      width: 6.0,
+    );
+
+    ///开始创建组件数组
+    /// 类型为1的为置顶文章，fresh为true的为最新文章,组件顺序按照置顶-新-tags顺序来
+    if (listDataData.type == 1) {
+      //置顶
+      Widget tag = DecoratedBox(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 1.0, horizontal: 3.0),
+          child: Text("置顶", style: TextStyle(fontSize: 10.0)),
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(3.0),
+          border: Border.all(color: Colors.red[400], width: 1.0),
+          color: Colors.white,
+          shape: BoxShape.rectangle,
+        ),
+      );
+      tags.add(tag);
+    }
+    if (listDataData.fresh == true) {
+      //最新
+      Widget tag = DecoratedBox(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 1.0, horizontal: 3.0),
+          child: Text("新", style: TextStyle(fontSize: 10.0)),
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(3.0),
+          border: Border.all(color: Colors.red, width: 1.0),
+          color: Colors.white,
+          shape: BoxShape.rectangle,
+        ),
+      );
+
+      ///添加间距
+      if (tags.length > 0) {
+        tags.add(spaceWidget);
+      }
+
+      ///添加组件
+      tags.add(tag);
+    }
+    if (listDataData.tags != null && listDataData.tags.length > 0) {
+      //tags中的
+      for (HomeArticleListDataDataTag tag in listDataData.tags) {
+        Widget tempTag = DecoratedBox(
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 1.0, horizontal: 3.0),
+            child: Text(tag.name,
+                style: TextStyle(fontSize: 10.0, color: Colors.green)),
+          ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(3.0),
+            border: Border.all(color: Colors.green, width: 1.0),
+            color: Colors.white,
+            shape: BoxShape.rectangle,
+          ),
+        );
+
+        Widget listener = GestureDetector(
+          child: tempTag,
+          onTap: () {
+            ///单击走这
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (buildContext) {
+                return WebViewWidget(
+                  url: API.baseUrl + tag.url,
+                  title: tag.name,
+                );
+              }),
+            );
+          },
+        );
+
+        ///添加间距
+        if (tags.length > 0) {
+          tags.add(spaceWidget);
+        }
+
+        ///添加组件
+        tags.add(listener);
+      }
+    }
+    String desc = "";
+
+    ///分享人
+    if (listDataData.shareUser != null && listDataData.shareUser.isNotEmpty) {
+      desc += " 分享人: ${listDataData.shareUser}";
+    }
+
+    ///作者
+    if (listDataData.shareUser != null && listDataData.shareUser.isNotEmpty) {
+      desc += " 作者: ${listDataData.author}";
+    }
+
+    ///分类
+    if (listDataData.shareUser != null && listDataData.shareUser.isNotEmpty) {
+      desc +=
+          " 分类: ${listDataData.superChapterName}/${listDataData.chapterName}";
+    }
+
+    ///时间
+    if (listDataData.shareUser != null && listDataData.shareUser.isNotEmpty) {
+      desc += " 时间: ${listDataData.niceDate}";
+    }
+    Widget tempDes = Text(desc.trim(), style: TextStyle(fontSize: 10.0, color: Colors.grey));
+    ///添加间距
+    if (tags.length > 0) {
+      tags.add(spaceWidget);
+    }
+
+    ///添加组件
+    tags.add(tempDes);
+    return tags;
   }
 
   /// 从网络获取轮播图数据
@@ -207,23 +353,14 @@ class HomePageState extends State<HomePage> {
 
   /// 从网络获取文章列表数据
   void initArticleListData() async {
-    var request = await HttpClient()
-        .getUrl(Uri.parse("https://www.wanandroid.com/article/list/0/json"));
-//    ///携带请求头
-//    request.headers.add(name, value);
-//    ///携带请求体
-//    request.add(data);
-//    request.addStream(stream);
-    var responses = await request.close();
-    String responsesBody = await responses.transform(utf8.decoder).join();
-    print("initArticleListData-获取到的数据为:$responsesBody");
+    Response responses = await HttpUtils.getInstance().get(API.homeArticleList);
 
     //设置数据
     setState(() {
       _homeArticleListEntity = homeArticleListEntityFromJson(
-          _homeArticleListEntity, json.decode(responsesBody));
-      print("initArticleListData-meBeanEntity转化的第一列的标题为:${_homeArticleListEntity
-          .data.datas[0].title}");
+          _homeArticleListEntity, json.decode(responses.toString()));
+      print(
+          "initArticleListData-meBeanEntity转化的第一列的标题为:${_homeArticleListEntity.data.datas[0].title}");
     });
   }
 }

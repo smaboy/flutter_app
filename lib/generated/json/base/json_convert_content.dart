@@ -21,7 +21,8 @@ class JsonConvert<T> {
     switch (type) {			case HomeArticleListEntity:
 			return homeArticleListEntityFromJson(data as HomeArticleListEntity, json) as T;			case HomeArticleListData:
 			return homeArticleListDataFromJson(data as HomeArticleListData, json) as T;			case HomeArticleListDataData:
-			return homeArticleListDataDataFromJson(data as HomeArticleListDataData, json) as T;			case HomeBannerEntity:
+			return homeArticleListDataDataFromJson(data as HomeArticleListDataData, json) as T;			case HomeArticleListDataDataTag:
+			return homeArticleListDataDataTagFromJson(data as HomeArticleListDataDataTag, json) as T;			case HomeBannerEntity:
 			return homeBannerEntityFromJson(data as HomeBannerEntity, json) as T;			case HomeBannerData:
 			return homeBannerDataFromJson(data as HomeBannerData, json) as T;    }
     return data as T;
@@ -31,7 +32,8 @@ class JsonConvert<T> {
 		switch (type) {			case HomeArticleListEntity:
 			return homeArticleListEntityToJson(data as HomeArticleListEntity);			case HomeArticleListData:
 			return homeArticleListDataToJson(data as HomeArticleListData);			case HomeArticleListDataData:
-			return homeArticleListDataDataToJson(data as HomeArticleListDataData);			case HomeBannerEntity:
+			return homeArticleListDataDataToJson(data as HomeArticleListDataData);			case HomeArticleListDataDataTag:
+			return homeArticleListDataDataTagToJson(data as HomeArticleListDataDataTag);			case HomeBannerEntity:
 			return homeBannerEntityToJson(data as HomeBannerEntity);			case HomeBannerData:
 			return homeBannerDataToJson(data as HomeBannerData);    }
     return data as T;
@@ -41,7 +43,8 @@ class JsonConvert<T> {
     switch (type) {			case 'HomeArticleListEntity':
 			return HomeArticleListEntity().fromJson(json);			case 'HomeArticleListData':
 			return HomeArticleListData().fromJson(json);			case 'HomeArticleListDataData':
-			return HomeArticleListDataData().fromJson(json);			case 'HomeBannerEntity':
+			return HomeArticleListDataData().fromJson(json);			case 'HomeArticleListDataDataTag':
+			return HomeArticleListDataDataTag().fromJson(json);			case 'HomeBannerEntity':
 			return HomeBannerEntity().fromJson(json);			case 'HomeBannerData':
 			return HomeBannerData().fromJson(json);    }
     return null;
@@ -52,7 +55,8 @@ class JsonConvert<T> {
     switch (type) {			case 'HomeArticleListEntity':
 			return List<HomeArticleListEntity>();			case 'HomeArticleListData':
 			return List<HomeArticleListData>();			case 'HomeArticleListDataData':
-			return List<HomeArticleListDataData>();			case 'HomeBannerEntity':
+			return List<HomeArticleListDataData>();			case 'HomeArticleListDataDataTag':
+			return List<HomeArticleListDataDataTag>();			case 'HomeBannerEntity':
 			return List<HomeBannerEntity>();			case 'HomeBannerData':
 			return List<HomeBannerData>();    }
     return null;

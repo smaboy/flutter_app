@@ -145,8 +145,10 @@ homeArticleListDataDataFromJson(HomeArticleListDataData data, Map<String, dynami
 		data.superChapterName = json['superChapterName']?.toString();
 	}
 	if (json['tags'] != null) {
-		data.tags = new List<dynamic>();
-		data.tags.addAll(json['tags']);
+		data.tags = new List<HomeArticleListDataDataTag>();
+		(json['tags'] as List).forEach((v) {
+			data.tags.add(new HomeArticleListDataDataTag().fromJson(v));
+		});
 	}
 	if (json['title'] != null) {
 		data.title = json['title']?.toString();
@@ -195,12 +197,29 @@ Map<String, dynamic> homeArticleListDataDataToJson(HomeArticleListDataData entit
 	data['superChapterId'] = entity.superChapterId;
 	data['superChapterName'] = entity.superChapterName;
 	if (entity.tags != null) {
-		data['tags'] =  [];
+		data['tags'] =  entity.tags.map((v) => v.toJson()).toList();
 	}
 	data['title'] = entity.title;
 	data['type'] = entity.type;
 	data['userId'] = entity.userId;
 	data['visible'] = entity.visible;
 	data['zan'] = entity.zan;
+	return data;
+}
+
+homeArticleListDataDataTagFromJson(HomeArticleListDataDataTag data, Map<String, dynamic> json) {
+	if (json['name'] != null) {
+		data.name = json['name']?.toString();
+	}
+	if (json['url'] != null) {
+		data.url = json['url']?.toString();
+	}
+	return data;
+}
+
+Map<String, dynamic> homeArticleListDataDataTagToJson(HomeArticleListDataDataTag entity) {
+	final Map<String, dynamic> data = new Map<String, dynamic>();
+	data['name'] = entity.name;
+	data['url'] = entity.url;
 	return data;
 }

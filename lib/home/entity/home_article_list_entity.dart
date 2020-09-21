@@ -43,10 +43,15 @@ class HomeArticleListDataData with JsonConvert<HomeArticleListDataData> {
 	String shareUser;
 	int superChapterId;
 	String superChapterName;
-	List<dynamic> tags;
+	List<HomeArticleListDataDataTag> tags;
 	String title;
 	int type;
 	int userId;
 	int visible;
 	int zan;
+}
+
+class HomeArticleListDataDataTag with JsonConvert<HomeArticleListDataDataTag>{
+	String name;
+	String url;
 }
