@@ -1,4 +1,4 @@
-import 'package:flutterapp/entity/home_banner_entity.dart';
+import 'package:flutterapp/home/entity/home_banner_entity.dart';
 
 homeBannerEntityFromJson(HomeBannerEntity data, Map<String, dynamic> json) {
 	if (json['data'] != null) {

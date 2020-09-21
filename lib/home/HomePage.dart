@@ -6,11 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutterapp/common/API.dart';
 import 'package:flutterapp/common/webview_widget.dart';
-import 'package:flutterapp/entity/home_article_list_entity.dart';
-import 'package:flutterapp/entity/home_banner_entity.dart';
 import 'package:flutterapp/generated/json/home_article_list_entity_helper.dart';
 import 'package:flutterapp/generated/json/home_banner_entity_helper.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
+
+import 'entity/home_article_list_entity.dart';
+import 'entity/home_banner_entity.dart';
 
 /// 首页
 class HomePage extends StatefulWidget {
