@@ -326,7 +326,7 @@ class HomePageState extends State<HomePage> {
     if (listDataData.shareUser != null && listDataData.shareUser.isNotEmpty) {
       desc += " 时间: ${listDataData.niceDate}";
     }
-    Widget tempDes = Text(desc.trim(), style: TextStyle(fontSize: 10.0, color: Colors.grey));
+    Widget tempDes = Expanded(child: Text(desc.trim(), style: TextStyle(fontSize: 10.0, color: Colors.grey),overflow: TextOverflow.ellipsis,),);
     ///添加间距
     if (tags.length > 0) {
       tags.add(spaceWidget);
