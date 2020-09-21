@@ -38,6 +38,9 @@ dependencies:
   # 该插件无法加载网络的异常处理 https://blog.csdn.net/weixin_30642267/article/details/101941152
   flutter_webview_plugin: ^0.3.11
 
+  # 网络请求框架
+  dio: ^3.0.10
+
 
 dev_dependencies:
   flutter_test:

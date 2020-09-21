@@ -1,13 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutterapp/common/API.dart';
 import 'package:flutterapp/common/webview_widget.dart';
 import 'package:flutterapp/entity/home_article_list_entity.dart';
 import 'package:flutterapp/entity/home_banner_entity.dart';
 import 'package:flutterapp/generated/json/home_article_list_entity_helper.dart';
 import 'package:flutterapp/generated/json/home_banner_entity_helper.dart';
+import 'package:flutterapp/http/HttpUtils.dart';
 
 /// 首页
 class HomePage extends StatefulWidget {
@@ -189,21 +192,12 @@ class HomePageState extends State<HomePage> {
 
   /// 从网络获取轮播图数据
   void initBannerData() async {
-    var request = await HttpClient()
-        .getUrl(Uri.parse("https://www.wanandroid.com/banner/json"));
-//    ///携带请求头
-//    request.headers.add(name, value);
-//    ///携带请求体
-//    request.add(data);
-//    request.addStream(stream);
-    var responses = await request.close();
-    String responsesBody = await responses.transform(utf8.decoder).join();
-    print("获取到的数据为:$responsesBody");
+    Response responses = await HttpUtils.getInstance().get(API.homeBanner);
 
     //设置数据
     setState(() {
       _homeBannerEntity = homeBannerEntityFromJson(
-          _homeBannerEntity, json.decode(responsesBody));
+          _homeBannerEntity, json.decode(responses.toString()));
       print("meBeanEntity转化的第一列的标题为:${_homeBannerEntity.data[0].title}");
     });
 
