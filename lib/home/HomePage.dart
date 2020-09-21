@@ -8,6 +8,8 @@ import 'package:flutterapp/common/API.dart';
 import 'package:flutterapp/common/webview_widget.dart';
 import 'package:flutterapp/generated/json/home_article_list_entity_helper.dart';
 import 'package:flutterapp/generated/json/home_banner_entity_helper.dart';
+import 'package:flutterapp/home/entity/home_article_data.dart';
+import 'package:flutterapp/home/entity/home_article_top_entity.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
 
 import 'entity/home_article_list_entity.dart';
@@ -31,12 +33,12 @@ class HomePageState extends State<HomePage> {
 
   /// 文章列表数据
   HomeArticleListEntity _homeArticleListEntity = HomeArticleListEntity();
+  /// 文章列表数据集合
+  List<HomeArticleDataBean> articleList = <HomeArticleDataBean>[];
   SwiperController _swiperController;
 
   @override
   Widget build(BuildContext context) {
-    List<HomeArticleListDataData> listData =
-        _homeArticleListEntity?.data?.datas ?? <HomeArticleListDataData>[];
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(widget.title),
@@ -45,11 +47,11 @@ class HomePageState extends State<HomePage> {
       body: Container(
         color: Colors.grey[100],
         child: ListView.builder(
-            itemCount: listData.length + 1,
+            itemCount: articleList.length + 1,
             itemBuilder: (BuildContext context, int index) {
               return index == 0
                   ? getBannerWidget()
-                  : getListViewItemWidget(listData[index - 1]);
+                  : getListViewItemWidget(articleList[index - 1]);
             }),
       ),
     );
@@ -147,7 +149,7 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget getListViewItemWidget(
-      HomeArticleListDataData homeArticleListDataData) {
+      HomeArticleDataBean homeArticleDataBean) {
     return GestureDetector(
       child: Container(
         padding: EdgeInsets.all(10.0),
@@ -175,7 +177,7 @@ class HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  homeArticleListDataData.title,
+                  homeArticleDataBean.title,
                   style: TextStyle(
                       fontWeight: FontWeight.w700,
                       color: Colors.black,
@@ -184,7 +186,7 @@ class HomePageState extends State<HomePage> {
                 Padding(
                   child: Row(
                     children:
-                        getListViewItemBottomWidget(homeArticleListDataData),
+                        getListViewItemBottomWidget(homeArticleDataBean),
                   ),
                   padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 0.0),
                 )
@@ -196,8 +198,8 @@ class HomePageState extends State<HomePage> {
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return WebViewWidget(
-            url: homeArticleListDataData.link,
-            title: homeArticleListDataData.title,
+            url: homeArticleDataBean.link,
+            title: homeArticleDataBean.title,
           );
         }));
       },
@@ -206,7 +208,7 @@ class HomePageState extends State<HomePage> {
 
   /// 获取ListView的子view布局中底部的详情组件（如:作者、分类、时间等）
   List<Widget> getListViewItemBottomWidget(
-      HomeArticleListDataData listDataData) {
+      HomeArticleDataBean homeArticleDataBean) {
     Widget tag = DecoratedBox(
       child: Text("新"),
       decoration: BoxDecoration(
@@ -223,12 +225,12 @@ class HomePageState extends State<HomePage> {
 
     ///开始创建组件数组
     /// 类型为1的为置顶文章，fresh为true的为最新文章,组件顺序按照置顶-新-tags顺序来
-    if (listDataData.type == 1) {
+    if (homeArticleDataBean.type == 1) {
       //置顶
       Widget tag = DecoratedBox(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 1.0, horizontal: 3.0),
-          child: Text("置顶", style: TextStyle(fontSize: 10.0)),
+          child: Text("置顶", style: TextStyle(fontSize: 10.0,color: Colors.red[400])),
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(3.0),
@@ -239,12 +241,12 @@ class HomePageState extends State<HomePage> {
       );
       tags.add(tag);
     }
-    if (listDataData.fresh == true) {
+    if (homeArticleDataBean.fresh == true) {
       //最新
       Widget tag = DecoratedBox(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 1.0, horizontal: 3.0),
-          child: Text("新", style: TextStyle(fontSize: 10.0)),
+          child: Text("新", style: TextStyle(fontSize: 10.0,color: Colors.red)),
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(3.0),
@@ -262,9 +264,9 @@ class HomePageState extends State<HomePage> {
       ///添加组件
       tags.add(tag);
     }
-    if (listDataData.tags != null && listDataData.tags.length > 0) {
+    if (homeArticleDataBean.tags != null && homeArticleDataBean.tags.length > 0) {
       //tags中的
-      for (HomeArticleListDataDataTag tag in listDataData.tags) {
+      for (HomeArticleDataBeanTag tag in homeArticleDataBean.tags) {
         Widget tempTag = DecoratedBox(
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 1.0, horizontal: 3.0),
@@ -307,24 +309,24 @@ class HomePageState extends State<HomePage> {
     String desc = "";
 
     ///分享人
-    if (listDataData.shareUser != null && listDataData.shareUser.isNotEmpty) {
-      desc += " 分享人: ${listDataData.shareUser}";
+    if (homeArticleDataBean.shareUser != null && homeArticleDataBean.shareUser.isNotEmpty) {
+      desc += " 分享人: ${homeArticleDataBean.shareUser}";
     }
 
     ///作者
-    if (listDataData.author != null && listDataData.author.isNotEmpty) {
-      desc += " 作者: ${listDataData.author}";
+    if (homeArticleDataBean.author != null && homeArticleDataBean.author.isNotEmpty) {
+      desc += " 作者: ${homeArticleDataBean.author}";
     }
 
     ///分类
-    if (listDataData.superChapterName != null && listDataData.superChapterName.isNotEmpty && listDataData.chapterName != null && listDataData.chapterName.isNotEmpty) {
+    if (homeArticleDataBean.superChapterName != null && homeArticleDataBean.superChapterName.isNotEmpty && homeArticleDataBean.chapterName != null && homeArticleDataBean.chapterName.isNotEmpty) {
       desc +=
-          " 分类: ${listDataData.superChapterName}/${listDataData.chapterName}";
+          " 分类: ${homeArticleDataBean.superChapterName}/${homeArticleDataBean.chapterName}";
     }
 
     ///时间
-    if (listDataData.niceDate != null && listDataData.niceDate.isNotEmpty) {
-      desc += " 时间: ${listDataData.niceDate}";
+    if (homeArticleDataBean.niceDate != null && homeArticleDataBean.niceDate.isNotEmpty) {
+      desc += " 时间: ${homeArticleDataBean.niceDate}";
     }
     Widget tempDes = Expanded(child: Text(desc.trim(), style: TextStyle(fontSize: 10.0, color: Colors.grey),overflow: TextOverflow.ellipsis,),);
     ///添加间距
@@ -353,14 +355,30 @@ class HomePageState extends State<HomePage> {
 
   /// 从网络获取文章列表数据
   void initArticleListData() async {
-    Response responses = await HttpUtils.getInstance().get(API.homeArticleList);
+    ///获取置顶文章列表数据
+    Response homeArticleTop = await HttpUtils.getInstance().get(API.homeArticleTop);
+    ///获取文章列表数据
+    Response homeArticleList = await HttpUtils.getInstance().get(API.homeArticleList);
+    print("homeArticleTop====${homeArticleTop.toString()}");
+    print("homeArticleList====${homeArticleList.toString()}");
+
+
 
     //设置数据
     setState(() {
-      _homeArticleListEntity = homeArticleListEntityFromJson(
-          _homeArticleListEntity, json.decode(responses.toString()));
+      ///整合数据r
+      var listData = <HomeArticleDataBean>[];
+      HomeArticleTopEntity homeArticleTopEntity = HomeArticleTopEntity().fromJson(json.decode(homeArticleTop.toString()));
+      HomeArticleListEntity homeArticleListEntity = HomeArticleListEntity().fromJson(json.decode(homeArticleList.toString()));
+      if(homeArticleTopEntity != null && homeArticleTopEntity.data != null ){//置顶文章数据
+        listData.addAll(homeArticleTopEntity.data);
+      }
+      if(homeArticleListEntity != null && homeArticleListEntity.data != null && homeArticleListEntity.data.datas != null){//文章数据
+        listData.addAll(homeArticleListEntity.data.datas);
+      }
+      articleList = listData;
       print(
-          "initArticleListData-meBeanEntity转化的第一列的标题为:${_homeArticleListEntity.data.datas[0].title}");
+          "initArticleListData-meBeanEntity转化的第一列的标题为:${articleList[0].title}");
     });
   }
 }
