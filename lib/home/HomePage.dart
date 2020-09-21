@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutterapp/common/API.dart';
 import 'package:flutterapp/common/webview_widget.dart';
@@ -37,6 +38,9 @@ class HomePageState extends State<HomePage> {
   List<HomeArticleDataBean> articleList = <HomeArticleDataBean>[];
   SwiperController _swiperController;
 
+  /// 刷新控制器
+  EasyRefreshController _easyRefreshController = EasyRefreshController();
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -46,13 +50,25 @@ class HomePageState extends State<HomePage> {
       ),
       body: Container(
         color: Colors.grey[100],
-        child: ListView.builder(
-            itemCount: articleList.length + 1,
-            itemBuilder: (BuildContext context, int index) {
-              return index == 0
-                  ? getBannerWidget()
-                  : getListViewItemWidget(articleList[index - 1]);
-            }),
+        child: EasyRefresh(
+          child: ListView.builder(
+              itemCount: articleList.length + 1,
+              itemBuilder: (BuildContext context, int index) {
+                return index == 0
+                    ? getBannerWidget()
+                    : getListViewItemWidget(articleList[index - 1]);
+              }),
+          controller: _easyRefreshController,
+          onRefresh: () async {
+            print("下拉刷新...");
+          },
+          onLoad: () async {
+            print("加载更多...");
+          },
+          header: BezierCircleHeader(),
+          footer: BezierBounceFooter(),
+
+        ),
       ),
     );
   }

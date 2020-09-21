@@ -41,6 +41,9 @@ dependencies:
   # 网络请求框架
   dio: ^3.0.10
 
+  # 刷新框架
+  flutter_easyrefresh: ^2.1.5
+
 
 dev_dependencies:
   flutter_test:
