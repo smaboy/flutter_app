@@ -88,7 +88,6 @@ class SystemPageState extends State<SystemPage> {
   ///获取标题树组件
   Widget getTitleTreeWidget() {
     return Container(
-      padding: EdgeInsets.all(10.0),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
