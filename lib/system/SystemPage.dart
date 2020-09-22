@@ -98,7 +98,7 @@ class SystemPageState extends State<SystemPage> {
 //                    title: Text(_systemTreeEntity?.data[index].name,style: TextStyle(color: Colors.black,fontSize: 13.0),),
 //                  );
                   return ListTile(
-                    title: Text(_systemTreeEntity?.data[index].name,style: TextStyle(color: index == _selectedPosition ? Colors.blue : Colors.black, fontSize: 13.0)),
+                    title: Text(_systemTreeEntity?.data[index].name,style: TextStyle(color: index == _selectedPosition ? Theme.of(context).primaryColor : Colors.black, fontSize: 13.0)),
                     onTap: (){
                       setState(() {
                         //设置被点击位置
