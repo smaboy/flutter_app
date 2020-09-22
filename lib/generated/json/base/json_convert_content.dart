@@ -9,6 +9,8 @@ import 'package:flutterapp/home/entity/home_article_list_entity.dart';
 import 'package:flutterapp/generated/json/home_article_list_entity_helper.dart';
 import 'package:flutterapp/home/entity/home_banner_entity.dart';
 import 'package:flutterapp/generated/json/home_banner_entity_helper.dart';
+import 'package:flutterapp/system/entity/system_tree_entity.dart';
+import 'package:flutterapp/generated/json/system_tree_entity_helper.dart';
 import 'package:flutterapp/home/entity/home_article_data.dart';
 import 'package:flutterapp/generated/json/home_article_data_helper.dart';
 
@@ -27,7 +29,10 @@ class JsonConvert<T> {
 			return homeArticleListEntityFromJson(data as HomeArticleListEntity, json) as T;			case HomeArticleListData:
 			return homeArticleListDataFromJson(data as HomeArticleListData, json) as T;			case HomeBannerEntity:
 			return homeBannerEntityFromJson(data as HomeBannerEntity, json) as T;			case HomeBannerData:
-			return homeBannerDataFromJson(data as HomeBannerData, json) as T;			case HomeArticleDataBean:
+			return homeBannerDataFromJson(data as HomeBannerData, json) as T;			case SystemTreeEntity:
+			return systemTreeEntityFromJson(data as SystemTreeEntity, json) as T;			case SystemTreeData:
+			return systemTreeDataFromJson(data as SystemTreeData, json) as T;			case SystemTreeDataChild:
+			return systemTreeDataChildFromJson(data as SystemTreeDataChild, json) as T;			case HomeArticleDataBean:
 			return homeArticleDataBeanFromJson(data as HomeArticleDataBean, json) as T;			case HomeArticleDataBeanTag:
 			return homeArticleDataBeanTagFromJson(data as HomeArticleDataBeanTag, json) as T;    }
     return data as T;
@@ -39,7 +44,10 @@ class JsonConvert<T> {
 			return homeArticleListEntityToJson(data as HomeArticleListEntity);			case HomeArticleListData:
 			return homeArticleListDataToJson(data as HomeArticleListData);			case HomeBannerEntity:
 			return homeBannerEntityToJson(data as HomeBannerEntity);			case HomeBannerData:
-			return homeBannerDataToJson(data as HomeBannerData);			case HomeArticleDataBean:
+			return homeBannerDataToJson(data as HomeBannerData);			case SystemTreeEntity:
+			return systemTreeEntityToJson(data as SystemTreeEntity);			case SystemTreeData:
+			return systemTreeDataToJson(data as SystemTreeData);			case SystemTreeDataChild:
+			return systemTreeDataChildToJson(data as SystemTreeDataChild);			case HomeArticleDataBean:
 			return homeArticleDataBeanToJson(data as HomeArticleDataBean);			case HomeArticleDataBeanTag:
 			return homeArticleDataBeanTagToJson(data as HomeArticleDataBeanTag);    }
     return data as T;
@@ -51,7 +59,10 @@ class JsonConvert<T> {
 			return HomeArticleListEntity().fromJson(json);			case 'HomeArticleListData':
 			return HomeArticleListData().fromJson(json);			case 'HomeBannerEntity':
 			return HomeBannerEntity().fromJson(json);			case 'HomeBannerData':
-			return HomeBannerData().fromJson(json);			case 'HomeArticleDataBean':
+			return HomeBannerData().fromJson(json);			case 'SystemTreeEntity':
+			return SystemTreeEntity().fromJson(json);			case 'SystemTreeData':
+			return SystemTreeData().fromJson(json);			case 'SystemTreeDataChild':
+			return SystemTreeDataChild().fromJson(json);			case 'HomeArticleDataBean':
 			return HomeArticleDataBean().fromJson(json);			case 'HomeArticleDataBeanTag':
 			return HomeArticleDataBeanTag().fromJson(json);    }
     return null;
@@ -64,7 +75,10 @@ class JsonConvert<T> {
 			return List<HomeArticleListEntity>();			case 'HomeArticleListData':
 			return List<HomeArticleListData>();			case 'HomeBannerEntity':
 			return List<HomeBannerEntity>();			case 'HomeBannerData':
-			return List<HomeBannerData>();			case 'HomeArticleDataBean':
+			return List<HomeBannerData>();			case 'SystemTreeEntity':
+			return List<SystemTreeEntity>();			case 'SystemTreeData':
+			return List<SystemTreeData>();			case 'SystemTreeDataChild':
+			return List<SystemTreeDataChild>();			case 'HomeArticleDataBean':
 			return List<HomeArticleDataBean>();			case 'HomeArticleDataBeanTag':
 			return List<HomeArticleDataBeanTag>();    }
     return null;
