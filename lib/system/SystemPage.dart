@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:flutterapp/system/entity/system_tree_entity.dart';
 import 'package:flutterapp/system/service/system_service_impl.dart';
 
@@ -65,9 +66,14 @@ class SystemPageState extends State<SystemPage> {
         systemTreeData.children != null &&
         systemTreeData.children.length > 0) {
       for (SystemTreeDataChild child in systemTreeData.children) {
-        titleTreeWidgets.add(Text(
-          child.name,
-          style: TextStyle(color: Colors.black, fontSize: 10.0),
+        titleTreeWidgets.add(RaisedButton(
+          child: Text(child.name),
+          color: Colors.blue,
+          highlightColor: Theme.of(context).primaryColor,
+          colorBrightness: Brightness.dark,
+          splashColor: Colors.grey,
+          shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+          onPressed: () {}
         ));
       }
 
@@ -115,11 +121,15 @@ class SystemPageState extends State<SystemPage> {
             child: Container(
               color: Colors.grey[100],
               height: double.infinity,
-              child: Wrap(
-                spacing: 5.0, // 主轴(水平)方向间距
-                runSpacing: 4.0, // 纵轴（垂直）方向间距
-                alignment: WrapAlignment.start, //沿主轴方向居中
-                children: getSecondTitleTreeItemWidgets(_secondTitleData),
+              width: double.infinity,
+              padding: EdgeInsets.all(10.0),
+              child: SingleChildScrollView(
+                child: Wrap(
+                  spacing: 10.0, // 主轴(水平)方向间距
+                  runSpacing: 4.0, // 纵轴（垂直）方向间距
+                  alignment: WrapAlignment.start, //沿主轴方向居中
+                  children: getSecondTitleTreeItemWidgets(_secondTitleData),
+                ),
               ),
             ),
           ), //一级标题
