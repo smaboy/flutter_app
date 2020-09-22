@@ -100,20 +100,31 @@ class SystemPageState extends State<SystemPage> {
                   return Divider(height: 2.0, color: Colors.grey[400],);
                 },
                 itemBuilder: (BuildContext context, int index) {
-//                  return ListTile(
-//                    title: Text(_systemTreeEntity?.data[index].name,style: TextStyle(color: Colors.black,fontSize: 13.0),),
-//                  );
-                  return ListTile(
-                    title: Text(_systemTreeEntity?.data[index].name,style: TextStyle(color: index == _selectedPosition ? Theme.of(context).primaryColor : Colors.black, fontSize: 13.0)),
-                    onTap: (){
-                      setState(() {
-                        //设置被点击位置
-                        _selectedPosition = index;
-                        //设置应该被展示的二级标题
-                        _secondTitleData = _systemTreeEntity.data[index];
-                      });
+                  return Container(
+                    color: index == _selectedPosition ? Colors.grey[100] : Colors.white,
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          color: index == _selectedPosition ? Theme.of(context).primaryColor : Colors.white,
+                          width: 5.0,
+                          height: 30.0,
+                        ),
+                        Expanded(
+                          child: ListTile(
+                            title: Text(_systemTreeEntity?.data[index].name,style: TextStyle(color: index == _selectedPosition ? Theme.of(context).primaryColor : Colors.black, fontSize: 13.0)),
+                            onTap: (){
+                              setState(() {
+                                //设置被点击位置
+                                _selectedPosition = index;
+                                //设置应该被展示的二级标题
+                                _secondTitleData = _systemTreeEntity.data[index];
+                              });
 
-                    },
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   );
                 }),
           ),
