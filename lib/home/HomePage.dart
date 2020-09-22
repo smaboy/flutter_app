@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +6,6 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutterapp/common/API.dart';
 import 'package:flutterapp/common/webview_widget.dart';
-import 'package:flutterapp/generated/json/home_article_list_entity_helper.dart';
 import 'package:flutterapp/generated/json/home_banner_entity_helper.dart';
 import 'package:flutterapp/home/entity/home_article_data.dart';
 import 'package:flutterapp/home/entity/home_article_top_entity.dart';
@@ -32,11 +30,11 @@ class HomePageState extends State<HomePage> {
   /// 轮播图数据
   HomeBannerEntity _homeBannerEntity = HomeBannerEntity();
 
-  /// 文章列表数据
-  HomeArticleListEntity _homeArticleListEntity = HomeArticleListEntity();
   /// 文章列表数据集合
-  List<HomeArticleDataBean> articleList = <HomeArticleDataBean>[];
-  SwiperController _swiperController;
+  List<HomeArticleDataBean> _articleList = <HomeArticleDataBean>[];
+
+  /// 轮播图控制器
+  SwiperController _swiperController = SwiperController();
 
   /// 刷新控制器
   EasyRefreshController _easyRefreshController = EasyRefreshController();
@@ -52,22 +50,23 @@ class HomePageState extends State<HomePage> {
         color: Colors.grey[100],
         child: EasyRefresh(
           child: ListView.builder(
-              itemCount: articleList.length + 1,
+              itemCount: _articleList.length + 1,
               itemBuilder: (BuildContext context, int index) {
                 return index == 0
                     ? getBannerWidget()
-                    : getListViewItemWidget(articleList[index - 1]);
+                    : getListViewItemWidget(_articleList[index - 1]);
               }),
           controller: _easyRefreshController,
           onRefresh: () async {
+            reFreshData();
             print("下拉刷新...");
           },
           onLoad: () async {
+            loadMoreData();
             print("加载更多...");
           },
           header: BezierCircleHeader(),
           footer: BezierBounceFooter(),
-
         ),
       ),
     );
@@ -76,8 +75,6 @@ class HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-
-    _swiperController = SwiperController();
 
     /// 初始化数据
     initDat();
@@ -164,20 +161,19 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  Widget getListViewItemWidget(
-      HomeArticleDataBean homeArticleDataBean) {
+  Widget getListViewItemWidget(HomeArticleDataBean homeArticleDataBean) {
     return GestureDetector(
       child: Container(
         padding: EdgeInsets.all(10.0),
         margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(5.0)),
-            boxShadow: [ //阴影
+            boxShadow: [
+              //阴影
               BoxShadow(
-                  color:Colors.grey[300],
-                  offset: Offset(2.0,2.0),
-                  blurRadius: 2.0
-              )
+                  color: Colors.grey[300],
+                  offset: Offset(2.0, 2.0),
+                  blurRadius: 2.0)
             ],
             color: Colors.white),
         child: Row(
@@ -201,8 +197,7 @@ class HomePageState extends State<HomePage> {
                 ),
                 Padding(
                   child: Row(
-                    children:
-                        getListViewItemBottomWidget(homeArticleDataBean),
+                    children: getListViewItemBottomWidget(homeArticleDataBean),
                   ),
                   padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 0.0),
                 )
@@ -246,7 +241,8 @@ class HomePageState extends State<HomePage> {
       Widget tag = DecoratedBox(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 1.0, horizontal: 3.0),
-          child: Text("置顶", style: TextStyle(fontSize: 10.0,color: Colors.red[400])),
+          child: Text("置顶",
+              style: TextStyle(fontSize: 10.0, color: Colors.red[400])),
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(3.0),
@@ -262,7 +258,7 @@ class HomePageState extends State<HomePage> {
       Widget tag = DecoratedBox(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 1.0, horizontal: 3.0),
-          child: Text("新", style: TextStyle(fontSize: 10.0,color: Colors.red)),
+          child: Text("新", style: TextStyle(fontSize: 10.0, color: Colors.red)),
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(3.0),
@@ -280,7 +276,8 @@ class HomePageState extends State<HomePage> {
       ///添加组件
       tags.add(tag);
     }
-    if (homeArticleDataBean.tags != null && homeArticleDataBean.tags.length > 0) {
+    if (homeArticleDataBean.tags != null &&
+        homeArticleDataBean.tags.length > 0) {
       //tags中的
       for (HomeArticleDataBeanTag tag in homeArticleDataBean.tags) {
         Widget tempTag = DecoratedBox(
@@ -325,26 +322,39 @@ class HomePageState extends State<HomePage> {
     String desc = "";
 
     ///分享人
-    if (homeArticleDataBean.shareUser != null && homeArticleDataBean.shareUser.isNotEmpty) {
+    if (homeArticleDataBean.shareUser != null &&
+        homeArticleDataBean.shareUser.isNotEmpty) {
       desc += " 分享人: ${homeArticleDataBean.shareUser}";
     }
 
     ///作者
-    if (homeArticleDataBean.author != null && homeArticleDataBean.author.isNotEmpty) {
+    if (homeArticleDataBean.author != null &&
+        homeArticleDataBean.author.isNotEmpty) {
       desc += " 作者: ${homeArticleDataBean.author}";
     }
 
     ///分类
-    if (homeArticleDataBean.superChapterName != null && homeArticleDataBean.superChapterName.isNotEmpty && homeArticleDataBean.chapterName != null && homeArticleDataBean.chapterName.isNotEmpty) {
+    if (homeArticleDataBean.superChapterName != null &&
+        homeArticleDataBean.superChapterName.isNotEmpty &&
+        homeArticleDataBean.chapterName != null &&
+        homeArticleDataBean.chapterName.isNotEmpty) {
       desc +=
           " 分类: ${homeArticleDataBean.superChapterName}/${homeArticleDataBean.chapterName}";
     }
 
     ///时间
-    if (homeArticleDataBean.niceDate != null && homeArticleDataBean.niceDate.isNotEmpty) {
+    if (homeArticleDataBean.niceDate != null &&
+        homeArticleDataBean.niceDate.isNotEmpty) {
       desc += " 时间: ${homeArticleDataBean.niceDate}";
     }
-    Widget tempDes = Expanded(child: Text(desc.trim(), style: TextStyle(fontSize: 10.0, color: Colors.grey),overflow: TextOverflow.ellipsis,),);
+    Widget tempDes = Expanded(
+      child: Text(
+        desc.trim(),
+        style: TextStyle(fontSize: 10.0, color: Colors.grey),
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
+
     ///添加间距
     if (tags.length > 0) {
       tags.add(spaceWidget);
@@ -372,29 +382,63 @@ class HomePageState extends State<HomePage> {
   /// 从网络获取文章列表数据
   void initArticleListData() async {
     ///获取置顶文章列表数据
-    Response homeArticleTop = await HttpUtils.getInstance().get(API.homeArticleTop);
+    Response homeArticleTop =
+        await HttpUtils.getInstance().get(API.homeArticleTop);
+
     ///获取文章列表数据
-    Response homeArticleList = await HttpUtils.getInstance().get(API.homeArticleList);
+    Response homeArticleList =
+        await HttpUtils.getInstance().get(API.homeArticleList);
     print("homeArticleTop====${homeArticleTop.toString()}");
     print("homeArticleList====${homeArticleList.toString()}");
-
-
 
     //设置数据
     setState(() {
       ///整合数据r
-      var listData = <HomeArticleDataBean>[];
-      HomeArticleTopEntity homeArticleTopEntity = HomeArticleTopEntity().fromJson(json.decode(homeArticleTop.toString()));
-      HomeArticleListEntity homeArticleListEntity = HomeArticleListEntity().fromJson(json.decode(homeArticleList.toString()));
-      if(homeArticleTopEntity != null && homeArticleTopEntity.data != null ){//置顶文章数据
-        listData.addAll(homeArticleTopEntity.data);
+      HomeArticleTopEntity homeArticleTopEntity = HomeArticleTopEntity()
+          .fromJson(json.decode(homeArticleTop.toString()));
+      HomeArticleListEntity homeArticleListEntity = HomeArticleListEntity()
+          .fromJson(json.decode(homeArticleList.toString()));
+      // 清空集合
+      _articleList.clear();
+      //添加数据到集合
+      if (homeArticleTopEntity != null && homeArticleTopEntity.data != null) {
+        //置顶文章数据
+        _articleList.addAll(homeArticleTopEntity.data);
       }
-      if(homeArticleListEntity != null && homeArticleListEntity.data != null && homeArticleListEntity.data.datas != null){//文章数据
-        listData.addAll(homeArticleListEntity.data.datas);
+      if (homeArticleListEntity != null &&
+          homeArticleListEntity.data != null &&
+          homeArticleListEntity.data.datas != null) {
+        //文章数据
+        _articleList.addAll(homeArticleListEntity.data.datas);
       }
-      articleList = listData;
       print(
-          "initArticleListData-meBeanEntity转化的第一列的标题为:${articleList[0].title}");
+          "initArticleListData-meBeanEntity转化的第一列的标题为:${_articleList[0].title},长度为:${_articleList.length}");
     });
+  }
+
+  /// 加载更多请求数据
+  void loadMoreData() async {
+    ///获取文章列表数据
+    API.pageNum++;
+    Response homeArticleList =
+        await HttpUtils.getInstance().get(API.homeArticleList);
+    //设置数据
+    setState(() {
+      HomeArticleListEntity homeArticleListEntity = HomeArticleListEntity()
+          .fromJson(json.decode(homeArticleList.toString()));
+      if (homeArticleListEntity != null &&
+          homeArticleListEntity.data != null &&
+          homeArticleListEntity.data.datas != null) {
+        //文章数据
+        _articleList.addAll(homeArticleListEntity.data.datas);
+      }
+    });
+  }
+
+  /// 刷新数据
+  void reFreshData() async {
+    API.pageNum = 0;
+    initBannerData();
+    initArticleListData();
   }
 }
