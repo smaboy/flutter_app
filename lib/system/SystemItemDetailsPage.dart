@@ -211,7 +211,42 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
 
   getListViewItemBottomWidget(SystemListByCidDataData contentList) {
 
-    return  Text("1111");
+    String desc = "";
+
+    ///分享人
+    if (contentList.shareUser != null &&
+        contentList.shareUser.isNotEmpty) {
+      desc += " 分享人: ${contentList.shareUser}";
+    }
+
+    ///作者
+    if (contentList.author != null &&
+        contentList.author.isNotEmpty) {
+      desc += " 作者: ${contentList.author}";
+    }
+
+    ///分类
+    if (contentList.superChapterName != null &&
+        contentList.superChapterName.isNotEmpty &&
+        contentList.chapterName != null &&
+        contentList.chapterName.isNotEmpty) {
+      desc +=
+      " 分类: ${contentList.superChapterName}/${contentList.chapterName}";
+    }
+
+    ///时间
+    if (contentList.niceDate != null &&
+        contentList.niceDate.isNotEmpty) {
+      desc += " 时间: ${contentList.niceDate}";
+    }
+
+    return  Expanded(
+      child: Text(
+        desc.trim(),
+        style: TextStyle(fontSize: 10.0, color: Colors.grey),
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
 
   }
 }
