@@ -110,20 +110,23 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
           },
         ),
       ),
-      body: PageView.builder(
-        controller: pageController,
-        //禁止滑动
+      body: Container(
+        color: Colors.grey[100],
+        child: PageView.builder(
+          controller: pageController,
+          //禁止滑动
 //        physics: NeverScrollableScrollPhysics(),
-        itemCount: widget.tabList.length,
-        onPageChanged: (index) {
-          print("system-pageview-onPageChanged-index-$index");
-          curPosition = index;
-          getListDataByCid();
-          tabController.animateTo(index);
-        },
-        itemBuilder: (buildContext, index) {
-          return getContentWidget();
-        },
+          itemCount: widget.tabList.length,
+          onPageChanged: (index) {
+            print("system-pageview-onPageChanged-index-$index");
+            curPosition = index;
+            getListDataByCid();
+            tabController.animateTo(index);
+          },
+          itemBuilder: (buildContext, index) {
+            return getContentWidget();
+          },
+        ),
       ),
     );
   }
