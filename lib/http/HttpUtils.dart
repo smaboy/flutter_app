@@ -65,6 +65,10 @@ class HttpUtils {
       print("get请求的数据toString:${response.data}");
     } on DioError catch(e){
       print(e);
+      response = Response(
+        statusCode: -1,
+        statusMessage: e.message
+      );
     }
 
     return response;

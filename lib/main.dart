@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-//      title: "Startup Name Generator",
+      title: "my flutter",
       theme: new ThemeData(
         // 1.亮度
           brightness: Brightness.light,

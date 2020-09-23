@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:flutterapp/system/SystemItemDetailsPage.dart';
 import 'package:flutterapp/system/entity/system_tree_entity.dart';
 import 'package:flutterapp/system/service/system_service_impl.dart';
 
@@ -73,7 +74,12 @@ class SystemPageState extends State<SystemPage> {
           colorBrightness: Brightness.dark,
           splashColor: Colors.grey,
           shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-          onPressed: () {}
+          onPressed: () {
+            Navigator.of(context)
+              ..push(MaterialPageRoute(builder: (context) {
+                return SystemItemDetailsPage();
+              }));
+          }
         ));
       }
 
