@@ -35,6 +35,10 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage> with Sing
   ///当前页码,初始值为0
   int curPageNum = 0;
 
+  // 2. 初始化控制器（一般定义变量后放在initState()中初始化）
+  TabController tabController ;
+  PageController pageController ;
+
 
 //  final List<Tab> myTabs = <Tab>[
 //    new Tab(text: '语文'),
@@ -61,6 +65,10 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage> with Sing
             ))
         .toList();
 
+    // 2. 初始化控制器（一般定义变量后放在initState()中初始化）
+    tabController = TabController(length: widget.list.length, vsync: this, initialIndex: widget.position);
+    pageController = PageController(initialPage: widget.position);
+
     ///初始化网络数据
     intData();
   }
@@ -70,30 +78,46 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage> with Sing
   @override
   Widget build(BuildContext context) {
 
-    return DefaultTabController(
-      initialIndex: curPosition,
-      length: widget.list.length,
-      child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(widget.title),
-          bottom: TabBar(
-            isScrollable: true,
-            tabs: myTabs,
-            indicatorSize: TabBarIndicatorSize.tab,
-            labelColor: Colors.white,
-            labelStyle: new TextStyle(fontSize: 16.0),
-            unselectedLabelColor: Colors.black,
-            unselectedLabelStyle: new TextStyle(fontSize: 12.0),
-          ),
-        ),
-        body: new TabBarView(
-          children: myTabs.map((Tab tab) {
-            return new Center(child: new Text(tab.text));
-          }).toList(),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(widget.title),
+        bottom: TabBar(
+          controller: tabController,
+          isScrollable: true,
+          tabs: myTabs,
+          // 线条宽度
+          // TabBarIndicatorSize.label 根据内容调整宽度
+          // TabBarIndicatorSize.tab 根据(mainWidth/itemCount)调整宽度
+          indicatorSize: TabBarIndicatorSize.label,
+          labelColor: Colors.white,
+          labelStyle: new TextStyle(fontSize: 16.0),
+          unselectedLabelColor: Colors.black,
+          unselectedLabelStyle: new TextStyle(fontSize: 12.0),
+          // 线条边距
+//          indicatorPadding: EdgeInsets.only(left: 6, right: 6),
+          // 点击item
+          onTap: (int index){
+            curPosition = index;
+            // 切换到指定索引
+            // curve 动画过度样式
+            pageController.animateToPage(index, duration: const Duration(milliseconds: 200), curve: Curves.linear);
+          },
         ),
       ),
-    );
+      body: PageView.builder(
+        controller: pageController,
+        //禁止滑动
+//        physics: NeverScrollableScrollPhysics(),
+        itemCount: widget.list.length,
+        onPageChanged: (index){
+          tabController.animateTo(index);
+        },
+        itemBuilder:(buildContext,index){
+          return Text("${widget.list[index].name}");
+        },
+        ),
+      );
   }
 
   ///通过页码和cid获取指定的知识体系数据
