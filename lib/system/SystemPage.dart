@@ -78,7 +78,7 @@ class SystemPageState extends State<SystemPage> {
             onPressed: () {
               Navigator.of(context)
                 ..push(MaterialPageRoute(builder: (context) {
-                  return SystemItemDetailsPage(title: systemTreeData.name,list: systemTreeData.children,position: i,);
+                  return SystemItemDetailsPage(title: systemTreeData.name,tabList: systemTreeData.children,position: i,);
                 }));
             }
         ));
