@@ -66,20 +66,21 @@ class SystemPageState extends State<SystemPage> {
     if (systemTreeData != null &&
         systemTreeData.children != null &&
         systemTreeData.children.length > 0) {
-      for (SystemTreeDataChild child in systemTreeData.children) {
+      for(var i =0 ;i < systemTreeData.children.length ; i++){
+        var child = systemTreeData.children[i];
         titleTreeWidgets.add(RaisedButton(
-          child: Text(child.name),
-          color: Colors.blue,
-          highlightColor: Theme.of(context).primaryColor,
-          colorBrightness: Brightness.dark,
-          splashColor: Colors.grey,
-          shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-          onPressed: () {
-            Navigator.of(context)
-              ..push(MaterialPageRoute(builder: (context) {
-                return SystemItemDetailsPage();
-              }));
-          }
+            child: Text(child.name),
+            color: Colors.blue,
+            highlightColor: Theme.of(context).primaryColor,
+            colorBrightness: Brightness.dark,
+            splashColor: Colors.grey,
+            shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+            onPressed: () {
+              Navigator.of(context)
+                ..push(MaterialPageRoute(builder: (context) {
+                  return SystemItemDetailsPage(title: systemTreeData.name,list: systemTreeData.children,position: i,);
+                }));
+            }
         ));
       }
 
