@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutterapp/common/API.dart';
+import 'package:flutterapp/common/RouteHelpUtils.dart';
 import 'package:flutterapp/common/webview_widget.dart';
 import 'package:flutterapp/generated/json/home_banner_entity_helper.dart';
 import 'package:flutterapp/home/entity/home_article_data.dart';
@@ -147,13 +148,14 @@ class HomePageState extends State<HomePage> {
 
           onTap: (int index) {
             //点击事件，返回下标
-            Navigator.of(context)
-              ..push(MaterialPageRoute(builder: (context) {
-                return WebViewWidget(
-                  url: homeBannerDataList[index].url,
-                  title: homeBannerDataList[index].title,
-                );
-              }));
+//            Navigator.of(context)
+//              ..push(MaterialPageRoute(builder: (context) {
+//                return WebViewWidget(
+//                  url: homeBannerDataList[index].url,
+//                  title: homeBannerDataList[index].title,
+//                );
+//              }));
+             RouteHelpUtils.push(context, WebViewWidget(url: homeBannerDataList[index].url,title: homeBannerDataList[index].title,));
           },
         ),
       ),
