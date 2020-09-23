@@ -23,12 +23,6 @@ class API {
 
   /// ---------------体系页面相关-----------------///
 
-  /// 页码
-  static int systemPageNum = 0;
-
-  /// cid
-  static int systemCid = 0;
-
   /// 作者
   static String author = "";
 
@@ -36,9 +30,13 @@ class API {
   static String systemTree = "/tree/json";
 
   /// 知识体系下的文章
-  static String systemListByCid = "/article/list/$systemPageNum/json?cid=$systemCid";
+  static String getSystemListByCid(int systemPageNum,int systemCid ){
+    return "/article/list/$systemPageNum/json?cid=$systemCid";
+  }
 
   /// 按照作者昵称搜索文章
   static String systemListByAuthor = "/article/list/0/json?author=鸿洋";
+
+
 
 }

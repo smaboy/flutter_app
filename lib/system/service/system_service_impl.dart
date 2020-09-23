@@ -32,9 +32,8 @@ class SystemServiceImpl extends SystemService{
 
   @override
   getSystemListByCid(int pageNum, int cid) async{
-    API.systemPageNum = pageNum;
-    API.systemCid = cid;
-    Response responses = await HttpUtils.getInstance().get(API.systemListByCid);
+
+    Response responses = await HttpUtils.getInstance().get(API.getSystemListByCid(pageNum, cid));
     SystemListByCidEntity systemListByCidEntity = SystemListByCidEntity().fromJson(jsonDecode(responses.toString()));
     return systemListByCidEntity;
   }

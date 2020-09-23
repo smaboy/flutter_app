@@ -72,7 +72,9 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
 
     // 2. 初始化控制器（一般定义变量后放在initState()中初始化）
     tabController = TabController(
-        length: widget.tabList.length, vsync: this, initialIndex: widget.position);
+        length: widget.tabList.length,
+        vsync: this,
+        initialIndex: widget.position);
     pageController = PageController(initialPage: widget.position);
 
     ///初始化网络数据
@@ -101,12 +103,15 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
 //          indicatorPadding: EdgeInsets.only(left: 6, right: 6),
           // 点击item
           onTap: (int index) {
+            print("system-tabbar-ontap-index-$index");
             curPosition = index;
+            getListDataByCid();
+            print("system-tabbar-ontap-curPosition-$index");
             // 切换到指定索引
             // curve 动画过度样式
-            pageController.animateToPage(index,
-                duration: const Duration(milliseconds: 200),
-                curve: Curves.linear);
+//            pageController.animateToPage(index,
+//                duration: const Duration(milliseconds: 200),
+//                curve: Curves.linear);
           },
         ),
       ),
@@ -132,11 +137,15 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
         await SystemServiceImpl.getInstance()
             .getSystemListByCid(curPageNum, widget.tabList[curPosition].id);
 
+    print("当前选中的position==$curPosition");
+
     //设置数据
     setState(() {
-      if(systemListByCidEntity != null && systemListByCidEntity.data != null && systemListByCidEntity.data.datas != null){
+      if (systemListByCidEntity != null &&
+          systemListByCidEntity.data != null &&
+          systemListByCidEntity.data.datas != null) {
         contentList = systemListByCidEntity.data.datas;
-      }else{
+      } else {
         contentList = <SystemListByCidDataData>[];
       }
     });
@@ -183,7 +192,7 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
                           fontSize: 15.0),
                     ),
                     Padding(
-                      child:getListViewItemBottomWidget(contentList[index]),
+                      child: getListViewItemBottomWidget(contentList[index]),
                       padding:
                           EdgeInsets.symmetric(vertical: 5.0, horizontal: 0.0),
                     )
@@ -210,18 +219,15 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
   }
 
   getListViewItemBottomWidget(SystemListByCidDataData contentList) {
-
     String desc = "";
 
     ///分享人
-    if (contentList.shareUser != null &&
-        contentList.shareUser.isNotEmpty) {
+    if (contentList.shareUser != null && contentList.shareUser.isNotEmpty) {
       desc += " 分享人: ${contentList.shareUser}";
     }
 
     ///作者
-    if (contentList.author != null &&
-        contentList.author.isNotEmpty) {
+    if (contentList.author != null && contentList.author.isNotEmpty) {
       desc += " 作者: ${contentList.author}";
     }
 
@@ -230,23 +236,18 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
         contentList.superChapterName.isNotEmpty &&
         contentList.chapterName != null &&
         contentList.chapterName.isNotEmpty) {
-      desc +=
-      " 分类: ${contentList.superChapterName}/${contentList.chapterName}";
+      desc += " 分类: ${contentList.superChapterName}/${contentList.chapterName}";
     }
 
     ///时间
-    if (contentList.niceDate != null &&
-        contentList.niceDate.isNotEmpty) {
+    if (contentList.niceDate != null && contentList.niceDate.isNotEmpty) {
       desc += " 时间: ${contentList.niceDate}";
     }
 
-    return  Expanded(
-      child: Text(
-        desc.trim(),
-        style: TextStyle(fontSize: 10.0, color: Colors.grey),
-        overflow: TextOverflow.ellipsis,
-      ),
+    return Text(
+      desc.trim(),
+      style: TextStyle(fontSize: 10.0, color: Colors.grey),
+      overflow: TextOverflow.ellipsis,
     );
-
   }
 }

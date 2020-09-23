@@ -30,15 +30,19 @@ class HttpUtils {
     //添加拦截器
     dio.interceptors
         .add(InterceptorsWrapper(onRequest: (RequestOptions options) {
-      print("请求之前");
+      print("------------------>>>>>>>>请求之前<<<<<<<————————————————————");
+      print("请求方法:${options.method}");
+      print("请求头:${options.headers}");
+      print("请求参数:${options.queryParameters}");
+      print("请求路径:${options.baseUrl}${options.path}");
       // Do something before request is sent
       return options; //continue
     }, onResponse: (Response response) {
-      print("响应之前");
+      print("------------------>>>>>>>>响应之前<<<<<<<————————————————————");
       // Do something with response data
       return response; // continue
     }, onError: (DioError e) {
-      print("错误之前");
+      print("------------------>>>>>>>>错误之前<<<<<<<————————————————————");
       // Do something with response error
       return e; //continue
     }));
@@ -60,9 +64,8 @@ class HttpUtils {
 
 
       /// 打印get请求的的code和数据
-      print("get请求的状态码:${response.statusCode}");
-      print("get请求的数据data:${response.data}");
-      print("get请求的数据toString:${response.data}");
+      print("get请求的返回的状态码:${response.statusCode}");
+      print("get请求返回的数据toString:${response.data}");
     } on DioError catch(e){
       print(e);
       response = Response(
