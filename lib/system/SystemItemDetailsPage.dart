@@ -106,12 +106,6 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
             print("system-tabbar-ontap-index-$index");
             curPosition = index;
             getListDataByCid();
-            print("system-tabbar-ontap-curPosition-$index");
-            // 切换到指定索引
-            // curve 动画过度样式
-//            pageController.animateToPage(index,
-//                duration: const Duration(milliseconds: 200),
-//                curve: Curves.linear);
           },
         ),
       ),
@@ -121,6 +115,9 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
 //        physics: NeverScrollableScrollPhysics(),
         itemCount: widget.tabList.length,
         onPageChanged: (index) {
+          print("system-pageview-onPageChanged-index-$index");
+          curPosition = index;
+          getListDataByCid();
           tabController.animateTo(index);
         },
         itemBuilder: (buildContext, index) {
