@@ -419,7 +419,7 @@ class HomePageState extends State<HomePage> {
   /// 加载更多请求数据
   void loadMoreData() async {
     ///获取文章列表数据
-    API.pageNum++;
+    API.homePageNum++;
     Response homeArticleList =
         await HttpUtils.getInstance().get(API.homeArticleList);
     //设置数据
@@ -437,7 +437,7 @@ class HomePageState extends State<HomePage> {
 
   /// 刷新数据
   void reFreshData() async {
-    API.pageNum = 0;
+    API.homePageNum = 0;
     initBannerData();
     initArticleListData();
   }

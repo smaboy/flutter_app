@@ -1,5 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterapp/http/HttpUtils.dart';
+import 'package:flutterapp/system/entity/system_list_by_cid_entity.dart';
+import 'package:flutterapp/system/service/system_service_impl.dart';
 
 import 'entity/system_tree_entity.dart';
 
@@ -21,10 +25,16 @@ class SystemItemDetailsPage extends StatefulWidget {
   _SystemItemDetailsPageState createState() => _SystemItemDetailsPageState();
 }
 
-class _SystemItemDetailsPageState extends State<SystemItemDetailsPage> {
+class _SystemItemDetailsPageState extends State<SystemItemDetailsPage> with SingleTickerProviderStateMixin{
   ///当前的位置
   int curPosition;
+
+  ///当前tabs
   List<Tab> myTabs;
+
+  ///当前页码,初始值为0
+  int curPageNum = 0;
+
 
 //  final List<Tab> myTabs = <Tab>[
 //    new Tab(text: '语文'),
@@ -50,13 +60,19 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage> {
               text: systemTreeDataChild.name,
             ))
         .toList();
+
+    ///初始化网络数据
+    intData();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
+
     return DefaultTabController(
-      initialIndex: widget.position,
-      length: myTabs.length,
+      initialIndex: curPosition,
+      length: widget.list.length,
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -78,5 +94,18 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage> {
         ),
       ),
     );
+  }
+
+  ///通过页码和cid获取指定的知识体系数据
+  void getListDataByCid() async {
+    ///获取当前tab对应的数据
+    SystemListByCidEntity systemListByCidEntity= await SystemServiceImpl.getInstance().getSystemListByCid(curPageNum, widget.list[curPosition].id);
+    print("第一个标题==${systemListByCidEntity.data.datas[0].title}");
+
+  }
+
+
+  void intData() {
+    getListDataByCid();
   }
 }

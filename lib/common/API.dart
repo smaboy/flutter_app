@@ -4,10 +4,10 @@ class API {
   /// ---------------首页相关-----------------///
 
   /// 页码
-  static int pageNum = 0;
+  static int homePageNum = 0;
 
   /// 首页文章列表
-  static String homeArticleList = "/article/list/$pageNum/json";
+  static String homeArticleList = "/article/list/$homePageNum/json";
 
   /// 首页banner
   static String homeBanner = "/banner/json";
@@ -23,11 +23,20 @@ class API {
 
   /// ---------------体系页面相关-----------------///
 
+  /// 页码
+  static int systemPageNum = 0;
+
+  /// cid
+  static int systemCid = 0;
+
+  /// 作者
+  static String author = "";
+
   /// 体系数据
   static String systemTree = "/tree/json";
 
   /// 知识体系下的文章
-  static String systemListByCid = "/article/list/0/json?cid=60";
+  static String systemListByCid = "/article/list/$systemPageNum/json?cid=$systemCid";
 
   /// 按照作者昵称搜索文章
   static String systemListByAuthor = "/article/list/0/json?author=鸿洋";

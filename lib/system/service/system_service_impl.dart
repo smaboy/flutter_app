@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutterapp/common/API.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
+import 'package:flutterapp/system/entity/system_list_by_cid_entity.dart';
 import 'package:flutterapp/system/entity/system_tree_entity.dart';
 import 'package:flutterapp/system/service/system_service.dart';
 
@@ -31,9 +32,11 @@ class SystemServiceImpl extends SystemService{
 
   @override
   getSystemListByCid(int pageNum, int cid) async{
-    Response responses = await HttpUtils.getInstance().get(API.systemTree);
-    SystemTreeEntity systemTreeEntity = SystemTreeEntity().fromJson(jsonDecode(responses.toString()));
-    return systemTreeEntity;
+    API.systemPageNum = pageNum;
+    API.systemCid = cid;
+    Response responses = await HttpUtils.getInstance().get(API.systemListByCid);
+    SystemListByCidEntity systemListByCidEntity = SystemListByCidEntity().fromJson(jsonDecode(responses.toString()));
+    return systemListByCidEntity;
   }
 
 
