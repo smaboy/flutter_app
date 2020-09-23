@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterapp/common/webview_widget.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
 import 'package:flutterapp/system/entity/system_list_by_cid_entity.dart';
 import 'package:flutterapp/system/service/system_service_impl.dart';
@@ -156,46 +157,56 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
         itemCount: contentList?.length ?? 0,
         addAutomaticKeepAlives: true,
         itemBuilder: (buildContext, index) {
-          return Container(
-            padding: EdgeInsets.all(10.0),
-            margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                boxShadow: [
-                  //阴影
-                  BoxShadow(
-                      color: Colors.grey[300],
-                      offset: Offset(2.0, 2.0),
-                      blurRadius: 2.0)
-                ],
-                color: Colors.white),
-            child: Row(
-              children: <Widget>[
-                Center(
-                  child: Padding(
-                      child: Icon(Icons.favorite_border),
-                      padding: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0)),
-                ),
-                Expanded(
-                    child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      contentList[index].title,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black,
-                          fontSize: 15.0),
-                    ),
-                    Padding(
-                      child: getListViewItemBottomWidget(contentList[index]),
-                      padding:
-                          EdgeInsets.symmetric(vertical: 5.0, horizontal: 0.0),
-                    )
+          return GestureDetector(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return WebViewWidget(
+                  url: contentList[index].link,
+                  title: contentList[index].title,
+                );
+              }));
+            },
+            child: Container(
+              padding: EdgeInsets.all(10.0),
+              margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  boxShadow: [
+                    //阴影
+                    BoxShadow(
+                        color: Colors.grey[300],
+                        offset: Offset(2.0, 2.0),
+                        blurRadius: 2.0)
                   ],
-                ))
-              ],
+                  color: Colors.white),
+              child: Row(
+                children: <Widget>[
+                  Center(
+                    child: Padding(
+                        child: Icon(Icons.favorite_border),
+                        padding: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0)),
+                  ),
+                  Expanded(
+                      child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        contentList[index].title,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black,
+                            fontSize: 15.0),
+                      ),
+                      Padding(
+                        child: getListViewItemBottomWidget(contentList[index]),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 5.0, horizontal: 0.0),
+                      )
+                    ],
+                  ))
+                ],
+              ),
             ),
           );
         });
