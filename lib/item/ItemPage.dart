@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/item/entity/item_list_entity.dart';
+import 'package:flutterapp/item/entity/item_tree_entity.dart';
+import 'package:flutterapp/item/service/item_service_impl.dart';
 
 /// 项目页面
 class ItemPage extends StatelessWidget {
@@ -15,7 +18,13 @@ class ItemPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: Container(
-        child: Text("我是项目页面"),
+        child: Column(
+          children: <Widget>[
+            Text("我是项目页面"),
+            ItemPageTitleWidget(),
+            ItemPageContentWidget()
+          ],
+        ),
         alignment: Alignment.center,
       ),
     );
@@ -42,7 +51,10 @@ class _ItemPageTitleWidgetState extends State<ItemPageTitleWidget> {
     initData();
   }
 
-  void initData() {}
+  void initData() async{
+    ItemTreeEntity itemTreeEntity = await ItemServiceImpl.getInstance().getItemTree();
+    print("ItemTreeEntity==第一个标题==${itemTreeEntity.data[0].name}");
+  }
 }
 
 
@@ -66,7 +78,9 @@ class _ItemPageContentWidgetState extends State<ItemPageContentWidget> {
     initData();
   }
 
-  void initData() {
+  void initData() async {
+    ItemListEntity itemListByCid = await ItemServiceImpl.getInstance().getItemListByCid(0, 402);
+    print("itemListByCid==第一个标题==${itemListByCid.data.datas[0].title}");
 
 
   }

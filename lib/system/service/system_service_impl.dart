@@ -25,7 +25,7 @@ class SystemServiceImpl extends SystemService{
 
   @override
   getSystemListByAuthor(int pageNum, String author) async{
-    Response responses = await HttpUtils.getInstance().get(API.systemTree);
+    Response responses = await HttpUtils.getInstance().get(API.systemListByAuthor);
     SystemTreeEntity systemTreeEntity = SystemTreeEntity().fromJson(jsonDecode(responses.toString()));
     return systemTreeEntity;
   }

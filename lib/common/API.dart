@@ -30,13 +30,22 @@ class API {
   static String systemTree = "/tree/json";
 
   /// 知识体系下的文章
-  static String getSystemListByCid(int systemPageNum,int systemCid ){
-    return "/article/list/$systemPageNum/json?cid=$systemCid";
+  static String getSystemListByCid(int pageNum,int cid ){
+    return "/article/list/$pageNum/json?cid=$cid";
   }
 
   /// 按照作者昵称搜索文章
   static String systemListByAuthor = "/article/list/0/json?author=鸿洋";
 
 
+/// ---------------项目页面相关-----------------///
+
+  ///项目页面分类标题
+  static String itemTree = "/project/tree/json";
+
+  ///项目页面集合文章
+  static String getItemList(int pageNum,int cid ){
+    return "/project/list/$pageNum/json?cid=$cid";
+  }
 
 }
