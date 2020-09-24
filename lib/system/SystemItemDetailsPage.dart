@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterapp/common/RouteHelpUtils.dart';
 import 'package:flutterapp/common/webview_widget.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
 import 'package:flutterapp/system/entity/system_list_by_cid_entity.dart';
@@ -162,12 +163,7 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
         itemBuilder: (buildContext, index) {
           return GestureDetector(
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return WebViewWidget(
-                  url: contentList[index].link,
-                  title: contentList[index].title,
-                );
-              }));
+              RouteHelpUtils.push(context, WebViewWidget(url: contentList[index].link,title: contentList[index].title,));
             },
             child: Container(
               padding: EdgeInsets.all(10.0),

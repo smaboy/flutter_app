@@ -209,12 +209,7 @@ class HomePageState extends State<HomePage> {
         ),
       ),
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return WebViewWidget(
-            url: homeArticleDataBean.link,
-            title: homeArticleDataBean.title,
-          );
-        }));
+        RouteHelpUtils.push(context, WebViewWidget(url: homeArticleDataBean.link,title: homeArticleDataBean.title,));
       },
     );
   }
@@ -299,16 +294,7 @@ class HomePageState extends State<HomePage> {
         Widget listener = GestureDetector(
           child: tempTag,
           onTap: () {
-            ///单击走这
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (buildContext) {
-                return WebViewWidget(
-                  url: API.baseUrl + tag.url,
-                  title: tag.name,
-                );
-              }),
-            );
+            RouteHelpUtils.push(context, WebViewWidget(url: API.baseUrl + tag.url,title: tag.name,));
           },
         );
 
