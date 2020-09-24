@@ -7,18 +7,18 @@ import 'package:flutterapp/system/entity/system_list_by_cid_entity.dart';
 import 'package:flutterapp/generated/json/system_list_by_cid_entity_helper.dart';
 import 'package:flutterapp/home/entity/home_article_top_entity.dart';
 import 'package:flutterapp/generated/json/home_article_top_entity_helper.dart';
+import 'package:flutterapp/system/entity/system_tree_entity.dart';
+import 'package:flutterapp/generated/json/system_tree_entity_helper.dart';
 import 'package:flutterapp/home/entity/home_article_list_entity.dart';
 import 'package:flutterapp/generated/json/home_article_list_entity_helper.dart';
+import 'package:flutterapp/home/entity/home_article_data.dart';
+import 'package:flutterapp/generated/json/home_article_data_helper.dart';
 import 'package:flutterapp/home/entity/home_banner_entity.dart';
 import 'package:flutterapp/generated/json/home_banner_entity_helper.dart';
 import 'package:flutterapp/item/entity/item_list_entity.dart';
 import 'package:flutterapp/generated/json/item_list_entity_helper.dart';
-import 'package:flutterapp/system/entity/system_tree_entity.dart';
-import 'package:flutterapp/generated/json/system_tree_entity_helper.dart';
 import 'package:flutterapp/item/entity/item_tree_entity.dart';
 import 'package:flutterapp/generated/json/item_tree_entity_helper.dart';
-import 'package:flutterapp/home/entity/home_article_data.dart';
-import 'package:flutterapp/generated/json/home_article_data_helper.dart';
 
 class JsonConvert<T> {
 	T fromJson(Map<String, dynamic> json) {
@@ -34,22 +34,22 @@ class JsonConvert<T> {
 			return systemListByCidEntityFromJson(data as SystemListByCidEntity, json) as T;			case SystemListByCidData:
 			return systemListByCidDataFromJson(data as SystemListByCidData, json) as T;			case SystemListByCidDataData:
 			return systemListByCidDataDataFromJson(data as SystemListByCidDataData, json) as T;			case HomeArticleTopEntity:
-			return homeArticleTopEntityFromJson(data as HomeArticleTopEntity, json) as T;			case HomeArticleListEntity:
+			return homeArticleTopEntityFromJson(data as HomeArticleTopEntity, json) as T;			case SystemTreeEntity:
+			return systemTreeEntityFromJson(data as SystemTreeEntity, json) as T;			case SystemTreeData:
+			return systemTreeDataFromJson(data as SystemTreeData, json) as T;			case SystemTreeDataChild:
+			return systemTreeDataChildFromJson(data as SystemTreeDataChild, json) as T;			case HomeArticleListEntity:
 			return homeArticleListEntityFromJson(data as HomeArticleListEntity, json) as T;			case HomeArticleListData:
-			return homeArticleListDataFromJson(data as HomeArticleListData, json) as T;			case HomeBannerEntity:
+			return homeArticleListDataFromJson(data as HomeArticleListData, json) as T;			case HomeArticleDataBean:
+			return homeArticleDataBeanFromJson(data as HomeArticleDataBean, json) as T;			case HomeArticleDataBeanTag:
+			return homeArticleDataBeanTagFromJson(data as HomeArticleDataBeanTag, json) as T;			case HomeBannerEntity:
 			return homeBannerEntityFromJson(data as HomeBannerEntity, json) as T;			case HomeBannerData:
 			return homeBannerDataFromJson(data as HomeBannerData, json) as T;			case ItemListEntity:
 			return itemListEntityFromJson(data as ItemListEntity, json) as T;			case ItemListData:
 			return itemListDataFromJson(data as ItemListData, json) as T;			case ItemListDataData:
 			return itemListDataDataFromJson(data as ItemListDataData, json) as T;			case ItemListDataDatasTag:
-			return itemListDataDatasTagFromJson(data as ItemListDataDatasTag, json) as T;			case SystemTreeEntity:
-			return systemTreeEntityFromJson(data as SystemTreeEntity, json) as T;			case SystemTreeData:
-			return systemTreeDataFromJson(data as SystemTreeData, json) as T;			case SystemTreeDataChild:
-			return systemTreeDataChildFromJson(data as SystemTreeDataChild, json) as T;			case ItemTreeEntity:
+			return itemListDataDatasTagFromJson(data as ItemListDataDatasTag, json) as T;			case ItemTreeEntity:
 			return itemTreeEntityFromJson(data as ItemTreeEntity, json) as T;			case ItemTreeData:
-			return itemTreeDataFromJson(data as ItemTreeData, json) as T;			case HomeArticleDataBean:
-			return homeArticleDataBeanFromJson(data as HomeArticleDataBean, json) as T;			case HomeArticleDataBeanTag:
-			return homeArticleDataBeanTagFromJson(data as HomeArticleDataBeanTag, json) as T;    }
+			return itemTreeDataFromJson(data as ItemTreeData, json) as T;    }
     return data as T;
   }
 
@@ -58,22 +58,22 @@ class JsonConvert<T> {
 			return systemListByCidEntityToJson(data as SystemListByCidEntity);			case SystemListByCidData:
 			return systemListByCidDataToJson(data as SystemListByCidData);			case SystemListByCidDataData:
 			return systemListByCidDataDataToJson(data as SystemListByCidDataData);			case HomeArticleTopEntity:
-			return homeArticleTopEntityToJson(data as HomeArticleTopEntity);			case HomeArticleListEntity:
+			return homeArticleTopEntityToJson(data as HomeArticleTopEntity);			case SystemTreeEntity:
+			return systemTreeEntityToJson(data as SystemTreeEntity);			case SystemTreeData:
+			return systemTreeDataToJson(data as SystemTreeData);			case SystemTreeDataChild:
+			return systemTreeDataChildToJson(data as SystemTreeDataChild);			case HomeArticleListEntity:
 			return homeArticleListEntityToJson(data as HomeArticleListEntity);			case HomeArticleListData:
-			return homeArticleListDataToJson(data as HomeArticleListData);			case HomeBannerEntity:
+			return homeArticleListDataToJson(data as HomeArticleListData);			case HomeArticleDataBean:
+			return homeArticleDataBeanToJson(data as HomeArticleDataBean);			case HomeArticleDataBeanTag:
+			return homeArticleDataBeanTagToJson(data as HomeArticleDataBeanTag);			case HomeBannerEntity:
 			return homeBannerEntityToJson(data as HomeBannerEntity);			case HomeBannerData:
 			return homeBannerDataToJson(data as HomeBannerData);			case ItemListEntity:
 			return itemListEntityToJson(data as ItemListEntity);			case ItemListData:
 			return itemListDataToJson(data as ItemListData);			case ItemListDataData:
 			return itemListDataDataToJson(data as ItemListDataData);			case ItemListDataDatasTag:
-			return itemListDataDatasTagToJson(data as ItemListDataDatasTag);			case SystemTreeEntity:
-			return systemTreeEntityToJson(data as SystemTreeEntity);			case SystemTreeData:
-			return systemTreeDataToJson(data as SystemTreeData);			case SystemTreeDataChild:
-			return systemTreeDataChildToJson(data as SystemTreeDataChild);			case ItemTreeEntity:
+			return itemListDataDatasTagToJson(data as ItemListDataDatasTag);			case ItemTreeEntity:
 			return itemTreeEntityToJson(data as ItemTreeEntity);			case ItemTreeData:
-			return itemTreeDataToJson(data as ItemTreeData);			case HomeArticleDataBean:
-			return homeArticleDataBeanToJson(data as HomeArticleDataBean);			case HomeArticleDataBeanTag:
-			return homeArticleDataBeanTagToJson(data as HomeArticleDataBeanTag);    }
+			return itemTreeDataToJson(data as ItemTreeData);    }
     return data as T;
   }
   //Go back to a single instance by type
@@ -82,22 +82,22 @@ class JsonConvert<T> {
 			return SystemListByCidEntity().fromJson(json);			case 'SystemListByCidData':
 			return SystemListByCidData().fromJson(json);			case 'SystemListByCidDataData':
 			return SystemListByCidDataData().fromJson(json);			case 'HomeArticleTopEntity':
-			return HomeArticleTopEntity().fromJson(json);			case 'HomeArticleListEntity':
+			return HomeArticleTopEntity().fromJson(json);			case 'SystemTreeEntity':
+			return SystemTreeEntity().fromJson(json);			case 'SystemTreeData':
+			return SystemTreeData().fromJson(json);			case 'SystemTreeDataChild':
+			return SystemTreeDataChild().fromJson(json);			case 'HomeArticleListEntity':
 			return HomeArticleListEntity().fromJson(json);			case 'HomeArticleListData':
-			return HomeArticleListData().fromJson(json);			case 'HomeBannerEntity':
+			return HomeArticleListData().fromJson(json);			case 'HomeArticleDataBean':
+			return HomeArticleDataBean().fromJson(json);			case 'HomeArticleDataBeanTag':
+			return HomeArticleDataBeanTag().fromJson(json);			case 'HomeBannerEntity':
 			return HomeBannerEntity().fromJson(json);			case 'HomeBannerData':
 			return HomeBannerData().fromJson(json);			case 'ItemListEntity':
 			return ItemListEntity().fromJson(json);			case 'ItemListData':
 			return ItemListData().fromJson(json);			case 'ItemListDataData':
 			return ItemListDataData().fromJson(json);			case 'ItemListDataDatasTag':
-			return ItemListDataDatasTag().fromJson(json);			case 'SystemTreeEntity':
-			return SystemTreeEntity().fromJson(json);			case 'SystemTreeData':
-			return SystemTreeData().fromJson(json);			case 'SystemTreeDataChild':
-			return SystemTreeDataChild().fromJson(json);			case 'ItemTreeEntity':
+			return ItemListDataDatasTag().fromJson(json);			case 'ItemTreeEntity':
 			return ItemTreeEntity().fromJson(json);			case 'ItemTreeData':
-			return ItemTreeData().fromJson(json);			case 'HomeArticleDataBean':
-			return HomeArticleDataBean().fromJson(json);			case 'HomeArticleDataBeanTag':
-			return HomeArticleDataBeanTag().fromJson(json);    }
+			return ItemTreeData().fromJson(json);    }
     return null;
   }
 
@@ -107,22 +107,22 @@ class JsonConvert<T> {
 			return List<SystemListByCidEntity>();			case 'SystemListByCidData':
 			return List<SystemListByCidData>();			case 'SystemListByCidDataData':
 			return List<SystemListByCidDataData>();			case 'HomeArticleTopEntity':
-			return List<HomeArticleTopEntity>();			case 'HomeArticleListEntity':
+			return List<HomeArticleTopEntity>();			case 'SystemTreeEntity':
+			return List<SystemTreeEntity>();			case 'SystemTreeData':
+			return List<SystemTreeData>();			case 'SystemTreeDataChild':
+			return List<SystemTreeDataChild>();			case 'HomeArticleListEntity':
 			return List<HomeArticleListEntity>();			case 'HomeArticleListData':
-			return List<HomeArticleListData>();			case 'HomeBannerEntity':
+			return List<HomeArticleListData>();			case 'HomeArticleDataBean':
+			return List<HomeArticleDataBean>();			case 'HomeArticleDataBeanTag':
+			return List<HomeArticleDataBeanTag>();			case 'HomeBannerEntity':
 			return List<HomeBannerEntity>();			case 'HomeBannerData':
 			return List<HomeBannerData>();			case 'ItemListEntity':
 			return List<ItemListEntity>();			case 'ItemListData':
 			return List<ItemListData>();			case 'ItemListDataData':
 			return List<ItemListDataData>();			case 'ItemListDataDatasTag':
-			return List<ItemListDataDatasTag>();			case 'SystemTreeEntity':
-			return List<SystemTreeEntity>();			case 'SystemTreeData':
-			return List<SystemTreeData>();			case 'SystemTreeDataChild':
-			return List<SystemTreeDataChild>();			case 'ItemTreeEntity':
+			return List<ItemListDataDatasTag>();			case 'ItemTreeEntity':
 			return List<ItemTreeEntity>();			case 'ItemTreeData':
-			return List<ItemTreeData>();			case 'HomeArticleDataBean':
-			return List<HomeArticleDataBean>();			case 'HomeArticleDataBeanTag':
-			return List<HomeArticleDataBeanTag>();    }
+			return List<ItemTreeData>();    }
     return null;
   }
 
