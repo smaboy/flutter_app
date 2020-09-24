@@ -24,7 +24,7 @@ class ItemServiceImpl extends ItemService{
 
   @override
   Future<ItemTreeEntity> getItemTree() async{
-    Response responses = await HttpUtils.getInstance().get(API.systemTree);
+    Response responses = await HttpUtils.getInstance().get(API.itemTree);
     ItemTreeEntity itemTreeEntity = ItemTreeEntity().fromJson(jsonDecode(responses.toString()));
     return itemTreeEntity;
   }
