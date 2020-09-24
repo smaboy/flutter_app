@@ -88,6 +88,16 @@ class _ItemPageState extends State<ItemPage> {
   }
 }
 
+/// 加载状态
+enum LoadMoreStatue{
+  //加载中
+  STATUE_LOADING,
+  //加载完成
+  STATUE_COMPLETE,
+  //空闲中
+  STATUE_IDEL
+}
+
 /// 内容组件
 class ContentWidget extends StatefulWidget {
   final int id;
@@ -100,25 +110,32 @@ class ContentWidget extends StatefulWidget {
 
 class _ContentWidgetState extends State<ContentWidget> {
   ///数据
-  List<ItemListDataData> contentList;
+  List<ItemListDataData> contentList = <ItemListDataData>[];
 
   ///当前页
   int curPageNum = 0;
 
   ScrollController _scrollController;
+  VoidCallback _voidCallback;
+
+  /// 加载更多的状态
+  LoadMoreStatue curLoadMoreStatue = LoadMoreStatue.STATUE_IDEL;
+
+  ///加载更多页面对应的内容
+  String loadMoreMsg = "";
 
   @override
   Widget build(BuildContext context) {
-
+    var length = contentList?.length ?? 0;
     return RefreshIndicator(
       onRefresh: () async{
 
       },
       child: ListView.builder(
         controller: _scrollController,
-        itemCount: (contentList?.length ?? 0),
+        itemCount: length >0 ? length+1 : 0,
         itemBuilder: (buildContext, index) {
-          return GestureDetector(
+          return index == length ? LoadMoreWidget(isVisibleProgress: curLoadMoreStatue == LoadMoreStatue.STATUE_LOADING,loadMoreMsg: loadMoreMsg,) : GestureDetector(
             onTap: (){
               RouteHelpUtils.push(context, WebViewWidget(url: contentList[index].link,title: contentList[index].title,));
             },
@@ -152,37 +169,83 @@ class _ContentWidgetState extends State<ContentWidget> {
 
     //listview控制器
     _scrollController = ScrollController();
-    _scrollController.addListener(() {
+    _voidCallback = () {
       if(_scrollController.position.pixels >= _scrollController.position.maxScrollExtent){
         //此时加载下一页数据
+        if(curLoadMoreStatue == LoadMoreStatue.STATUE_IDEL && mounted){//空闲状态才改变
+          setState(() {
+            loadMoreMsg = "加载中...";
+            curLoadMoreStatue = LoadMoreStatue.STATUE_LOADING;
 
+            //异步加载数据
+            loadMoreData();
+          });
+        }
       }
-    });
+    };
+    _scrollController.addListener(_voidCallback);
 
     initData();
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+
+    _scrollController.removeListener(_voidCallback);
+    _scrollController.dispose();
+  }
+
 
   void initData() async {
+    curPageNum = 0;
     ItemListEntity itemListByCid = await ItemServiceImpl.getInstance()
         .getItemListByCid(curPageNum, widget.id);
-    setState(() {
-      if (itemListByCid != null &&
-          itemListByCid.data != null &&
-          itemListByCid.data.datas != null) {
-        contentList = itemListByCid.data.datas;
-      }
-    });
+    if(mounted){
+      setState(() {
+        if (itemListByCid != null &&
+            itemListByCid.data != null &&
+            itemListByCid.data.datas != null) {
+          contentList.addAll(itemListByCid.data.datas);
+        }
+      });
+    }
+
+  }
+
+  Future loadMoreData() async {
+    curPageNum++;
+    print("加载更多-当前页码为:$curPageNum");
+    ItemListEntity itemListByCid = await ItemServiceImpl.getInstance()
+        .getItemListByCid(curPageNum, widget.id);
+    if(mounted){
+      setState(() {
+        if (itemListByCid != null &&
+            itemListByCid.data != null &&
+            itemListByCid.data.datas != null &&
+            itemListByCid.data.datas.length > 0) {
+
+          curLoadMoreStatue = LoadMoreStatue.STATUE_IDEL;
+          contentList.addAll(itemListByCid.data.datas);
+
+        }else{
+          loadMoreMsg = "已经到底了!!";
+          curLoadMoreStatue = LoadMoreStatue.STATUE_COMPLETE;
+        }
+      });
+    }
+
   }
 }
 
+
+
 class LoadMoreWidget extends StatelessWidget {
   const LoadMoreWidget({
-    Key key,
-    @required this.context, this.isVisibleProgress = false, this.loadMoreMsg = "",
+    Key key,this.isVisibleProgress = false, this.loadMoreMsg = "",
   }) : super(key: key);
 
-  final BuildContext context;
   final bool isVisibleProgress;
   final String loadMoreMsg;
 
