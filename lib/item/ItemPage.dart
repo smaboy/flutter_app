@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/common/RouteHelpUtils.dart';
+import 'package:flutterapp/common/webview_widget.dart';
 import 'package:flutterapp/item/entity/item_list_entity.dart';
 import 'package:flutterapp/item/entity/item_tree_entity.dart';
 import 'package:flutterapp/item/service/item_service_impl.dart';
@@ -117,21 +118,26 @@ class _ContentWidgetState extends State<ContentWidget> {
         controller: _scrollController,
         itemCount: (contentList?.length ?? 0),
         itemBuilder: (buildContext, index) {
-          return Card(
-            color: Colors.white,
-            margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-            child: Container(
-              height: 200.0,
-              padding: EdgeInsets.all(10.0),
-              child: Row(
-                children: <Widget>[
-                  Image.network(
-                    contentList[index].envelopePic,
-                    width: 160.0,
-                    fit: BoxFit.fill,
-                  ),
-                  ContentEndWidget(contentList: contentList,index : index),
-                ],
+          return GestureDetector(
+            onTap: (){
+              RouteHelpUtils.push(context, WebViewWidget(url: contentList[index].link,title: contentList[index].title,));
+            },
+            child: Card(
+              color: Colors.white,
+              margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+              child: Container(
+                height: 200.0,
+                padding: EdgeInsets.all(10.0),
+                child: Row(
+                  children: <Widget>[
+                    Image.network(
+                      contentList[index].envelopePic,
+                      width: 160.0,
+                      fit: BoxFit.fill,
+                    ),
+                    ContentEndWidget(contentList: contentList,index : index),
+                  ],
+                ),
               ),
             ),
           );
