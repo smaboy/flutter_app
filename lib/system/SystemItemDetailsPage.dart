@@ -6,6 +6,7 @@ import 'package:flutterapp/common/webview_widget.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
 import 'package:flutterapp/system/entity/system_list_by_cid_entity.dart';
 import 'package:flutterapp/system/service/system_service_impl.dart';
+import 'package:toast/toast.dart';
 
 import 'entity/system_tree_entity.dart';
 
@@ -87,6 +88,11 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.search),onPressed: (){
+            Toast.show("搜索",context,duration: Toast.LENGTH_LONG,gravity: Toast.BOTTOM);
+          },)
+        ],
         centerTitle: true,
         title: Text(widget.title),
         bottom: TabBar(

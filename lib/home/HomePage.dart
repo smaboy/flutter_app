@@ -11,6 +11,7 @@ import 'package:flutterapp/generated/json/home_banner_entity_helper.dart';
 import 'package:flutterapp/home/entity/home_article_data.dart';
 import 'package:flutterapp/home/entity/home_article_top_entity.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
+import 'package:toast/toast.dart';
 
 import 'entity/home_article_list_entity.dart';
 import 'entity/home_banner_entity.dart';
