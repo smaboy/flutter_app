@@ -1,6 +1,71 @@
-import 'package:flutterapp/home/entity/home_article_data.dart';
+import 'package:flutterapp/item/entity/item_list_entity.dart';
 
-homeArticleDataBeanFromJson(HomeArticleDataBean data, Map<String, dynamic> json) {
+itemListEntityFromJson(ItemListEntity data, Map<String, dynamic> json) {
+	if (json['data'] != null) {
+		data.data = new ItemListData().fromJson(json['data']);
+	}
+	if (json['errorCode'] != null) {
+		data.errorCode = json['errorCode']?.toInt();
+	}
+	if (json['errorMsg'] != null) {
+		data.errorMsg = json['errorMsg']?.toString();
+	}
+	return data;
+}
+
+Map<String, dynamic> itemListEntityToJson(ItemListEntity entity) {
+	final Map<String, dynamic> data = new Map<String, dynamic>();
+	if (entity.data != null) {
+		data['data'] = entity.data.toJson();
+	}
+	data['errorCode'] = entity.errorCode;
+	data['errorMsg'] = entity.errorMsg;
+	return data;
+}
+
+itemListDataFromJson(ItemListData data, Map<String, dynamic> json) {
+	if (json['curPage'] != null) {
+		data.curPage = json['curPage']?.toInt();
+	}
+	if (json['datas'] != null) {
+		data.datas = new List<ItemListDataData>();
+		(json['datas'] as List).forEach((v) {
+			data.datas.add(new ItemListDataData().fromJson(v));
+		});
+	}
+	if (json['offset'] != null) {
+		data.offset = json['offset']?.toInt();
+	}
+	if (json['over'] != null) {
+		data.over = json['over'];
+	}
+	if (json['pageCount'] != null) {
+		data.pageCount = json['pageCount']?.toInt();
+	}
+	if (json['size'] != null) {
+		data.size = json['size']?.toInt();
+	}
+	if (json['total'] != null) {
+		data.total = json['total']?.toInt();
+	}
+	return data;
+}
+
+Map<String, dynamic> itemListDataToJson(ItemListData entity) {
+	final Map<String, dynamic> data = new Map<String, dynamic>();
+	data['curPage'] = entity.curPage;
+	if (entity.datas != null) {
+		data['datas'] =  entity.datas.map((v) => v.toJson()).toList();
+	}
+	data['offset'] = entity.offset;
+	data['over'] = entity.over;
+	data['pageCount'] = entity.pageCount;
+	data['size'] = entity.size;
+	data['total'] = entity.total;
+	return data;
+}
+
+itemListDataDataFromJson(ItemListDataData data, Map<String, dynamic> json) {
 	if (json['apkLink'] != null) {
 		data.apkLink = json['apkLink']?.toString();
 	}
@@ -80,9 +145,9 @@ homeArticleDataBeanFromJson(HomeArticleDataBean data, Map<String, dynamic> json)
 		data.superChapterName = json['superChapterName']?.toString();
 	}
 	if (json['tags'] != null) {
-		data.tags = new List<HomeArticleDataBeanTag>();
+		data.tags = new List<ItemListDataDatasTag>();
 		(json['tags'] as List).forEach((v) {
-			data.tags.add(new HomeArticleDataBeanTag().fromJson(v));
+			data.tags.add(new ItemListDataDatasTag().fromJson(v));
 		});
 	}
 	if (json['title'] != null) {
@@ -103,7 +168,7 @@ homeArticleDataBeanFromJson(HomeArticleDataBean data, Map<String, dynamic> json)
 	return data;
 }
 
-Map<String, dynamic> homeArticleDataBeanToJson(HomeArticleDataBean entity) {
+Map<String, dynamic> itemListDataDataToJson(ItemListDataData entity) {
 	final Map<String, dynamic> data = new Map<String, dynamic>();
 	data['apkLink'] = entity.apkLink;
 	data['audit'] = entity.audit;
@@ -142,7 +207,7 @@ Map<String, dynamic> homeArticleDataBeanToJson(HomeArticleDataBean entity) {
 	return data;
 }
 
-homeArticleDataBeanTagFromJson(HomeArticleDataBeanTag data, Map<String, dynamic> json) {
+itemListDataDatasTagFromJson(ItemListDataDatasTag data, Map<String, dynamic> json) {
 	if (json['name'] != null) {
 		data.name = json['name']?.toString();
 	}
@@ -152,7 +217,7 @@ homeArticleDataBeanTagFromJson(HomeArticleDataBeanTag data, Map<String, dynamic>
 	return data;
 }
 
-Map<String, dynamic> homeArticleDataBeanTagToJson(HomeArticleDataBeanTag entity) {
+Map<String, dynamic> itemListDataDatasTagToJson(ItemListDataDatasTag entity) {
 	final Map<String, dynamic> data = new Map<String, dynamic>();
 	data['name'] = entity.name;
 	data['url'] = entity.url;
