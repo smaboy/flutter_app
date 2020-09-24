@@ -129,7 +129,7 @@ class _ContentWidgetState extends State<ContentWidget> {
     var length = contentList?.length ?? 0;
     return RefreshIndicator(
       onRefresh: () async{
-
+        initData();
       },
       child: ListView.builder(
         controller: _scrollController,
@@ -207,6 +207,7 @@ class _ContentWidgetState extends State<ContentWidget> {
         if (itemListByCid != null &&
             itemListByCid.data != null &&
             itemListByCid.data.datas != null) {
+          contentList.clear();
           contentList.addAll(itemListByCid.data.datas);
         }
       });
