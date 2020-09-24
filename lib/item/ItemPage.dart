@@ -104,87 +104,39 @@ class _ContentWidgetState extends State<ContentWidget> {
   ///当前页
   int curPageNum = 0;
 
+  ScrollController _scrollController;
+
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: contentList?.length ?? 0,
-      itemBuilder: (buildContext, index) {
-        return Card(
-          color: Colors.white,
-          margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-//            child: ListTile(
-//              title: Text(contentList[index].title),
-//              subtitle: Text(contentList[index].desc),
-//              leading: Image.network(contentList[index].envelopePic),
-//            ),
-          child: Container(
-            height: 200.0,
-            padding: EdgeInsets.all(10.0),
-            child: Row(
-              children: <Widget>[
-                Image.network(
-                  contentList[index].envelopePic,
-                  width: 160.0,
-                  fit: BoxFit.fill,
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Padding(
-                        child: Text(
-                          contentList[index].title,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontSize: 13.0,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        padding: EdgeInsets.all(5.0),
-                      ),
-                      Padding(
-                        child: Text(
-                          contentList[index].desc,
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontSize: 10.0,
-                              color: Colors.grey,
-                              fontWeight: FontWeight.normal),
-                        ),
-                        padding: EdgeInsets.all(5.0),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Text(
-                                  "${contentList[index].niceDate}   ${contentList[index].author} ",
-                                  maxLines: 3,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      fontSize: 10.0,
-                                      color: Colors.grey,
-                                      fontWeight: FontWeight.normal),
-                                ),
-                              ),
-                              FavoriteButtonWidget(),
-                            ],
-                          ),
-                          padding: EdgeInsets.all(5.0),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
+
+    return RefreshIndicator(
+      onRefresh: () async{
+
       },
+      child: ListView.builder(
+        controller: _scrollController,
+        itemCount: (contentList?.length ?? 0),
+        itemBuilder: (buildContext, index) {
+          return Card(
+            color: Colors.white,
+            margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+            child: Container(
+              height: 200.0,
+              padding: EdgeInsets.all(10.0),
+              child: Row(
+                children: <Widget>[
+                  Image.network(
+                    contentList[index].envelopePic,
+                    width: 160.0,
+                    fit: BoxFit.fill,
+                  ),
+                  ContentEndWidget(contentList: contentList,index : index),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -192,8 +144,18 @@ class _ContentWidgetState extends State<ContentWidget> {
   void initState() {
     super.initState();
 
+    //listview控制器
+    _scrollController = ScrollController();
+    _scrollController.addListener(() {
+      if(_scrollController.position.pixels >= _scrollController.position.maxScrollExtent){
+        //此时加载下一页数据
+
+      }
+    });
+
     initData();
   }
+
 
   void initData() async {
     ItemListEntity itemListByCid = await ItemServiceImpl.getInstance()
@@ -205,6 +167,111 @@ class _ContentWidgetState extends State<ContentWidget> {
         contentList = itemListByCid.data.datas;
       }
     });
+  }
+}
+
+class LoadMoreWidget extends StatelessWidget {
+  const LoadMoreWidget({
+    Key key,
+    @required this.context, this.isVisibleProgress = false, this.loadMoreMsg = "",
+  }) : super(key: key);
+
+  final BuildContext context;
+  final bool isVisibleProgress;
+  final String loadMoreMsg;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(10.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Visibility(
+            visible: isVisibleProgress,
+            child: SizedBox(
+              width: 13.0,
+              height: 13.0,
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Text(loadMoreMsg,style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 12.0),),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class ContentEndWidget extends StatelessWidget {
+  const ContentEndWidget({
+    Key key,
+    @required this.contentList, @required this.index,
+  }) : super(key: key);
+
+  final List<ItemListDataData> contentList;
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Padding(
+            child: Text(
+              contentList[index].title,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  fontSize: 13.0,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold),
+            ),
+            padding: EdgeInsets.all(5.0),
+          ),
+          Padding(
+            child: Text(
+              contentList[index].desc,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  fontSize: 10.0,
+                  color: Colors.grey,
+                  fontWeight: FontWeight.normal),
+            ),
+            padding: EdgeInsets.all(5.0),
+          ),
+          Expanded(
+            child: Padding(
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      "${contentList[index].niceDate}   ${contentList[index].author} ",
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          fontSize: 10.0,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.normal),
+                    ),
+                  ),
+                  FavoriteButtonWidget(),
+                ],
+              ),
+              padding: EdgeInsets.all(5.0),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
