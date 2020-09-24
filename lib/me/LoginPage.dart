@@ -14,6 +14,12 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         title: Text("登录"),
         flexibleSpace: Text("hhaha"),
+        actions: <Widget>[
+          IconButton(icon: Text("注册"), onPressed: () {
+            Toast.show("注册", context);
+          },),
+
+        ],
       ),
       body: Container(
         alignment: Alignment.topCenter,
@@ -55,28 +61,28 @@ class _LoginPageState extends State<LoginPage> {
             Container(
               margin: EdgeInsets.all(20.0),
               padding: const EdgeInsets.all(8.0),
-              child: DecoratedBox(
+              child: RaisedButton(
+                color: Theme
+                    .of(context)
+                    .primaryColor,
+                onPressed: () {
+
+                },
                 child: Container(
                   width: double.infinity,
                   alignment: Alignment.center,
                   padding: EdgeInsets.all(10.0),
                   child: Text(
                     "登录",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14.0,
+                        color: Colors.white,
                   ),
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(3.0),
-                  border: Border.all(color: Colors.red[400], width: 1.0),
-                  color: Colors.white,
-                  shape: BoxShape.rectangle,
-                  gradient: LinearGradient(
-                      colors: [ Colors.green, Colors.blue],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight),
                 ),
               ),
             ),
-          ],
+            ),],
         ),
       ),
     );
