@@ -5,6 +5,7 @@ import 'package:flutterapp/item/entity/item_list_entity.dart';
 import 'package:flutterapp/item/entity/item_tree_entity.dart';
 import 'package:flutterapp/item/service/item_service_impl.dart';
 import 'package:flutterapp/me/LoginPage.dart';
+import 'package:toast/toast.dart';
 
 /// 项目页面
 class ItemPage extends StatefulWidget {
@@ -106,17 +107,85 @@ class _ContentWidgetState extends State<ContentWidget> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: contentList?.length ?? 0, itemBuilder: (buildContext,index){
-          return Card(
-            color: Colors.white,
-            margin: EdgeInsets.symmetric(horizontal: 10.0,vertical: 5.0),
-            child: ListTile(
-              title: Text(contentList[index].title),
-              subtitle: Text(contentList[index].desc),
-              leading: Image.network(contentList[index].envelopePic),
+      itemCount: contentList?.length ?? 0,
+      itemBuilder: (buildContext, index) {
+        return Card(
+          color: Colors.white,
+          margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+//            child: ListTile(
+//              title: Text(contentList[index].title),
+//              subtitle: Text(contentList[index].desc),
+//              leading: Image.network(contentList[index].envelopePic),
+//            ),
+          child: Container(
+            height: 200.0,
+            padding: EdgeInsets.all(10.0),
+            child: Row(
+              children: <Widget>[
+                Image.network(
+                  contentList[index].envelopePic,
+                  width: 160.0,
+                  fit: BoxFit.fill,
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Padding(
+                        child: Text(
+                          contentList[index].title,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: 13.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        padding: EdgeInsets.all(5.0),
+                      ),
+                      Padding(
+                        child: Text(
+                          contentList[index].desc,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: 10.0,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.normal),
+                        ),
+                        padding: EdgeInsets.all(5.0),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: Text(
+                                  "${contentList[index].niceDate}   ${contentList[index].author} ",
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: 10.0,
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                              ),
+                              FavoriteButtonWidget(),
+                            ],
+                          ),
+                          padding: EdgeInsets.all(5.0),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          );
-    },);
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -127,8 +196,6 @@ class _ContentWidgetState extends State<ContentWidget> {
   }
 
   void initData() async {
-    print(
-        "_ContentWidgetState-initData-curPageNum-$curPageNum-id-${widget.id}");
     ItemListEntity itemListByCid = await ItemServiceImpl.getInstance()
         .getItemListByCid(curPageNum, widget.id);
     setState(() {
@@ -138,6 +205,53 @@ class _ContentWidgetState extends State<ContentWidget> {
         contentList = itemListByCid.data.datas;
       }
     });
-    print("itemListByCid==第一个标题==${itemListByCid.data.datas[0].title}");
+  }
+}
+
+
+///收藏按钮组件
+class FavoriteButtonWidget extends StatefulWidget {
+  ///是否收藏了
+  final bool isFavorite;
+
+  const FavoriteButtonWidget({
+    Key key, this.isFavorite = false,
+  }) : super(key: key);
+
+  @override
+  _FavoriteButtonWidgetState createState() => _FavoriteButtonWidgetState();
+}
+
+class _FavoriteButtonWidgetState extends State<FavoriteButtonWidget> {
+
+  bool curIsFavorite ;
+
+  @override
+  void initState() {
+    super.initState();
+
+    curIsFavorite = widget.isFavorite;
+  }
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(curIsFavorite ? Icons.favorite : Icons.favorite_border,color: Colors.grey,),
+      onPressed: (){
+        //点击收藏的事件
+        if(curIsFavorite){
+          //将此收藏移除
+          Toast.show("取消收藏", context);
+        }else{
+          //添加收藏
+          Toast.show("添加收藏", context);
+        }
+        //改变收藏状态
+        setState(() {
+          curIsFavorite = !curIsFavorite;
+        });
+
+      },
+    );
+
   }
 }
