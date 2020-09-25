@@ -43,10 +43,11 @@ class _MePageState extends State<MePage> {
                 //进入登录注册页面
                 RouteHelpUtils.push(context, LoginPage());
               },),
-              background: Image.network(
-                'http://img.haote.com/upload/20180918/2018091815372344164.jpg',
-                fit: BoxFit.fitHeight,
-              ),
+              background: Image(image: AssetImage("images/lake.jpg"),fit: BoxFit.fill,),
+//              background: Image.network(
+//                'http://img.haote.com/upload/20180918/2018091815372344164.jpg',
+//                fit: BoxFit.fitHeight,
+//              ),
             ),
           )];
         },
