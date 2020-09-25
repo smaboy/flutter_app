@@ -14,7 +14,7 @@ class RouteHelpUtils{
   }
 
 
-  static pop<T extends Object>(BuildContext context , Widget widget , [T result]){
+  static pop<T extends Object>(BuildContext context , [T result]){
     Navigator.of(context).pop(result);
   }
 }

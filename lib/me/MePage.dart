@@ -2,48 +2,68 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/common/RouteHelpUtils.dart';
 import 'package:flutterapp/me/LoginPage.dart';
 
-class MePage extends StatelessWidget {
+class MePage extends StatefulWidget {
   ///标题
   final String title;
 
   const MePage({Key key, this.title}) : super(key: key);
 
   @override
+  _MePageState createState() => _MePageState();
+}
+
+class _MePageState extends State<MePage> {
+
+  //判断用户是否登录
+  var isLogin = false;
+
+  //用户名称
+  var userName = "";
+
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text("我是我的页面"),
-            RaisedButton(
-              onPressed: () {
-//                Scaffold.of(context)
-//                    .showSnackBar(SnackBar(content: Text("按钮一 ---> 您点击我了")));
+//      appBar: AppBar(
+//        title: Text(title),
+//        centerTitle: true,
+//      ),
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[SliverAppBar(
+            expandedHeight: 200.0,
+            pinned: true,
+            leading: IconButton(icon: Icon(Icons.account_circle),onPressed: (){
+              //进入登录注册页面
               RouteHelpUtils.push(context, LoginPage());
-              },
-              child: Text("我是按钮一"),
-              color: Colors.blue,
-              highlightColor: Colors.blue[700],
-              colorBrightness: Brightness.dark,
-              splashColor: Colors.grey,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+            },),
+//            title: Text("我是标题"),
+            flexibleSpace: FlexibleSpaceBar(
+              title: GestureDetector(child: Text(isLogin ? userName : "点击登录/注册"),onTap: (){
+                //进入登录注册页面
+                RouteHelpUtils.push(context, LoginPage());
+              },),
+              background: Image.network(
+                'http://img.haote.com/upload/20180918/2018091815372344164.jpg',
+                fit: BoxFit.fitHeight,
+              ),
             ),
-            RaisedButton.icon(
-                onPressed: () {
-                  Scaffold.of(context)
-                      .showSnackBar(SnackBar(content: Text("按钮二 ---> 您点击我了")));
-                },
-                icon: Icon(Icons.arrow_back),
-                label: Text("我是按钮二")),
+          )];
+        },
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            ListTile(leading: Icon(Icons.favorite) ,title: Text("我的收藏"),),
+            Divider(color: Colors.grey,),
+            ListTile(leading: Icon(Icons.dashboard) ,title: Text("切换主题"),),
+            Divider(color: Colors.grey,),
+            ListTile(leading: Icon(Icons.warning) ,title: Text("关于软件"),),
+            Divider(color: Colors.grey,)
           ],
         ),
       ),
+      )
     );
 
   }
