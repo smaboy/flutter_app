@@ -199,7 +199,7 @@ class _ContentWidgetState extends State<ContentWidget> {
 
 
   void initData() async {
-    curPageNum = 0;
+    curPageNum = 1;
     ItemListEntity itemListByCid = await ItemServiceImpl.getInstance()
         .getItemListByCid(curPageNum, widget.id);
     if(mounted){
