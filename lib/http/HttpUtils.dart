@@ -105,4 +105,34 @@ class HttpUtils {
     }
     return response;
   }
+
+  /// 处理错误
+  String handleError(DioError e) {
+    String errorMsg = "";
+    switch (e.type) {
+      case DioErrorType.CONNECT_TIMEOUT:
+        errorMsg = "连接超时";
+        break;
+      case DioErrorType.RECEIVE_TIMEOUT:
+        errorMsg = "接收超时";
+        break;
+      case DioErrorType.SEND_TIMEOUT:
+        errorMsg = "发送超时";
+        break;
+      case DioErrorType.CANCEL:
+        errorMsg = "请求取消";
+        break;
+      case DioErrorType.RESPONSE:
+        errorMsg = "服务器状态码错误";
+        break;
+      case DioErrorType.DEFAULT:
+        errorMsg = "未知错误";
+        break;
+      default:
+        errorMsg = "未知错误";
+        break;
+    }
+
+    return errorMsg;
+  }
 }
