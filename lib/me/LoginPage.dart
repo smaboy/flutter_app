@@ -8,12 +8,15 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  //默认不展示密码
+  bool isLock = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("登录"),
-        flexibleSpace: Text("hhaha"),
+        centerTitle: true,
         actions: <Widget>[
           IconButton(icon: Text("注册"), onPressed: () {
             Toast.show("注册", context);
@@ -49,13 +52,17 @@ class _LoginPageState extends State<LoginPage> {
                     labelText: "密码",
                     helperText: "密码只能是英文大小写字母、@、*、_等字符",
                     prefixIcon: Icon(Icons.vpn_key),
-                    suffixIcon: Icon(Icons.lock_open),
+                    suffixIcon: IconButton(icon: isLock ? Icon(Icons.lock_outline) : Icon(Icons.lock_open),onPressed: (){
+                      setState(() {
+                        isLock = !isLock;
+                      });
+                    },),
                     contentPadding: EdgeInsets.all(5.0),
                     border: OutlineInputBorder(
                         gapPadding: 5.0,
                         borderRadius: BorderRadius.all(Radius.circular(5.0)))),
                 keyboardType: TextInputType.visiblePassword,
-                obscureText: true,
+                obscureText: isLock,
               ),
             ),
             Container(
