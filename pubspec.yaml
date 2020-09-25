@@ -41,11 +41,17 @@ dependencies:
   # 网络请求框架
   dio: ^3.0.10
 
+  # 网络请求框架 cookie管理框架
+  dio_cookie_manager: ^1.0.0
+
   # 刷新框架
   flutter_easyrefresh: ^2.1.5
 
   # toast框架
   toast: ^0.1.5
+
+  # 文件操作插件
+  path_provider: ^0.4.1
 
 
 dev_dependencies:

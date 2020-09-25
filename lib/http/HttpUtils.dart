@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutterapp/common/API.dart';
+import 'package:cookie_jar/cookie_jar.dart';
 
 /// Http工具类
 ///
@@ -25,7 +27,7 @@ class HttpUtils {
     dio = Dio(options);
 
     //Cookie管理
-//    dio.interceptors.add(CookieManager(CookieJar()));
+    dio.interceptors.add(CookieManager(CookieJar()));
 
     //添加拦截器
     dio.interceptors
@@ -101,7 +103,6 @@ class HttpUtils {
     } on DioError catch(e){
 
     }
-
     return response;
   }
 }
