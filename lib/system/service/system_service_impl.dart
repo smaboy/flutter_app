@@ -18,14 +18,26 @@ class SystemServiceImpl extends SystemService{
 
   @override
   getSystemTree() async{
-    Response responses = await HttpUtils.getInstance().get(API.systemTree);
+    Response responses = await HttpUtils.getInstance().get(API.systemTree,
+        onSuccess: (responses){
+
+        },
+        onFailure: (msg){
+
+        });
     SystemTreeEntity systemTreeEntity = SystemTreeEntity().fromJson(jsonDecode(responses.toString()));
     return systemTreeEntity;
   }
 
   @override
   getSystemListByAuthor(int pageNum, String author) async{
-    Response responses = await HttpUtils.getInstance().get(API.systemListByAuthor);
+    Response responses = await HttpUtils.getInstance().get(API.systemListByAuthor,
+        onSuccess: (responses){
+
+        },
+        onFailure: (msg){
+
+        });
     SystemTreeEntity systemTreeEntity = SystemTreeEntity().fromJson(jsonDecode(responses.toString()));
     return systemTreeEntity;
   }
@@ -33,7 +45,13 @@ class SystemServiceImpl extends SystemService{
   @override
   getSystemListByCid(int pageNum, int cid) async{
 
-    Response responses = await HttpUtils.getInstance().get(API.getSystemListByCid(pageNum, cid));
+    Response responses = await HttpUtils.getInstance().get(API.getSystemListByCid(pageNum, cid),
+        onSuccess: (responses){
+
+        },
+        onFailure: (msg){
+
+        });
     SystemListByCidEntity systemListByCidEntity = SystemListByCidEntity().fromJson(jsonDecode(responses.toString()));
     return systemListByCidEntity;
   }

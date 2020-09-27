@@ -355,28 +355,45 @@ class HomePageState extends State<HomePage> {
   }
 
   /// 从网络获取轮播图数据
-  void initBannerData() async {
-    Response responses = await HttpUtils.getInstance().get(API.homeBanner);
+  void initBannerData() {
+    HttpUtils.getInstance().get(API.homeBanner,onSuccess: (responses){
+      //设置数据
+      setState(() {
+        _homeBannerEntity = homeBannerEntityFromJson(
+            _homeBannerEntity, json.decode(responses.toString()));
+        print("meBeanEntity转化的第一列的标题为:${_homeBannerEntity.data[0].title}");
+      });
 
-    //设置数据
-    setState(() {
-      _homeBannerEntity = homeBannerEntityFromJson(
-          _homeBannerEntity, json.decode(responses.toString()));
-      print("meBeanEntity转化的第一列的标题为:${_homeBannerEntity.data[0].title}");
+      _swiperController.startAutoplay();
+    },onFailure: (msg){
+      //报错处理
+
     });
 
-    _swiperController.startAutoplay();
+
   }
 
   /// 从网络获取文章列表数据
   void initArticleListData() async {
     ///获取置顶文章列表数据
     Response homeArticleTop =
-        await HttpUtils.getInstance().get(API.homeArticleTop);
+        await HttpUtils.getInstance().get(API.homeArticleTop,
+        onSuccess: (responses){
+
+        },
+        onFailure: (msg){
+
+        });
 
     ///获取文章列表数据
     Response homeArticleList =
-        await HttpUtils.getInstance().get(API.homeArticleList);
+        await HttpUtils.getInstance().get(API.homeArticleList,
+            onSuccess: (responses){
+
+            },
+            onFailure: (msg){
+
+            });
     print("homeArticleTop====${homeArticleTop.toString()}");
     print("homeArticleList====${homeArticleList.toString()}");
 
@@ -410,7 +427,13 @@ class HomePageState extends State<HomePage> {
     ///获取文章列表数据
     API.homePageNum++;
     Response homeArticleList =
-        await HttpUtils.getInstance().get(API.homeArticleList);
+        await HttpUtils.getInstance().get(API.homeArticleList,
+            onSuccess: (responses){
+
+            },
+            onFailure: (msg){
+
+            });
     //设置数据
     setState(() {
       HomeArticleListEntity homeArticleListEntity = HomeArticleListEntity()

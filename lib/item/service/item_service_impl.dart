@@ -17,14 +17,26 @@ class ItemServiceImpl extends ItemService{
 
   @override
   Future<ItemListEntity> getItemListByCid(int pageNum, int cid) async{
-    Response responses = await HttpUtils.getInstance().get(API.getItemList(pageNum, cid));
+    Response responses = await HttpUtils.getInstance().get(API.getItemList(pageNum, cid),
+        onSuccess: (responses){
+
+        },
+        onFailure: (msg){
+
+        });
     ItemListEntity itemListEntity = ItemListEntity().fromJson(jsonDecode(responses.toString()));
     return itemListEntity;
   }
 
   @override
   Future<ItemTreeEntity> getItemTree() async{
-    Response responses = await HttpUtils.getInstance().get(API.itemTree);
+    Response responses = await HttpUtils.getInstance().get(API.itemTree,
+        onSuccess: (responses){
+
+        },
+        onFailure: (msg){
+
+        });
     ItemTreeEntity itemTreeEntity = ItemTreeEntity().fromJson(jsonDecode(responses.toString()));
     return itemTreeEntity;
   }
