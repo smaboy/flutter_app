@@ -65,6 +65,7 @@ class HttpUtils {
       {Map<String, dynamic> queryParameters,
       Options options,
       CancelToken cancelToken,
+      bool isNeedCache = true,
       void Function(int, int) onReceiveProgress,
       void Function(Response) onSuccess,
       void Function(String) onFailure}) async {
@@ -76,7 +77,7 @@ class HttpUtils {
       //开始请求
       response = await dio.get(path,
           queryParameters: queryParameters,
-          options: optionTemp,
+          options: isNeedCache ? optionTemp : options,
           cancelToken: cancelToken,
           onReceiveProgress: onReceiveProgress);
 
@@ -103,6 +104,7 @@ class HttpUtils {
       Map<String, dynamic> queryParameters,
       Options options,
       CancelToken cancelToken,
+      bool isNeedCache = true,
       void Function(int, int) onSendProgress,
       void Function(int, int) onReceiveProgress,
       void Function(Response) onSuccess,
@@ -117,7 +119,7 @@ class HttpUtils {
       response = await dio.post(path,
           data: data,
           queryParameters: queryParameters,
-          options: options,
+          options: isNeedCache ? optionTemp : options,
           cancelToken: cancelToken,
           onSendProgress: onSendProgress,
           onReceiveProgress: onReceiveProgress);
