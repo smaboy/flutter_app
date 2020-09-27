@@ -32,7 +32,7 @@ class HttpUtils {
     //添加拦截器
     dio.interceptors
         .add(InterceptorsWrapper(onRequest: (RequestOptions options) {
-      print("------------------>>>>>>>>请求之前<<<<<<<————————————————————");
+      print("------------------>>>>>>>>发送请求<<<<<<<————————————————————");
       print("请求方法:${options.method}");
       print("请求头:${options.headers}");
       print("请求参数:${options.queryParameters}");
@@ -40,11 +40,19 @@ class HttpUtils {
       // Do something before request is sent
       return options; //continue
     }, onResponse: (Response response) {
-      print("------------------>>>>>>>>响应之前<<<<<<<————————————————————");
+      print("------------------>>>>>>>>接收响应<<<<<<<————————————————————");
+      print("请求方法:${response.request.method}");
+      print("请求头:${response.request.headers}");
+      print("请求参数:${response.request.queryParameters}");
+      print("请求路径:${response.request.baseUrl}${response.request.path}");
+      print("响应状态码:${response.statusCode}");
+      print("响应状态信息:${response.statusMessage}");
+      print("响应头:${response.headers.toString()}");
+      print("响应头数据:${response.toString()}");
       // Do something with response data
       return response; // continue
     }, onError: (DioError e) {
-      print("------------------>>>>>>>>错误之前<<<<<<<————————————————————");
+      print("------------------>>>>>>>>发生错误<<<<<<<————————————————————");
       // Do something with response error
       return e; //continue
     }));
@@ -55,7 +63,9 @@ class HttpUtils {
       {Map<String, dynamic> queryParameters,
       Options options,
       CancelToken cancelToken,
-      void Function(int, int) onReceiveProgress}) async {
+      void Function(int, int) onReceiveProgress,
+      void Function(Response) onSuccess,
+      void Function(String) onFailure}) async {
     Response response;
     try {
       response = await dio.get(path,
@@ -64,16 +74,18 @@ class HttpUtils {
           cancelToken: cancelToken,
           onReceiveProgress: onReceiveProgress);
 
+      //将成功的响应抛出
+      if (onSuccess != null) {
+        onSuccess(response);
+      }
+    } on DioError catch (e) {
+      //将失败的响应抛出
+      if (onFailure != null) {
+        onFailure(handleError(e));
+      }
 
-      /// 打印get请求的的code和数据
-      print("get请求的返回的状态码:${response.statusCode}");
-      print("get请求返回的数据toString:${response.data}");
-    } on DioError catch(e){
+      //打印请求报错信息
       print(e);
-      response = Response(
-        statusCode: -1,
-        statusMessage: e.message
-      );
     }
 
     return response;
@@ -86,7 +98,9 @@ class HttpUtils {
       Options options,
       CancelToken cancelToken,
       void Function(int, int) onSendProgress,
-      void Function(int, int) onReceiveProgress}) async {
+      void Function(int, int) onReceiveProgress,
+      void Function(Response) onSuccess,
+      void Function(String) onFailure}) async {
     Response response;
     try {
       response = await dio.post(path,
@@ -97,11 +111,18 @@ class HttpUtils {
           onSendProgress: onSendProgress,
           onReceiveProgress: onReceiveProgress);
 
-      /// 打印get请求的的code和数据
-      print("post请求的状态码:${response.statusCode}");
-      print("post请求的数据:${response.data}");
-    } on DioError catch(e){
+      //将成功的响应抛出
+      if (onSuccess != null) {
+        onSuccess(response);
+      }
+    } on DioError catch (e) {
+      //将失败的响应抛出
+      if (onFailure != null) {
+        onFailure(handleError(e));
+      }
 
+      //打印请求报错信息
+      print(e);
     }
     return response;
   }
