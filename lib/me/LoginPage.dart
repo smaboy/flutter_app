@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutterapp/common/API.dart';
+import 'package:flutterapp/http/HttpUtils.dart';
 import 'package:toast/toast.dart';
 
 class LoginPage extends StatefulWidget {
@@ -56,8 +58,7 @@ class _LoginPageState extends State<LoginPage> {
                     contentPadding: EdgeInsets.all(10.0),
                     border: OutlineInputBorder(
                         gapPadding: 5.0,
-                        borderRadius:
-                            BorderRadius.all(Radius.circular(5.0)))),
+                        borderRadius: BorderRadius.all(Radius.circular(5.0)))),
                 keyboardType: TextInputType.text,
                 onEditingComplete: () {
                   //编辑完成，焦点自动到密码输入框
@@ -89,8 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                     contentPadding: EdgeInsets.all(10.0),
                     border: OutlineInputBorder(
                         gapPadding: 10.0,
-                        borderRadius:
-                            BorderRadius.all(Radius.circular(5.0)))),
+                        borderRadius: BorderRadius.all(Radius.circular(5.0)))),
                 keyboardType: TextInputType.visiblePassword,
                 obscureText: isLock,
                 onEditingComplete: () {
@@ -142,10 +142,12 @@ class _LoginPageState extends State<LoginPage> {
                     //走登录校验逻辑
 
                     //走登录接口
+                    go2login();
                   } else {
                     //走注册校验逻辑
 
                     //走注册接口
+                    go2register();
                   }
                 },
                 child: Text(
@@ -162,5 +164,28 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  /// 登录
+  void go2login()  {
+    HttpUtils.getInstance().post(API.login,
+        queryParameters: {"username": "Test@001", "password": "Test@001"},
+    onSuccess: (responses){
+
+    },
+    onFailure: (msg){
+
+    });
+  }
+
+  void go2register()  {
+    HttpUtils.getInstance().post(API.register,
+        queryParameters: {"username": "Test@001", "password": "Test@001","repassword" : "Test@001"},
+        onSuccess: (responses){
+
+        },
+        onFailure: (msg){
+
+        });
   }
 }
