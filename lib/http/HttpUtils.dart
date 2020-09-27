@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:flutterapp/common/API.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 
@@ -26,36 +27,37 @@ class HttpUtils {
 
     dio = Dio(options);
 
-    //Cookie管理
-    dio.interceptors.add(CookieManager(CookieJar()));
-
     //添加拦截器
     dio.interceptors
-        .add(InterceptorsWrapper(onRequest: (RequestOptions options) {
-      print("------------------>>>>>>>>发送请求<<<<<<<————————————————————");
-      print("请求方法:${options.method}");
-      print("请求头:${options.headers}");
-      print("请求参数:${options.queryParameters}");
-      print("请求路径:${options.baseUrl}${options.path}");
-      // Do something before request is sent
-      return options; //continue
-    }, onResponse: (Response response) {
-      print("------------------>>>>>>>>接收响应<<<<<<<————————————————————");
-      print("请求方法:${response.request.method}");
-      print("请求头:${response.request.headers}");
-      print("请求参数:${response.request.queryParameters}");
-      print("请求路径:${response.request.baseUrl}${response.request.path}");
-      print("响应状态码:${response.statusCode}");
-      print("响应状态信息:${response.statusMessage}");
-      print("响应头:${response.headers.toString()}");
-      print("响应头数据:${response.toString()}");
-      // Do something with response data
-      return response; // continue
-    }, onError: (DioError e) {
-      print("------------------>>>>>>>>发生错误<<<<<<<————————————————————");
-      // Do something with response error
-      return e; //continue
-    }));
+      ..add(CookieManager(CookieJar())) //cookie管理
+      ..add(InterceptorsWrapper(onRequest: (RequestOptions options) {
+        //请求拦截器
+        print("------------------>>>>>>>>发送请求<<<<<<<————————————————————");
+        print("请求方法:${options.method}");
+        print("请求头:${options.headers}");
+        print("请求参数:${options.queryParameters}");
+        print("请求路径:${options.baseUrl}${options.path}");
+        // Do something before request is sent
+        return options; //continue
+      }, onResponse: (Response response) {
+        print("------------------>>>>>>>>接收响应<<<<<<<————————————————————");
+        print("请求方法:${response.request.method}");
+        print("请求头:${response.request.headers}");
+        print("请求参数:${response.request.queryParameters}");
+        print("请求路径:${response.request.baseUrl}${response.request.path}");
+        print("响应状态码:${response.statusCode}");
+        print("响应状态信息:${response.statusMessage}");
+        print("响应头:${response.headers.toString()}");
+        print("响应头数据:${response.toString()}");
+        // Do something with response data
+        return response; // continue
+      }, onError: (DioError e) {
+        print("------------------>>>>>>>>发生错误<<<<<<<————————————————————");
+        // Do something with response error
+        return e; //continue
+      }))
+      ..add(DioCacheManager(CacheConfig(baseUrl: API.baseUrl))
+          .interceptor); //缓存拦截器
   }
 
   /// get 请求方法
@@ -68,9 +70,13 @@ class HttpUtils {
       void Function(String) onFailure}) async {
     Response response;
     try {
+      //  添加缓存配置 MaxAge：设置缓存的时间，MaxStale: 设置过期时常
+      var optionTemp = buildCacheOptions(Duration(days: 7),
+          maxStale: Duration(days: 10), subKey: "page=1", options: options);
+      //开始请求
       response = await dio.get(path,
           queryParameters: queryParameters,
-          options: options,
+          options: optionTemp,
           cancelToken: cancelToken,
           onReceiveProgress: onReceiveProgress);
 
@@ -103,6 +109,11 @@ class HttpUtils {
       void Function(String) onFailure}) async {
     Response response;
     try {
+      //  添加缓存配置 MaxAge：设置缓存的时间，MaxStale: 设置过期时常
+      var optionTemp = buildCacheOptions(Duration(days: 7),
+          maxStale: Duration(days: 10), subKey: "page=1", options: options);
+      //开始请求
+
       response = await dio.post(path,
           data: data,
           queryParameters: queryParameters,

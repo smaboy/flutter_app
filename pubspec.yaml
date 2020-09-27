@@ -44,6 +44,9 @@ dependencies:
   # 网络请求框架 cookie管理框架
   dio_cookie_manager: ^1.0.0
 
+  # http缓存库
+  dio_http_cache: ^0.2.11
+
   # 刷新框架
   flutter_easyrefresh: ^2.1.5
 
