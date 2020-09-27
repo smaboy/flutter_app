@@ -3,11 +3,10 @@ class API {
 
   /// ---------------首页相关-----------------///
 
-  /// 页码
-  static int homePageNum = 0;
-
   /// 首页文章列表
-  static String homeArticleList = "/article/list/$homePageNum/json";
+  static String getHomeArticleList(int pageNum){
+    return "/article/list/$pageNum/json";
+  }
 
   /// 首页banner
   static String homeBanner = "/banner/json";

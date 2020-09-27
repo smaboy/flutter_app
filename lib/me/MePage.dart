@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/common/RouteHelpUtils.dart';
+import 'package:flutterapp/common/widget/error_page_widget.dart';
 import 'package:flutterapp/me/LoginPage.dart';
 
 class MePage extends StatefulWidget {
@@ -60,7 +61,8 @@ class _MePageState extends State<MePage> {
             ListTile(leading: Icon(Icons.dashboard) ,title: Text("切换主题"),),
             Divider(color: Colors.grey,),
             ListTile(leading: Icon(Icons.warning) ,title: Text("关于软件"),),
-            Divider(color: Colors.grey,)
+            Divider(color: Colors.grey,),
+            ErrorPageWidget(msg: "请求超时",)
           ],
         ),
       ),

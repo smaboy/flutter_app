@@ -7,6 +7,7 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutterapp/common/API.dart';
 import 'package:flutterapp/common/RouteHelpUtils.dart';
 import 'package:flutterapp/common/webview_widget.dart';
+import 'package:flutterapp/common/widget/error_page_widget.dart';
 import 'package:flutterapp/generated/json/home_banner_entity_helper.dart';
 import 'package:flutterapp/home/entity/home_article_data.dart';
 import 'package:flutterapp/home/entity/home_article_top_entity.dart';
@@ -41,6 +42,15 @@ class HomePageState extends State<HomePage> {
   /// 刷新控制器
   EasyRefreshController _easyRefreshController = EasyRefreshController();
 
+  /// 是否展示网络出错页面
+  bool isVisibleErrorPage = false;
+
+  /// 网络出错页面提示信息
+  String errorPageMsg = "";
+
+  ///默认页码
+  int curPageNum = 0;
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -48,7 +58,7 @@ class HomePageState extends State<HomePage> {
         title: new Text(widget.title),
         centerTitle: true,
       ),
-      body: Container(
+      body: isVisibleErrorPage ? ErrorPageWidget(msg: errorPageMsg,) : Container(
         color: Colors.grey[100],
         child: EasyRefresh(
           child: ListView.builder(
@@ -96,8 +106,8 @@ class HomePageState extends State<HomePage> {
   /// 初始化数据
   void initDat() {
     ///获取轮播图数据
+    curPageNum = 0;
     initBannerData();
-    initArticleListData();
   }
 
   /// 获取banner组件
@@ -365,8 +375,16 @@ class HomePageState extends State<HomePage> {
       });
 
       _swiperController.startAutoplay();
+
+      //获取列表数据
+      initArticleListData();
+
     },onFailure: (msg){
       //报错处理
+      setState(() {
+        isVisibleErrorPage = true;
+        errorPageMsg = msg;
+      });
 
     });
 
@@ -387,7 +405,7 @@ class HomePageState extends State<HomePage> {
 
     ///获取文章列表数据
     Response homeArticleList =
-        await HttpUtils.getInstance().get(API.homeArticleList,
+        await HttpUtils.getInstance().get(API.getHomeArticleList(curPageNum),
             onSuccess: (responses){
 
             },
@@ -425,9 +443,9 @@ class HomePageState extends State<HomePage> {
   /// 加载更多请求数据
   void loadMoreData() async {
     ///获取文章列表数据
-    API.homePageNum++;
+    curPageNum++;
     Response homeArticleList =
-        await HttpUtils.getInstance().get(API.homeArticleList,
+        await HttpUtils.getInstance().get(API.getHomeArticleList(curPageNum),
             onSuccess: (responses){
 
             },
@@ -449,8 +467,7 @@ class HomePageState extends State<HomePage> {
 
   /// 刷新数据
   void reFreshData() async {
-    API.homePageNum = 0;
+    curPageNum++;
     initBannerData();
-    initArticleListData();
   }
 }
