@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
+import 'package:flutter/material.dart';
 import 'package:flutterapp/common/API.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 
@@ -168,5 +169,30 @@ class HttpUtils {
     }
 
     return errorMsg;
+  }
+
+  /// 显示加载对话框
+  void showProgressDialog(BuildContext context){
+    showDialog(context: context,builder: (context){
+      return UnconstrainedBox(
+        constrainedAxis: Axis.vertical,
+        child: SizedBox(
+          width: 280,
+          child: AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                CircularProgressIndicator(value: .8,),
+                Padding(
+                  padding: const EdgeInsets.only(top: 26.0),
+                  child: Text("正在加载，请稍后..."),
+                )
+              ],
+            ),
+          ),
+        ),
+      );
+    });
+
   }
 }
