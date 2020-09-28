@@ -197,7 +197,7 @@ class _MePageState extends State<MePage> {
         //重置本地数据状态
         SPUtils.getInstance().setValue(SPUtils.isLogin, false);
         if(!rememberPassword){
-          SPUtils.getInstance().setValue(SPUtils.userName, "");
+//          SPUtils.getInstance().setValue(SPUtils.userName, "");
           SPUtils.getInstance().setValue(SPUtils.password, "");
         }
 
