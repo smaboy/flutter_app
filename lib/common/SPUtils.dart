@@ -2,6 +2,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// 数据存储工具类
 class SPUtils {
+
+  static final String userName = "username";
+  static String password = "password";
+  static String isLogin = "isLogin";
+
   static SPUtils _instance;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
@@ -10,30 +15,13 @@ class SPUtils {
     return _instance;
   }
 
-  dynamic getValue(String key , [Type type]) async {
-    SharedPreferences sp = await _prefs;
-    if(type == null){
-      return sp.get(key);
-    }else{
-      if (type is int) {
-        return sp.getInt(key);
-      } else if (type is bool) {
-        return sp.getBool(key);
-      } else if (type is double) {
-        return sp.getDouble(key);
-      } else if (type is String) {
-        return sp.getString(key);
-      } else if (type is List<String>) {
-        return sp.getString(key);
-      } else {
-        throw Exception("不支持获取该类型的数据!");
-      }
-    }
+  Future<SharedPreferences> getSP() async{
+    return await _prefs;
   }
 
   /// 设置数据
   setValue<T>(String key, T value) async {
-    SharedPreferences sp = await _prefs;
+    SharedPreferences sp = await getSP();
     if (value is int) {
       sp.setInt(key, value);
     } else if (value is bool) {

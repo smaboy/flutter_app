@@ -245,8 +245,9 @@ class _LoginPageState extends State<LoginPage> {
       LoginEntity loginEntity = LoginEntity().fromJson(json.decode(response.toString()));
       if(loginEntity?.errorCode == 0){
         Toast.show("登录成功", context);
-        SPUtils.getInstance().setValue("username", _userNameControl.text);
-        SPUtils.getInstance().setValue("password", _pwControl.text);
+        SPUtils.getInstance().setValue(SPUtils.isLogin, true);
+        SPUtils.getInstance().setValue(SPUtils.userName, _userNameControl.text);
+        SPUtils.getInstance().setValue(SPUtils.password, _pwControl.text);
 
         //关闭当前页面
         Navigator.pop(context);
@@ -299,8 +300,9 @@ class _LoginPageState extends State<LoginPage> {
           RegisterEntity registerEntity = RegisterEntity().fromJson(json.decode(response.toString()));
           if(registerEntity?.errorCode == 0){
             Toast.show("注册成功", context);
-            SPUtils.getInstance().setValue("username", _userNameControl.text);
-            SPUtils.getInstance().setValue("password", _pwControl.text);
+            SPUtils.getInstance().setValue(SPUtils.isLogin, true);
+            SPUtils.getInstance().setValue(SPUtils.userName, _userNameControl.text);
+            SPUtils.getInstance().setValue(SPUtils.password, _pwControl.text);
 
             //关闭当前页面
             Navigator.pop(context);
