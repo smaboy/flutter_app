@@ -68,20 +68,23 @@ class _MePageState extends State<MePage> {
             pinned: true,
             leading: IconButton(
               icon: Icon(Icons.account_circle),
-              onPressed: () {
+              onPressed: () async{
                 //进入登录注册页面
-                RouteHelpUtils.push(context, LoginPage());
+                bool result = await RouteHelpUtils.push(context, LoginPage());
+                if(result) initData();
               },
             ),
 //            title: Text("我是标题"),
             flexibleSpace: FlexibleSpaceBar(
               title: GestureDetector(
                 child: Text(isLogin ? userName : "点击登录/注册"),
-                onTap: () {
+                onTap: () async{
                   //已经登录,不做操作
                   if (isLogin) return;
                   //进入登录注册页面
-                  RouteHelpUtils.push(context, LoginPage());
+                  //进入登录注册页面
+                  bool result = await RouteHelpUtils.push(context, LoginPage());
+                  if(result) initData();
                 },
               ),
               background: Image(
@@ -103,12 +106,14 @@ class _MePageState extends State<MePage> {
             ListTile(
               leading: Icon(Icons.favorite),
               title: Text("我的收藏"),
-              onTap: () {
+              onTap: () async{
                 //点击进入我的收藏页面(需要判断是否登录)
                 if (isLogin) {
                   RouteHelpUtils.push(context, MeFavoritePage());
                 } else {
-                  RouteHelpUtils.push(context, LoginPage());
+                  //进入登录注册页面
+                  bool result = await RouteHelpUtils.push(context, LoginPage());
+                  if(result) initData();
                 }
               },
             ),

@@ -306,7 +306,7 @@ class _LoginPageState extends State<LoginPage> {
         SPUtils.getInstance().setValue(SPUtils.password, _pwControl.text);
 
         //关闭当前页面
-        Navigator.pop(context);
+        Navigator.pop(context,true);
       }else{
         Toast.show(loginEntity?.errorMsg ?? "登录失败", context);
       }
@@ -361,7 +361,7 @@ class _LoginPageState extends State<LoginPage> {
             SPUtils.getInstance().setValue(SPUtils.password, _pwControl.text);
 
             //关闭当前页面
-            Navigator.pop(context);
+            Navigator.pop(context,true);
           }else{
             Toast.show(registerEntity?.errorMsg ?? "注册失败", context);
           }
