@@ -6,6 +6,7 @@ class SPUtils {
   static final String userName = "username";
   static String password = "password";
   static String isLogin = "isLogin";
+  static String rememberPassword = "rememberPassword";
 
   static SPUtils _instance;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();

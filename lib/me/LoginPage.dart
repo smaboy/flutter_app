@@ -7,6 +7,7 @@ import 'package:flutterapp/common/API.dart';
 import 'package:flutterapp/common/SPUtils.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
 import 'package:flutterapp/me/entity/register_entity.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
 import 'entity/login_entity.dart';
@@ -38,16 +39,37 @@ class _LoginPageState extends State<LoginPage> {
   bool isLoginPage = true;
 
 
+  ///  记住密码
+  bool rPWChecked = false;
+
+  /// 用户名
+  String localUserName ="";
+
+  /// 密码
+  String localPassword= "";
+
+
   @override
   void initState() {
-    _userNameControl = TextEditingController();
-    _pwControl = TextEditingController();
+    _userNameControl = TextEditingController(text: localUserName);
+    _pwControl = TextEditingController(text: localPassword);
     _pw2Control = TextEditingController();
 
     //获取用户名和密码
+    initConfigure();
 
 
     super.initState();
+  }
+
+  initConfigure() async{
+    SharedPreferences sp  = await SPUtils.getInstance().getSP();
+    setState(() {
+      rPWChecked = sp.getBool(SPUtils.rememberPassword) ?? false;
+      localUserName = sp.getString(SPUtils.userName) ?? "";
+      localPassword = sp.getString(SPUtils.password) ?? "";
+    });
+
   }
 
   @override
@@ -176,8 +198,38 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             Container(
-              width: double.infinity,
+//              padding: const EdgeInsets.all(10.0),
               margin: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 0.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Checkbox(
+                    value: rPWChecked,
+                    activeColor: Colors.blue,
+                    onChanged: (b){
+                      if(b){
+                        //记住密码
+                        SPUtils.getInstance().setValue(SPUtils.rememberPassword, true);
+                      }else{
+                        //不记住密码
+                        SPUtils.getInstance().setValue(SPUtils.rememberPassword, false);
+                      }
+                      setState(() {
+                        rPWChecked = !rPWChecked;
+                      });
+                    },
+                  ),
+                  Text("记住密码?",style: TextStyle(
+                    fontSize: 13.0,
+                    color: Colors.grey,
+                  ),),
+                ],
+              ),
+            ),
+            Container(
+              width: double.infinity,
+              margin: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
               child: RaisedButton(
                 padding: EdgeInsets.all(10.0),
                 color: Theme.of(context).primaryColor,

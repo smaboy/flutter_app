@@ -33,6 +33,9 @@ class _MePageState extends State<MePage> {
   //密码
   var password = "";
 
+  //  记住密码
+  var rememberPassword = false;
+
   @override
   void initState() {
     initData();
@@ -46,6 +49,7 @@ class _MePageState extends State<MePage> {
       isLogin = sharedPreferences.getBool(SPUtils.isLogin) ?? false;
       userName = sharedPreferences.getString(SPUtils.userName) ?? "";
       password = sharedPreferences.getString(SPUtils.password) ?? "";
+      rememberPassword = sharedPreferences.getBool(SPUtils.rememberPassword) ?? false;
     });
   }
 
@@ -180,12 +184,25 @@ class _MePageState extends State<MePage> {
   /// 退出登录操作
   void logout() {
     HttpUtils.getInstance().get(API.logout,
-    onSuccess: (responses){
+    onSuccess: (responses) {
       Map<String,dynamic> logoutBean = json.decode(responses.toString());
       if(logoutBean['errorCode'] == 0){//退出成功
+        //弹窗提示
+        Toast.show("退出成功", context);
+        //重置本地数据状态
         SPUtils.getInstance().setValue(SPUtils.isLogin, false);
-        SPUtils.getInstance().setValue(SPUtils.userName, "");
-        SPUtils.getInstance().setValue(SPUtils.password, "");
+        if(!rememberPassword){
+          SPUtils.getInstance().setValue(SPUtils.userName, "");
+          SPUtils.getInstance().setValue(SPUtils.password, "");
+        }
+
+        //更新当前组件状态
+        setState(() {
+          isLogin = false;
+          userName = "";
+          password = "";
+        });
+
       }else{//退出失败
         Toast.show(logoutBean['errorMsg'] ?? "退出失败", context);
 
