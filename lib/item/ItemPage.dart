@@ -337,7 +337,7 @@ class ContentEndWidget extends StatelessWidget {
                           fontWeight: FontWeight.normal),
                     ),
                   ),
-                  FavoriteButtonWidget(id : contentList[index].id),
+                  FavoriteButtonWidget(id : contentList[index].id,isFavorite: contentList[index]?.collect ?? false,),
                 ],
               ),
               padding: EdgeInsets.all(5.0),
@@ -391,7 +391,7 @@ class _FavoriteButtonWidgetState extends State<FavoriteButtonWidget> {
               Toast.show("取消收藏成功", context);
               temp = !curIsFavorite;
             }else{
-              Toast.show("取消收藏失败", context);
+              Toast.show(map['errorMsg'] ?? "取消收藏失败", context);
             }
           },
           onFailure: (msg){
@@ -406,7 +406,7 @@ class _FavoriteButtonWidgetState extends State<FavoriteButtonWidget> {
                   Toast.show("收藏成功", context);
                   temp = !curIsFavorite;
                 }else{
-                  Toast.show("收藏失败", context);
+                  Toast.show(map['errorMsg'] ?? "收藏失败", context);
                 }
               },
               onFailure: (msg){
