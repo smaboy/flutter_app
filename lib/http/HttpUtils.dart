@@ -49,7 +49,7 @@ class HttpUtils {
         print("响应状态码:${response.statusCode}");
         print("响应状态信息:${response.statusMessage}");
         print("响应头:${response.headers.toString()}");
-        print("响应头数据:${response.toString()}");
+        print("响应数据:${response.toString()}");
         // Do something with response data
         return response; // continue
       }, onError: (DioError e) {
