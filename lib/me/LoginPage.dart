@@ -51,8 +51,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    _userNameControl = TextEditingController(text: localUserName);
-    _pwControl = TextEditingController(text: localPassword);
+    _userNameControl = TextEditingController();
+    _pwControl = TextEditingController();
     _pw2Control = TextEditingController();
 
     //获取用户名和密码
@@ -64,10 +64,14 @@ class _LoginPageState extends State<LoginPage> {
 
   initConfigure() async{
     SharedPreferences sp  = await SPUtils.getInstance().getSP();
+    rPWChecked = sp.getBool(SPUtils.rememberPassword) ?? false;
+    localUserName = sp.getString(SPUtils.userName) ?? "";
+    localPassword = sp.getString(SPUtils.password) ?? "";
     setState(() {
-      rPWChecked = sp.getBool(SPUtils.rememberPassword) ?? false;
-      localUserName = sp.getString(SPUtils.userName) ?? "";
-      localPassword = sp.getString(SPUtils.password) ?? "";
+      _userNameControl.text = localUserName;
+      _pwControl.text = localPassword;
+
+      print("拿到的SP数据:rPWChecked=$rPWChecked,localUserName=$localUserName,localPassword=$localPassword");
     });
 
   }
