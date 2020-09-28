@@ -160,10 +160,10 @@ class HttpUtils {
         errorMsg = "服务器状态码错误";
         break;
       case DioErrorType.DEFAULT:
-        errorMsg = "未知错误";
+        errorMsg = e.message;
         break;
       default:
-        errorMsg = "未知错误";
+        errorMsg = e.message;
         break;
     }
 

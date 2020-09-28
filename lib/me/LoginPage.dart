@@ -1,7 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutterapp/common/API.dart';
+import 'package:flutterapp/common/SPUtils.dart';
+import 'package:flutterapp/http/HttpUtils.dart';
+import 'package:flutterapp/me/entity/register_entity.dart';
 import 'package:toast/toast.dart';
+
+import 'entity/login_entity.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -12,16 +20,48 @@ class _LoginPageState extends State<LoginPage> {
   //默认不展示密码
   bool isLock = true;
 
-  //密码输入框焦点
-  var pwFocusNode = FocusNode();
+  //用户名输入框控制器
+  var userNameFocusNode = FocusNode();
+  TextEditingController _userNameControl;
 
   //密码输入框焦点
+  var pwFocusNode = FocusNode();
+  TextEditingController _pwControl;
+
+  //密码输入确认框焦点
   var pw2FocusNode = FocusNode();
+  TextEditingController _pw2Control;
 
   String userNameErrorText = "";
 
   /// 当前页面类型(登录/注册)
   bool isLoginPage = true;
+
+
+  @override
+  void initState() {
+    _userNameControl = TextEditingController();
+    _pwControl = TextEditingController();
+    _pw2Control = TextEditingController();
+
+    //获取用户名和密码
+
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _userNameControl.dispose();
+    _pwControl.dispose();
+    _pw2Control.dispose();
+
+    userNameFocusNode.dispose();
+    pwFocusNode.dispose();
+    pw2FocusNode.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +88,8 @@ class _LoginPageState extends State<LoginPage> {
               padding: const EdgeInsets.all(8.0),
               margin: const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0.0),
               child: TextField(
+                controller: _userNameControl,
+                focusNode: userNameFocusNode,
                 decoration: InputDecoration(
                     labelText: "用户名",
                     hintText: "请输入用户名",
@@ -70,6 +112,7 @@ class _LoginPageState extends State<LoginPage> {
               padding: const EdgeInsets.all(8.0),
               margin: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
               child: TextField(
+                controller: _pwControl,
                 focusNode: pwFocusNode,
                 decoration: InputDecoration(
                     labelText: "登录密码",
@@ -105,6 +148,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Visibility(
                 visible: !isLoginPage,
                 child: TextField(
+                  controller: _pw2Control,
                   focusNode: pw2FocusNode,
                   decoration: InputDecoration(
                       labelText: "确认密码",
@@ -138,15 +182,7 @@ class _LoginPageState extends State<LoginPage> {
                 padding: EdgeInsets.all(10.0),
                 color: Theme.of(context).primaryColor,
                 onPressed: () {
-                  if (isLoginPage) {
-                    //走登录校验逻辑
-
-                    //走登录接口
-                  } else {
-                    //走注册校验逻辑
-
-                    //走注册接口
-                  }
+                  btnSubmit();
                 },
                 child: Text(
                   isLoginPage ? "登录" : "注册",
@@ -163,4 +199,108 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+  ///点击按钮提交数据
+  void btnSubmit() {
+     if (isLoginPage && loginCheck()) {
+      //走登录接口
+      login();
+    } else {
+       if(registerCheck()){
+         //走注册接口
+         register();
+       }
+    }
+  }
+
+  bool loginCheck() {
+    if(_userNameControl.text.isEmpty){
+      Toast.show("用户名不能为空", context);
+      userNameFocusNode.requestFocus();
+//      FocusScope.of(context).requestFocus(pw2FocusNode);
+    return false;
+    }else if(_pwControl.text.isEmpty){
+      Toast.show("密码不能为空", context);
+      pwFocusNode.requestFocus();
+//      FocusScope.of(context).requestFocus(pw2FocusNode);
+    return false;
+    }
+
+    return true;
+  }
+
+  void login() {
+    HttpUtils.getInstance().post(API.login,
+    queryParameters: {
+      "username" : _userNameControl.text,
+      "password" : _pwControl.text,
+    },
+    onSuccess: (response){
+      LoginEntity loginEntity = LoginEntity().fromJson(json.decode(response.toString()));
+      if(loginEntity?.errorCode == 0){
+        Toast.show("登录成功", context);
+        SPUtils.getInstance().setValue("username", _userNameControl.text);
+        SPUtils.getInstance().setValue("password", _pwControl.text);
+      }else{
+        Toast.show(loginEntity?.errorMsg ?? "登录失败", context);
+      }
+
+    },
+    onFailure: (msg){
+      Toast.show(msg, context);
+    },
+    isNeedCache: false);
+  }
+
+  bool registerCheck() {
+    if(_userNameControl.text.isEmpty){
+      Toast.show("用户名不能为空", context);
+//      userNameFocusNode.requestFocus();
+      FocusScope.of(context).requestFocus(userNameFocusNode);
+      return false;
+    }else if(_pwControl.text.isEmpty){
+      Toast.show("密码不能为空", context);
+//      pwFocusNode.requestFocus();
+      FocusScope.of(context).requestFocus(pwFocusNode);
+      return false;
+    }else if(_pw2Control.text.isEmpty){
+      Toast.show("确认密码不能为空", context);
+//      pwFocusNode.requestFocus();
+      FocusScope.of(context).requestFocus(pw2FocusNode);
+      return false;
+    }else if(_pw2Control.text.isEmpty != _pwControl.text.isEmpty){
+      Toast.show("确认密码和密码不一致,请确保两者一致", context);
+//      pwFocusNode.requestFocus();
+      FocusScope.of(context).requestFocus(pw2FocusNode);
+      return false;
+    }
+
+    return true;
+
+  }
+
+  void register() {
+    HttpUtils.getInstance().post(API.register,
+        queryParameters: {
+          "username" : _userNameControl.text,
+          "password" : _pwControl.text,
+          "repassword" : _pw2Control.text,
+        },
+        onSuccess: (response){
+          RegisterEntity registerEntity = RegisterEntity().fromJson(json.decode(response.toString()));
+          if(registerEntity?.errorCode == 0){
+            Toast.show("注册成功", context);
+            SPUtils.getInstance().setValue("username", _userNameControl.text);
+            SPUtils.getInstance().setValue("password", _pwControl.text);
+          }else{
+            Toast.show(registerEntity?.errorMsg ?? "注册失败", context);
+          }
+        },
+        onFailure: (msg){
+          Toast.show(msg, context);
+        },
+        isNeedCache: false);
+  }
+
+
 }

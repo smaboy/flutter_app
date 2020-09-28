@@ -42,6 +42,7 @@ class HomePageState extends State<HomePage> {
   /// 刷新控制器
   EasyRefreshController _easyRefreshController = EasyRefreshController();
 
+
   /// 是否展示网络出错页面
   bool isVisibleErrorPage = false;
 
@@ -100,6 +101,7 @@ class HomePageState extends State<HomePage> {
 
     _swiperController.stopAutoplay();
     _swiperController.dispose();
+    _easyRefreshController.dispose();
     print("dispose");
   }
 

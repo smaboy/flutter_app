@@ -47,4 +47,14 @@ class API {
     return "/project/list/$pageNum/json?cid=$cid";
   }
 
+/// ---------------项目页面相关-----------------///
+
+  ///登录
+  static String login = "/user/login";
+
+  ///登录
+  static String register = "/user/register";
+
+  ///登录
+  static String logout = "/user/logout/json";
 }

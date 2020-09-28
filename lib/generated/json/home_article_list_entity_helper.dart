@@ -1,7 +1,6 @@
 import 'package:flutterapp/home/entity/home_article_data.dart';
 import 'package:flutterapp/home/entity/home_article_list_entity.dart';
 
-
 homeArticleListEntityFromJson(HomeArticleListEntity data, Map<String, dynamic> json) {
 	if (json['data'] != null) {
 		data.data = new HomeArticleListData().fromJson(json['data']);

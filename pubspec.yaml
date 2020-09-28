@@ -56,6 +56,10 @@ dependencies:
   # 文件操作插件
   path_provider: ^0.4.1
 
+  # 简单数据存储插件
+  # NSUserDefaults on iOS and macOS, SharedPreferences on Android, etc.
+  shared_preferences: ^0.5.12
+
 
 dev_dependencies:
   flutter_test:
