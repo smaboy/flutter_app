@@ -202,6 +202,12 @@ class _LoginPageState extends State<LoginPage> {
 
   ///点击按钮提交数据
   void btnSubmit() {
+    //失去焦点，收起键盘
+    userNameFocusNode.unfocus();
+    pwFocusNode.unfocus();
+    pw2FocusNode.unfocus();
+
+    //登录注册逻辑
      if (isLoginPage && loginCheck()) {
       //走登录接口
       login();
@@ -241,6 +247,9 @@ class _LoginPageState extends State<LoginPage> {
         Toast.show("登录成功", context);
         SPUtils.getInstance().setValue("username", _userNameControl.text);
         SPUtils.getInstance().setValue("password", _pwControl.text);
+
+        //关闭当前页面
+        Navigator.pop(context);
       }else{
         Toast.show(loginEntity?.errorMsg ?? "登录失败", context);
       }
@@ -292,6 +301,9 @@ class _LoginPageState extends State<LoginPage> {
             Toast.show("注册成功", context);
             SPUtils.getInstance().setValue("username", _userNameControl.text);
             SPUtils.getInstance().setValue("password", _pwControl.text);
+
+            //关闭当前页面
+            Navigator.pop(context);
           }else{
             Toast.show(registerEntity?.errorMsg ?? "注册失败", context);
           }
@@ -301,6 +313,8 @@ class _LoginPageState extends State<LoginPage> {
         },
         isNeedCache: false);
   }
+
+
 
 
 }
