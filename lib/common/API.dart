@@ -62,4 +62,15 @@ class API {
   static String getCollectArticleList([int pageNum = 0]){
     return "/lg/collect/list/$pageNum/json";
   }
+  //---------------收藏相关api-------------------//
+  ///收藏站内文章
+  static String getCollectArticleById(int id){
+    return "/lg/collect/$id/json";
+  }
+
+  //-------------取消收藏相关api------------------//
+  ///收藏站内文章
+  static String getUnCollectOriginId(int id){
+    return "/lg/uncollect_originId/$id/json";
+  }
 }

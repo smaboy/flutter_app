@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterapp/common/API.dart';
 import 'package:flutterapp/common/RouteHelpUtils.dart';
 import 'package:flutterapp/common/webview_widget.dart';
+import 'package:flutterapp/http/HttpUtils.dart';
 import 'package:flutterapp/item/entity/item_list_entity.dart';
 import 'package:flutterapp/item/entity/item_tree_entity.dart';
 import 'package:flutterapp/item/service/item_service_impl.dart';
@@ -333,7 +337,7 @@ class ContentEndWidget extends StatelessWidget {
                           fontWeight: FontWeight.normal),
                     ),
                   ),
-                  FavoriteButtonWidget(),
+                  FavoriteButtonWidget(id : contentList[index].id),
                 ],
               ),
               padding: EdgeInsets.all(5.0),
@@ -350,9 +354,11 @@ class ContentEndWidget extends StatelessWidget {
 class FavoriteButtonWidget extends StatefulWidget {
   ///是否收藏了
   final bool isFavorite;
+  ///是否收藏了
+  final int id;
 
-  const FavoriteButtonWidget({
-    Key key, this.isFavorite = false,
+  const FavoriteButtonWidget( {
+    Key key, this.isFavorite = false, this.id,
   }) : super(key: key);
 
   @override
@@ -375,16 +381,41 @@ class _FavoriteButtonWidgetState extends State<FavoriteButtonWidget> {
       icon: Icon(curIsFavorite ? Icons.favorite : Icons.favorite_border,color: Colors.grey,),
       onPressed: (){
         //点击收藏的事件
+        bool temp = curIsFavorite;
         if(curIsFavorite){
           //将此收藏移除
-          Toast.show("取消收藏", context);
+          HttpUtils.getInstance().post(API.getUnCollectOriginId(widget.id),
+          onSuccess: (responses){
+            Map<String,dynamic> map = jsonDecode(responses.toString());
+            if(0 == map['errorCode']){
+              Toast.show("取消收藏成功", context);
+              temp = !curIsFavorite;
+            }else{
+              Toast.show("取消收藏失败", context);
+            }
+          },
+          onFailure: (msg){
+            Toast.show(msg, context);
+          });
         }else{
           //添加收藏
-          Toast.show("添加收藏", context);
+          HttpUtils.getInstance().post(API.getCollectArticleById(widget.id),
+              onSuccess: (responses){
+                Map<String,dynamic> map = jsonDecode(responses.toString());
+                if(0 == map['errorCode']){
+                  Toast.show("收藏成功", context);
+                  temp = !curIsFavorite;
+                }else{
+                  Toast.show("收藏失败", context);
+                }
+              },
+              onFailure: (msg){
+                Toast.show(msg, context);
+              });
         }
         //改变收藏状态
         setState(() {
-          curIsFavorite = !curIsFavorite;
+          curIsFavorite = temp;
         });
 
       },
