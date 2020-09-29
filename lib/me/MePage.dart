@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/common/API.dart';
 import 'package:flutterapp/common/RouteHelpUtils.dart';
@@ -137,6 +138,26 @@ class _MePageState extends State<MePage> {
               onTap: () {
                 //切换主题
                 Toast.show("关于软件功能构建中...", context);
+              },
+            ),
+            Divider(
+              color: Colors.grey,
+            ),
+            ListTile(
+              leading: Icon(Icons.restore_from_trash),
+              title: Text("清理缓存"),
+              onTap: () async{
+                //清理缓存
+                HttpUtils.getInstance().showProgressDialog(context, "清理中...");
+                bool result = await HttpUtils.getInstance().clearAllCache();
+                Navigator.pop(context);
+                if(result){
+                  //清理成功
+                  Toast.show("清理成功", context);
+                }else{
+                  Toast.show("清理失败", context);
+
+                }
               },
             ),
             Divider(

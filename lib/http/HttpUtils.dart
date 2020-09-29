@@ -12,6 +12,7 @@ import 'package:cookie_jar/cookie_jar.dart';
 class HttpUtils {
   static HttpUtils _instance;
   Dio dio;
+  DioCacheManager _dioCacheManager;
 
   static HttpUtils getInstance() {
     if (_instance == null) _instance = HttpUtils();
@@ -27,6 +28,8 @@ class HttpUtils {
       ..receiveTimeout = 3000;
 
     dio = Dio(options);
+
+    _dioCacheManager = DioCacheManager(CacheConfig(baseUrl: API.baseUrl));
 
     //添加拦截器
     dio.interceptors
@@ -57,8 +60,7 @@ class HttpUtils {
         // Do something with response error
         return e; //continue
       }))
-      ..add(DioCacheManager(CacheConfig(baseUrl: API.baseUrl))
-          .interceptor); //缓存拦截器
+      ..add(_dioCacheManager.interceptor); //缓存拦截器
   }
 
   /// get 请求方法
@@ -66,7 +68,7 @@ class HttpUtils {
       {Map<String, dynamic> queryParameters,
       Options options,
       CancelToken cancelToken,
-      bool isNeedCache = true,
+      bool isNeedCache = false,
       void Function(int, int) onReceiveProgress,
       void Function(Response) onSuccess,
       void Function(String) onFailure}) async {
@@ -105,7 +107,7 @@ class HttpUtils {
       Map<String, dynamic> queryParameters,
       Options options,
       CancelToken cancelToken,
-      bool isNeedCache = true,
+      bool isNeedCache = false,
       void Function(int, int) onSendProgress,
       void Function(int, int) onReceiveProgress,
       void Function(Response) onSuccess,
@@ -172,7 +174,7 @@ class HttpUtils {
   }
 
   /// 显示加载对话框
-  void showProgressDialog(BuildContext context){
+  void showProgressDialog(BuildContext context , String content){
     showDialog(context: context,builder: (context){
       return UnconstrainedBox(
         constrainedAxis: Axis.vertical,
@@ -185,7 +187,7 @@ class HttpUtils {
                 CircularProgressIndicator(value: .8,),
                 Padding(
                   padding: const EdgeInsets.only(top: 26.0),
-                  child: Text("正在加载，请稍后..."),
+                  child: Text(content),
                 )
               ],
             ),
@@ -194,5 +196,13 @@ class HttpUtils {
       );
     });
 
+  }
+
+  Future<bool> clearAllCache() async{
+    //清理所有缓存不管有没有过期
+    return _dioCacheManager.clearAll();
+
+//    //清理过期的缓存
+//    _dioCacheManager.clearExpired()
   }
 }

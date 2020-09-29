@@ -378,10 +378,9 @@ class _FavoriteButtonWidgetState extends State<FavoriteButtonWidget> {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(curIsFavorite ? Icons.favorite : Icons.favorite_border,color: Colors.grey,),
+      icon: Icon(curIsFavorite ? Icons.favorite : Icons.favorite_border,color: Colors.red,),
       onPressed: (){
         //点击收藏的事件
-        bool temp = curIsFavorite;
         if(curIsFavorite){
           //将此收藏移除
           HttpUtils.getInstance().post(API.getUnCollectOriginId(widget.id),
@@ -389,7 +388,9 @@ class _FavoriteButtonWidgetState extends State<FavoriteButtonWidget> {
             Map<String,dynamic> map = jsonDecode(responses.toString());
             if(0 == map['errorCode']){
               Toast.show("取消收藏成功", context);
-              temp = !curIsFavorite;
+              setState(() {
+                curIsFavorite = !curIsFavorite;
+              });
             }else{
               Toast.show(map['errorMsg'] ?? "取消收藏失败", context);
             }
@@ -404,7 +405,9 @@ class _FavoriteButtonWidgetState extends State<FavoriteButtonWidget> {
                 Map<String,dynamic> map = jsonDecode(responses.toString());
                 if(0 == map['errorCode']){
                   Toast.show("收藏成功", context);
-                  temp = !curIsFavorite;
+                  setState(() {
+                    curIsFavorite = !curIsFavorite;
+                  });
                 }else{
                   Toast.show(map['errorMsg'] ?? "收藏失败", context);
                 }
@@ -413,10 +416,6 @@ class _FavoriteButtonWidgetState extends State<FavoriteButtonWidget> {
                 Toast.show(msg, context);
               });
         }
-        //改变收藏状态
-        setState(() {
-          curIsFavorite = temp;
-        });
 
       },
     );

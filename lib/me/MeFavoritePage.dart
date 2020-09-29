@@ -19,6 +19,7 @@ class _MeFavoritePageState extends State<MeFavoritePage> {
   //页面数据
   List<CollectArticleListDataData> articleList;
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,27 +32,34 @@ class _MeFavoritePageState extends State<MeFavoritePage> {
         child: ListView.builder(
             itemCount: articleList?.length ?? 0,
             itemBuilder:(buildContext,index){
-              return ListTile(
-                leading: Icon(Icons.favorite),
-                trailing: Icon(Icons.favorite),
-                isThreeLine: true,
-                title: Text(
-                  articleList[index].title,
-                  style: TextStyle(
-                    fontSize: 15.0,
-                    color: Colors.black
+              return Column(
+                children: <Widget>[
+                  ListTile(
+                    leading: Icon(Icons.favorite,color: Colors.red,),
+//                    trailing: Icon(Icons.favorite),
+                    isThreeLine: true,
+                    title: Text(
+                      articleList[index].title,
+                      style: TextStyle(
+                        fontSize: 15.0,
+                        color: Colors.black
+                      ),
+                    ),
+                    subtitle: Text(
+                      "作者: ${articleList[index].author}  分类: ${articleList[index].chapterName}  收藏时间: ${articleList[index].niceDate}",
+                      style: TextStyle(
+                          fontSize: 15.0,
+                          color: Colors.grey
+                      ),
+                    ),
+                    onTap: (){
+                      RouteHelpUtils.push(context, WebViewWidget(url: articleList[index].link,title: articleList[index].title,));
+                    },
                   ),
-                ),
-                subtitle: Text(
-                  "作者: ${articleList[index].author}  分类: ${articleList[index].chapterName}  收藏时间: ${articleList[index].niceDate}",
-                  style: TextStyle(
-                      fontSize: 15.0,
-                      color: Colors.grey
-                  ),
-                ),
-                onTap: (){
-                  RouteHelpUtils.push(context, WebViewWidget(url: articleList[index].link,title: articleList[index].title,));
-                },
+                  Divider(
+                    color: Colors.grey,
+                  )
+                ],
               );
             },),
       ),
