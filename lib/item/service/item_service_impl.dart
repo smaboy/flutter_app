@@ -23,7 +23,8 @@ class ItemServiceImpl extends ItemService{
         },
         onFailure: (msg){
 
-        });
+        },
+    isNeedCache: true);
     ItemListEntity itemListEntity = ItemListEntity().fromJson(jsonDecode(responses.toString()));
     return itemListEntity;
   }
@@ -36,7 +37,8 @@ class ItemServiceImpl extends ItemService{
         },
         onFailure: (msg){
 
-        });
+        },
+    isNeedCache: true);
     ItemTreeEntity itemTreeEntity = ItemTreeEntity().fromJson(jsonDecode(responses.toString()));
     return itemTreeEntity;
   }

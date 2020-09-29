@@ -388,7 +388,7 @@ class HomePageState extends State<HomePage> {
         errorPageMsg = msg;
       });
 
-    });
+    },isNeedCache: true);
 
 
   }
@@ -403,7 +403,8 @@ class HomePageState extends State<HomePage> {
         },
         onFailure: (msg){
 
-        });
+        },
+        isNeedCache: true);
 
     ///获取文章列表数据
     Response homeArticleList =
@@ -413,7 +414,8 @@ class HomePageState extends State<HomePage> {
             },
             onFailure: (msg){
 
-            });
+            },
+        isNeedCache: true);
     print("homeArticleTop====${homeArticleTop.toString()}");
     print("homeArticleList====${homeArticleList.toString()}");
 

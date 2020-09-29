@@ -24,7 +24,8 @@ class SystemServiceImpl extends SystemService{
         },
         onFailure: (msg){
 
-        });
+        },
+    isNeedCache: true);
     SystemTreeEntity systemTreeEntity = SystemTreeEntity().fromJson(jsonDecode(responses.toString()));
     return systemTreeEntity;
   }
@@ -51,7 +52,8 @@ class SystemServiceImpl extends SystemService{
         },
         onFailure: (msg){
 
-        });
+        },
+    isNeedCache: true);
     SystemListByCidEntity systemListByCidEntity = SystemListByCidEntity().fromJson(jsonDecode(responses.toString()));
     return systemListByCidEntity;
   }
