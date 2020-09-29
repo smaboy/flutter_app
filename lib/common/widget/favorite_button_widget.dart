@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
-import 'package:flutterapp/me/LoginPage.dart';
+import 'package:flutterapp/me/page/LoginPage.dart';
 import 'package:toast/toast.dart';
 
 import '../API.dart';

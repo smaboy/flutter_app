@@ -73,10 +73,15 @@ class _MeFavoritePageState extends State<MeFavoritePage> {
   void initState() {
     super.initState();
 
-    initData();
+    // 解决dependOnInheritedWidgetOfExactType<_LocalizationsScope>() or dependOnInheritedElement() was called before _MeFavoritePageState.initState() completed.
+    Future.delayed(Duration.zero,(){
+      initData();
+    });
+
   }
 
   void initData() {
+    HttpUtils.getInstance().showProgressDialog(context, "数据加载中...");
     HttpUtils.getInstance().get(API.getCollectArticleList(),
         onSuccess: (responses) {
           CollectArticleListEntity collectArticleListEntity = CollectArticleListEntity()
@@ -88,9 +93,13 @@ class _MeFavoritePageState extends State<MeFavoritePage> {
               articleList = collectArticleListEntity.data.datas;
             });
           }
+          //关闭弹窗
+          Navigator.pop(context);
         },
         onFailure: (msg) {
           Toast.show(msg, context);
+          //关闭弹窗
+          Navigator.pop(context);
         });
   }
 }

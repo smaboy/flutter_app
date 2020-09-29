@@ -8,7 +8,7 @@ import 'package:flutterapp/common/RouteHelpUtils.dart';
 import 'package:flutterapp/common/SPUtils.dart';
 import 'package:flutterapp/common/widget/error_page_widget.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
-import 'package:flutterapp/me/LoginPage.dart';
+import 'package:flutterapp/me/page/LoginPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 

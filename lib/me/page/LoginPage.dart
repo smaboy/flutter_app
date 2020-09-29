@@ -10,7 +10,7 @@ import 'package:flutterapp/me/entity/register_entity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
-import 'entity/login_entity.dart';
+import '../entity/login_entity.dart';
 
 class LoginPage extends StatefulWidget {
   @override
