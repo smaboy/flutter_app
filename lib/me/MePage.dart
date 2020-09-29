@@ -8,6 +8,7 @@ import 'package:flutterapp/common/RouteHelpUtils.dart';
 import 'package:flutterapp/common/SPUtils.dart';
 import 'package:flutterapp/common/widget/error_page_widget.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
+import 'package:flutterapp/me/page/AboutSoftwarePage.dart';
 import 'package:flutterapp/me/page/LoginPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
@@ -137,7 +138,7 @@ class _MePageState extends State<MePage> {
               title: Text("关于软件"),
               onTap: () {
                 //切换主题
-                Toast.show("关于软件功能构建中...", context);
+                RouteHelpUtils.push(context, AboutSoftwarePage());
               },
             ),
             Divider(
