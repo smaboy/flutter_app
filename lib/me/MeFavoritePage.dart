@@ -36,7 +36,7 @@ class _MeFavoritePageState extends State<MeFavoritePage> {
                 children: <Widget>[
                   ListTile(
                     leading: Icon(Icons.favorite,color: Colors.red,),
-//                    trailing: Icon(Icons.favorite),
+                    trailing: Icon(Icons.arrow_forward_ios,color: Theme.of(context).primaryColor,),
                     isThreeLine: true,
                     title: Text(
                       articleList[index].title,
@@ -45,11 +45,14 @@ class _MeFavoritePageState extends State<MeFavoritePage> {
                         color: Colors.black
                       ),
                     ),
-                    subtitle: Text(
-                      "作者: ${articleList[index].author}  分类: ${articleList[index].chapterName}  收藏时间: ${articleList[index].niceDate}",
-                      style: TextStyle(
-                          fontSize: 15.0,
-                          color: Colors.grey
+                    subtitle: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 0.0,vertical: 10.0),
+                      child: Text(
+                        "作者: ${articleList[index].author}  分类: ${articleList[index].chapterName}  收藏时间: ${articleList[index].niceDate}",
+                        style: TextStyle(
+                            fontSize: 12.0,
+                            color: Colors.grey
+                        ),
                       ),
                     ),
                     onTap: (){
