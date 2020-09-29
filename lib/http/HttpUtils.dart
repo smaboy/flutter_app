@@ -94,8 +94,10 @@ class HttpUtils {
     Response response;
     try {
       //  添加缓存配置 MaxAge：设置缓存的时间，MaxStale: 设置过期时常
+      //  subKey: dio-http-cache 默认使用 url 作为缓存 key ,但当 url 不够用的时候，比如 post 请求分页数据的时候，就需要配合subKey使用。
+      //  forceRefresh默认为false,开启后先获取后台数据当后台数据获取不到或者网络出现问题,再去本地获取
       var optionTemp = buildCacheOptions(Duration(days: 7),
-          maxStale: Duration(days: 10), subKey: "page=1", options: options);
+          maxStale: Duration(days: 10), subKey: "subPage", options: options,forceRefresh: true);
       //开始请求
       response = await dio.get(path,
           queryParameters: queryParameters,
