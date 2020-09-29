@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/common/API.dart';
 import 'package:cookie_jar/cookie_jar.dart';
+import 'package:path_provider/path_provider.dart';
 
 /// Http工具类
 ///
@@ -13,6 +16,7 @@ class HttpUtils {
   static HttpUtils _instance;
   Dio dio;
   DioCacheManager _dioCacheManager;
+  PersistCookieJar _cookieJar;
 
   static HttpUtils getInstance() {
     if (_instance == null) _instance = HttpUtils();
@@ -31,9 +35,12 @@ class HttpUtils {
 
     _dioCacheManager = DioCacheManager(CacheConfig(baseUrl: API.baseUrl));
 
+    //添加cookie拦截器
+    addCookieInterceptors(dio);
+
     //添加拦截器
     dio.interceptors
-      ..add(CookieManager(CookieJar())) //cookie管理
+//      ..add(CookieManager(CookieJar())) //cookie管理
       ..add(InterceptorsWrapper(onRequest: (RequestOptions options) {
         //请求拦截器
         print("------------------>>>>>>>>发送请求<<<<<<<————————————————————");
@@ -61,6 +68,18 @@ class HttpUtils {
         return e; //continue
       }))
       ..add(_dioCacheManager.interceptor); //缓存拦截器
+  }
+
+  ///添加cookie拦截器
+  Future addCookieInterceptors(Dio dio) async {
+    //默认cookie拦截器，将cookie保存在运存中，应用退出cookie销毁
+//    add(CookieManager(CookieJar()))
+
+    //cookie持久化，保存在文件中,用户手动销毁
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    String appDocPath = appDocDir.path;
+    _cookieJar=PersistCookieJar(dir:"$appDocPath\/cookies/");
+    dio.interceptors.add(CookieManager(_cookieJar));
   }
 
   /// get 请求方法
@@ -198,11 +217,19 @@ class HttpUtils {
 
   }
 
+  ///清除缓存
   Future<bool> clearAllCache() async{
     //清理所有缓存不管有没有过期
     return _dioCacheManager.clearAll();
 
 //    //清理过期的缓存
 //    _dioCacheManager.clearExpired()
+  }
+
+  /// 清除cookie
+  clearAllCookie(){
+    if(_cookieJar != null){
+      _cookieJar.deleteAll();
+    }
   }
 }
