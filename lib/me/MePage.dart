@@ -12,7 +12,7 @@ import 'package:flutterapp/me/page/LoginPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
-import 'MeFavoritePage.dart';
+import 'page/MeFavoritePage.dart';
 
 class MePage extends StatefulWidget {
   ///标题
