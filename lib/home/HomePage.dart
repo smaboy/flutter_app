@@ -8,6 +8,7 @@ import 'package:flutterapp/common/API.dart';
 import 'package:flutterapp/common/RouteHelpUtils.dart';
 import 'package:flutterapp/common/webview_widget.dart';
 import 'package:flutterapp/common/widget/error_page_widget.dart';
+import 'package:flutterapp/common/widget/favorite_button_widget.dart';
 import 'package:flutterapp/generated/json/home_banner_entity_helper.dart';
 import 'package:flutterapp/home/entity/home_article_data.dart';
 import 'package:flutterapp/home/entity/home_article_top_entity.dart';
@@ -194,9 +195,7 @@ class HomePageState extends State<HomePage> {
         child: Row(
           children: <Widget>[
             Center(
-              child: Padding(
-                  child: Icon(Icons.favorite_border),
-                  padding: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0)),
+              child: FavoriteButtonWidget(isFavorite: homeArticleDataBean.collect ?? false,id: homeArticleDataBean.id,),
             ),
             Expanded(
                 child: Column(
