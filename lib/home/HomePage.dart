@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutterapp/common/API.dart';
 import 'package:flutterapp/common/RouteHelpUtils.dart';
@@ -13,7 +13,7 @@ import 'package:flutterapp/generated/json/home_banner_entity_helper.dart';
 import 'package:flutterapp/home/entity/home_article_data.dart';
 import 'package:flutterapp/home/entity/home_article_top_entity.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
-import 'package:toast/toast.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'entity/home_article_list_entity.dart';
 import 'entity/home_banner_entity.dart';
@@ -40,8 +40,7 @@ class HomePageState extends State<HomePage> {
   /// 轮播图控制器
   SwiperController _swiperController = SwiperController();
 
-  /// 刷新控制器
-  EasyRefreshController _easyRefreshController = EasyRefreshController();
+  RefreshController _refreshController = RefreshController(initialRefresh: false);
 
 
   /// 是否展示网络出错页面
@@ -60,9 +59,18 @@ class HomePageState extends State<HomePage> {
         title: new Text(widget.title),
         centerTitle: true,
       ),
-      body: isVisibleErrorPage ? ErrorPageWidget(msg: errorPageMsg,) : Container(
+      body: isVisibleErrorPage
+          ? ErrorPageWidget(msg: errorPageMsg,)
+          : Container(
         color: Colors.grey[100],
-        child: EasyRefresh(
+        child: SmartRefresher(
+          enablePullDown: true,
+          enablePullUp: true,
+          header: WaterDropHeader(),
+          footer: ClassicFooter(),
+          controller: _refreshController,
+          onRefresh: reFreshData,
+          onLoading: loadMoreData,
           child: ListView.builder(
               itemCount: _articleList.length + 1,
               itemBuilder: (BuildContext context, int index) {
@@ -70,17 +78,6 @@ class HomePageState extends State<HomePage> {
                     ? getBannerWidget()
                     : getListViewItemWidget(_articleList[index - 1]);
               }),
-          controller: _easyRefreshController,
-          onRefresh: () async {
-            reFreshData();
-            print("下拉刷新...");
-          },
-          onLoad: () async {
-            loadMoreData();
-            print("加载更多...");
-          },
-          header: BezierCircleHeader(),
-          footer: BezierBounceFooter(),
         ),
       ),
     );
@@ -102,7 +99,7 @@ class HomePageState extends State<HomePage> {
 
     _swiperController.stopAutoplay();
     _swiperController.dispose();
-    _easyRefreshController.dispose();
+    _refreshController.dispose();
     print("dispose");
   }
 
@@ -169,7 +166,9 @@ class HomePageState extends State<HomePage> {
 //                  title: homeBannerDataList[index].title,
 //                );
 //              }));
-             RouteHelpUtils.push(context, WebViewWidget(url: homeBannerDataList[index].url,title: homeBannerDataList[index].title,));
+            RouteHelpUtils.push(context, WebViewWidget(
+              url: homeBannerDataList[index].url,
+              title: homeBannerDataList[index].title,));
           },
         ),
       ),
@@ -195,33 +194,38 @@ class HomePageState extends State<HomePage> {
         child: Row(
           children: <Widget>[
             Center(
-              child: FavoriteButtonWidget(isFavorite: homeArticleDataBean.collect ?? false,id: homeArticleDataBean.id,),
+              child: FavoriteButtonWidget(
+                isFavorite: homeArticleDataBean.collect ?? false,
+                id: homeArticleDataBean.id,),
             ),
             Expanded(
                 child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  homeArticleDataBean.title,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                      fontSize: 15.0),
-                ),
-                Padding(
-                  child: Row(
-                    children: getListViewItemBottomWidget(homeArticleDataBean),
-                  ),
-                  padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 0.0),
-                )
-              ],
-            ))
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      homeArticleDataBean.title,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black,
+                          fontSize: 15.0),
+                    ),
+                    Padding(
+                      child: Row(
+                        children: getListViewItemBottomWidget(
+                            homeArticleDataBean),
+                      ),
+                      padding: EdgeInsets.symmetric(
+                          vertical: 5.0, horizontal: 0.0),
+                    )
+                  ],
+                ))
           ],
         ),
       ),
       onTap: () {
-        RouteHelpUtils.push(context, WebViewWidget(url: homeArticleDataBean.link,title: homeArticleDataBean.title,));
+        RouteHelpUtils.push(context, WebViewWidget(
+          url: homeArticleDataBean.link, title: homeArticleDataBean.title,));
       },
     );
   }
@@ -306,7 +310,8 @@ class HomePageState extends State<HomePage> {
         Widget listener = GestureDetector(
           child: tempTag,
           onTap: () {
-            RouteHelpUtils.push(context, WebViewWidget(url: API.baseUrl + tag.url,title: tag.name,));
+            RouteHelpUtils.push(context,
+                WebViewWidget(url: API.baseUrl + tag.url, title: tag.name,));
           },
         );
 
@@ -339,7 +344,8 @@ class HomePageState extends State<HomePage> {
         homeArticleDataBean.chapterName != null &&
         homeArticleDataBean.chapterName.isNotEmpty) {
       desc +=
-          " 分类: ${homeArticleDataBean.superChapterName}/${homeArticleDataBean.chapterName}";
+      " 分类: ${homeArticleDataBean.superChapterName}/${homeArticleDataBean
+          .chapterName}";
     }
 
     ///时间
@@ -367,7 +373,7 @@ class HomePageState extends State<HomePage> {
 
   /// 从网络获取轮播图数据
   void initBannerData() {
-    HttpUtils.getInstance().get(API.homeBanner,onSuccess: (responses){
+    HttpUtils.getInstance().get(API.homeBanner, onSuccess: (responses) {
       //设置数据
       setState(() {
         _homeBannerEntity = homeBannerEntityFromJson(
@@ -379,41 +385,37 @@ class HomePageState extends State<HomePage> {
 
       //获取列表数据
       initArticleListData();
-
-    },onFailure: (msg){
+    }, onFailure: (msg) {
       //报错处理
       setState(() {
         isVisibleErrorPage = true;
         errorPageMsg = msg;
       });
-
-    },isNeedCache: true);
-
-
+    }, isNeedCache: true);
   }
 
   /// 从网络获取文章列表数据
   void initArticleListData() async {
     ///获取置顶文章列表数据
     Response homeArticleTop =
-        await HttpUtils.getInstance().get(API.homeArticleTop,
-        onSuccess: (responses){
+    await HttpUtils.getInstance().get(API.homeArticleTop,
+        onSuccess: (responses) {
 
         },
-        onFailure: (msg){
+        onFailure: (msg) {
 
         },
         isNeedCache: true);
 
     ///获取文章列表数据
     Response homeArticleList =
-        await HttpUtils.getInstance().get(API.getHomeArticleList(curPageNum),
-            onSuccess: (responses){
+    await HttpUtils.getInstance().get(API.getHomeArticleList(curPageNum),
+        onSuccess: (responses) {
 
-            },
-            onFailure: (msg){
+        },
+        onFailure: (msg) {
 
-            },
+        },
         isNeedCache: true);
     print("homeArticleTop====${homeArticleTop.toString()}");
     print("homeArticleList====${homeArticleList.toString()}");
@@ -439,38 +441,40 @@ class HomePageState extends State<HomePage> {
         _articleList.addAll(homeArticleListEntity.data.datas);
       }
       print(
-          "initArticleListData-meBeanEntity转化的第一列的标题为:${_articleList[0].title},长度为:${_articleList.length}");
+          "initArticleListData-meBeanEntity转化的第一列的标题为:${_articleList[0]
+              .title},长度为:${_articleList.length}");
     });
   }
 
   /// 加载更多请求数据
-  void loadMoreData() async {
+  void loadMoreData() {
     ///获取文章列表数据
     curPageNum++;
-    Response homeArticleList =
-        await HttpUtils.getInstance().get(API.getHomeArticleList(curPageNum),
-            onSuccess: (responses){
-
-            },
-            onFailure: (msg){
-
-            });
-    //设置数据
-    setState(() {
-      HomeArticleListEntity homeArticleListEntity = HomeArticleListEntity()
-          .fromJson(json.decode(homeArticleList.toString()));
-      if (homeArticleListEntity != null &&
-          homeArticleListEntity.data != null &&
-          homeArticleListEntity.data.datas != null) {
-        //文章数据
-        _articleList.addAll(homeArticleListEntity.data.datas);
-      }
-    });
+    HttpUtils.getInstance().get(API.getHomeArticleList(curPageNum),
+        onSuccess: (responses) {
+          //设置数据
+          setState(() {
+            HomeArticleListEntity homeArticleListEntity = HomeArticleListEntity()
+                .fromJson(json.decode(responses.toString()));
+            if (homeArticleListEntity != null &&
+                homeArticleListEntity.data != null &&
+                homeArticleListEntity.data.datas != null) {
+              //文章数据
+              _articleList.addAll(homeArticleListEntity.data.datas);
+            }
+            _refreshController.loadComplete();
+          });
+        },
+        onFailure: (msg) {
+          _refreshController.loadFailed();
+        });
   }
 
   /// 刷新数据
   void reFreshData() async {
     curPageNum++;
     initBannerData();
+    _refreshController.refreshCompleted();
   }
+
 }
