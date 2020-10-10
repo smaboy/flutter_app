@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/common/myIcons.dart';
 import 'package:flutterapp/me/MePage.dart';
 import 'package:flutterapp/system/SystemPage.dart';
 
@@ -48,20 +49,20 @@ class _MainPageState extends State<MainPage> {
         items: [
           const BottomNavigationBarItem(
             icon: Icon(
-              Icons.home,
+              MyIcons.home,
             ),
             title: Text("首页"),
           ),
           const BottomNavigationBarItem(
-            icon: Icon(Icons.storage),
+            icon: Icon(MyIcons.item),
             title: Text("体系"),
           ),
           const BottomNavigationBarItem(
-            icon: Icon(Icons.dvr),
+            icon: Icon(MyIcons.project),
             title: Text("项目"),
           ),
           const BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(MyIcons.me),
             title: Text("我的"),
           ),
         ],

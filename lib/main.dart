@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
           buttonTheme: ButtonThemeData(
               height: 25,
               minWidth: 10,
-              buttonColor: Colors.yellow
+              buttonColor: Colors.blueAccent
           ),
           // 6.Card的主题
           cardTheme: CardTheme(

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/common/API.dart';
 import 'package:flutterapp/common/RouteHelpUtils.dart';
 import 'package:flutterapp/common/SPUtils.dart';
+import 'package:flutterapp/common/myIcons.dart';
 import 'package:flutterapp/common/widget/error_page_widget.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
 import 'package:flutterapp/me/page/AboutSoftwarePage.dart';
@@ -51,7 +52,8 @@ class _MePageState extends State<MePage> {
       isLogin = sharedPreferences.getBool(SPUtils.isLogin) ?? false;
       userName = sharedPreferences.getString(SPUtils.userName) ?? "";
       password = sharedPreferences.getString(SPUtils.password) ?? "";
-      rememberPassword = sharedPreferences.getBool(SPUtils.rememberPassword) ?? false;
+      rememberPassword =
+          sharedPreferences.getBool(SPUtils.rememberPassword) ?? false;
     });
   }
 
@@ -70,23 +72,23 @@ class _MePageState extends State<MePage> {
             pinned: true,
             leading: IconButton(
               icon: Icon(Icons.account_circle),
-              onPressed: () async{
+              onPressed: () async {
                 //进入登录注册页面
                 bool result = await RouteHelpUtils.push(context, LoginPage());
-                if(result) initData();
+                if (result) initData();
               },
             ),
 //            title: Text("我是标题"),
             flexibleSpace: FlexibleSpaceBar(
               title: GestureDetector(
                 child: Text(isLogin ? userName : "点击登录/注册"),
-                onTap: () async{
+                onTap: () async {
                   //已经登录,不做操作
                   if (isLogin) return;
                   //进入登录注册页面
                   //进入登录注册页面
                   bool result = await RouteHelpUtils.push(context, LoginPage());
-                  if(result) initData();
+                  if (result) initData();
                 },
               ),
               background: Image(
@@ -106,16 +108,17 @@ class _MePageState extends State<MePage> {
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             ListTile(
-              leading: Icon(Icons.favorite),
+//              leading: Icon(Icons.favorite),
+              leading: Icon(MyIcons.my_favorite,),
               title: Text("我的收藏"),
-              onTap: () async{
+              onTap: () async {
                 //点击进入我的收藏页面(需要判断是否登录)
                 if (isLogin) {
                   RouteHelpUtils.push(context, MeFavoritePage());
                 } else {
                   //进入登录注册页面
                   bool result = await RouteHelpUtils.push(context, LoginPage());
-                  if(result) initData();
+                  if (result) initData();
                 }
               },
             ),
@@ -123,7 +126,7 @@ class _MePageState extends State<MePage> {
               color: Colors.grey,
             ),
             ListTile(
-              leading: Icon(Icons.dashboard),
+              leading: Icon(MyIcons.switch_theme),
               title: Text("切换主题"),
               onTap: () {
                 //切换主题
@@ -134,7 +137,7 @@ class _MePageState extends State<MePage> {
               color: Colors.grey,
             ),
             ListTile(
-              leading: Icon(Icons.notifications),
+              leading: Icon(MyIcons.about_software),
               title: Text("关于软件"),
               onTap: () {
                 //切换主题
@@ -145,19 +148,18 @@ class _MePageState extends State<MePage> {
               color: Colors.grey,
             ),
             ListTile(
-              leading: Icon(Icons.restore_from_trash),
+              leading: Icon(MyIcons.clear_cache),
               title: Text("清理缓存"),
-              onTap: () async{
+              onTap: () async {
                 //清理缓存
                 HttpUtils.getInstance().showProgressDialog(context, "清理中...");
                 bool result = await HttpUtils.getInstance().clearAllCache();
                 Navigator.pop(context);
-                if(result){
+                if (result) {
                   //清理成功
                   Toast.show("清理成功", context);
-                }else{
+                } else {
                   Toast.show("清理失败", context);
-
                 }
               },
             ),
@@ -169,7 +171,7 @@ class _MePageState extends State<MePage> {
               child: Column(
                 children: <Widget>[
                   ListTile(
-                    leading: Icon(Icons.warning),
+                    leading: Icon(MyIcons.log_out),
                     title: Text("退出登录"),
                     onTap: () {
                       showDialog(
@@ -182,15 +184,21 @@ class _MePageState extends State<MePage> {
                               contentPadding: EdgeInsets.symmetric(
                                   vertical: 15.0, horizontal: 10.0),
                               actions: <Widget>[
-                                FlatButton(child: Text("取消"),onPressed: (){
-                                  Navigator.pop(context);
-                                },),
-                                FlatButton(child: Text("确定"),onPressed: (){
-                                  //关闭弹窗
-                                  Navigator.pop(context);
-                                  //退出登录操作
-                                  logout();
-                                },)
+                                FlatButton(
+                                  child: Text("取消"),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                FlatButton(
+                                  child: Text("确定"),
+                                  onPressed: () {
+                                    //关闭弹窗
+                                    Navigator.pop(context);
+                                    //退出登录操作
+                                    logout();
+                                  },
+                                )
                               ],
                             );
                           });
@@ -210,15 +218,15 @@ class _MePageState extends State<MePage> {
 
   /// 退出登录操作
   void logout() {
-    HttpUtils.getInstance().get(API.logout,
-    onSuccess: (responses) {
-      Map<String,dynamic> logoutBean = json.decode(responses.toString());
-      if(logoutBean['errorCode'] == 0){//退出成功
+    HttpUtils.getInstance().get(API.logout, onSuccess: (responses) {
+      Map<String, dynamic> logoutBean = json.decode(responses.toString());
+      if (logoutBean['errorCode'] == 0) {
+        //退出成功
         //弹窗提示
         Toast.show("退出成功", context);
         //重置本地数据状态
         SPUtils.getInstance().setValue(SPUtils.isLogin, false);
-        if(!rememberPassword){
+        if (!rememberPassword) {
 //          SPUtils.getInstance().setValue(SPUtils.userName, "");
           SPUtils.getInstance().setValue(SPUtils.password, "");
         }
@@ -229,15 +237,12 @@ class _MePageState extends State<MePage> {
           userName = "";
           password = "";
         });
-
-      }else{//退出失败
+      } else {
+        //退出失败
         Toast.show(logoutBean['errorMsg'] ?? "退出失败", context);
-
       }
-    },
-    onFailure: (msg){
+    }, onFailure: (msg) {
       Toast.show(msg, context);
     });
-
   }
 }

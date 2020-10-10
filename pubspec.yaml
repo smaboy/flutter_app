@@ -82,6 +82,11 @@ flutter:
   assets:
     - images/lake.jpg
     - images/net_error.png
+
+  fonts:
+    - family: myIcon
+      fonts:
+        - asset: fonts/iconfont.ttf
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

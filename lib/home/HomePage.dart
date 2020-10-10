@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutterapp/common/API.dart';
@@ -40,8 +41,8 @@ class HomePageState extends State<HomePage> {
   /// 轮播图控制器
   SwiperController _swiperController = SwiperController();
 
-  RefreshController _refreshController = RefreshController(initialRefresh: false);
-
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   /// 是否展示网络出错页面
   bool isVisibleErrorPage = false;
@@ -60,26 +61,28 @@ class HomePageState extends State<HomePage> {
         centerTitle: true,
       ),
       body: isVisibleErrorPage
-          ? ErrorPageWidget(msg: errorPageMsg,)
+          ? ErrorPageWidget(
+              msg: errorPageMsg,
+            )
           : Container(
-        color: Colors.grey[100],
-        child: SmartRefresher(
-          enablePullDown: true,
-          enablePullUp: true,
-          header: WaterDropHeader(),
-          footer: ClassicFooter(),
-          controller: _refreshController,
-          onRefresh: reFreshData,
-          onLoading: loadMoreData,
-          child: ListView.builder(
-              itemCount: _articleList.length + 1,
-              itemBuilder: (BuildContext context, int index) {
-                return index == 0
-                    ? getBannerWidget()
-                    : getListViewItemWidget(_articleList[index - 1]);
-              }),
-        ),
-      ),
+              color: Colors.grey[100],
+              child: SmartRefresher(
+                enablePullDown: true,
+                enablePullUp: true,
+                header: WaterDropHeader(),
+                footer: ClassicFooter(),
+                controller: _refreshController,
+                onRefresh: reFreshData,
+                onLoading: loadMoreData,
+                child: ListView.builder(
+                    itemCount: _articleList.length + 1,
+                    itemBuilder: (BuildContext context, int index) {
+                      return index == 0
+                          ? getBannerWidget()
+                          : getListViewItemWidget(_articleList[index - 1]);
+                    }),
+              ),
+            ),
     );
   }
 
@@ -166,9 +169,12 @@ class HomePageState extends State<HomePage> {
 //                  title: homeBannerDataList[index].title,
 //                );
 //              }));
-            RouteHelpUtils.push(context, WebViewWidget(
-              url: homeBannerDataList[index].url,
-              title: homeBannerDataList[index].title,));
+            RouteHelpUtils.push(
+                context,
+                WebViewWidget(
+                  url: homeBannerDataList[index].url,
+                  title: homeBannerDataList[index].title,
+                ));
           },
         ),
       ),
@@ -196,36 +202,39 @@ class HomePageState extends State<HomePage> {
             Center(
               child: FavoriteButtonWidget(
                 isFavorite: homeArticleDataBean.collect ?? false,
-                id: homeArticleDataBean.id,),
+                id: homeArticleDataBean.id,
+              ),
             ),
             Expanded(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      homeArticleDataBean.title,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black,
-                          fontSize: 15.0),
-                    ),
-                    Padding(
-                      child: Row(
-                        children: getListViewItemBottomWidget(
-                            homeArticleDataBean),
-                      ),
-                      padding: EdgeInsets.symmetric(
-                          vertical: 5.0, horizontal: 0.0),
-                    )
-                  ],
-                ))
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  homeArticleDataBean.title,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black,
+                      fontSize: 15.0),
+                ),
+                Padding(
+                  child: Row(
+                    children: getListViewItemBottomWidget(homeArticleDataBean),
+                  ),
+                  padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 0.0),
+                )
+              ],
+            ))
           ],
         ),
       ),
       onTap: () {
-        RouteHelpUtils.push(context, WebViewWidget(
-          url: homeArticleDataBean.link, title: homeArticleDataBean.title,));
+        RouteHelpUtils.push(
+            context,
+            WebViewWidget(
+              url: homeArticleDataBean.link,
+              title: homeArticleDataBean.title,
+            ));
       },
     );
   }
@@ -310,8 +319,12 @@ class HomePageState extends State<HomePage> {
         Widget listener = GestureDetector(
           child: tempTag,
           onTap: () {
-            RouteHelpUtils.push(context,
-                WebViewWidget(url: API.baseUrl + tag.url, title: tag.name,));
+            RouteHelpUtils.push(
+                context,
+                WebViewWidget(
+                  url: API.baseUrl + tag.url,
+                  title: tag.name,
+                ));
           },
         );
 
@@ -324,18 +337,38 @@ class HomePageState extends State<HomePage> {
         tags.add(listener);
       }
     }
-    String desc = "";
 
+    List<TextSpan> desTS = [];
     ///分享人
     if (homeArticleDataBean.shareUser != null &&
         homeArticleDataBean.shareUser.isNotEmpty) {
-      desc += " 分享人: ${homeArticleDataBean.shareUser}";
+//      desc += "  分享人: ${homeArticleDataBean.shareUser}";
+      TextSpan shareUserTS = TextSpan(
+          text: "  分享人: ",
+          style: TextStyle(color: Colors.grey),
+          children: [
+            TextSpan(
+              text: homeArticleDataBean.shareUser,
+              style: TextStyle(color: Colors.black),
+            )
+          ]);
+      desTS.add(shareUserTS);
     }
 
     ///作者
     if (homeArticleDataBean.author != null &&
         homeArticleDataBean.author.isNotEmpty) {
-      desc += " 作者: ${homeArticleDataBean.author}";
+//      desc += "  作者: ${homeArticleDataBean.author}";
+      TextSpan authorTS = TextSpan(
+          text: "  作者: ",
+          style: TextStyle(color: Colors.grey),
+          children: [
+            TextSpan(
+              text: homeArticleDataBean.author,
+              style: TextStyle(color: Colors.black),
+            )
+          ]);
+      desTS.add(authorTS);
     }
 
     ///分类
@@ -343,19 +376,39 @@ class HomePageState extends State<HomePage> {
         homeArticleDataBean.superChapterName.isNotEmpty &&
         homeArticleDataBean.chapterName != null &&
         homeArticleDataBean.chapterName.isNotEmpty) {
-      desc +=
-      " 分类: ${homeArticleDataBean.superChapterName}/${homeArticleDataBean
-          .chapterName}";
+//      desc +=
+//          "  分类: ${homeArticleDataBean.superChapterName}/${homeArticleDataBean.chapterName}";
+      TextSpan chapterTS = TextSpan(
+          text: "  分类: ",
+          style: TextStyle(color: Colors.grey),
+          children: [
+            TextSpan(
+              text: "${homeArticleDataBean.superChapterName}/${homeArticleDataBean.chapterName}",
+              style: TextStyle(color: Colors.black),
+            )
+          ]);
+      desTS.add(chapterTS);
     }
 
     ///时间
     if (homeArticleDataBean.niceDate != null &&
         homeArticleDataBean.niceDate.isNotEmpty) {
-      desc += " 时间: ${homeArticleDataBean.niceDate}";
+//      desc += "  时间: ${homeArticleDataBean.niceDate}";
+      TextSpan timeTS = TextSpan(
+          text: "  时间: ",
+          style: TextStyle(color: Colors.grey),
+          children: [
+            TextSpan(
+              text: homeArticleDataBean.niceDate,
+              style: TextStyle(color: Colors.black),
+            )
+          ]);
+      desTS.add(timeTS);
     }
+
     Widget tempDes = Expanded(
-      child: Text(
-        desc.trim(),
+      child: Text.rich(
+        TextSpan(children: desTS),
         style: TextStyle(fontSize: 10.0, color: Colors.grey),
         overflow: TextOverflow.ellipsis,
       ),
@@ -397,25 +450,17 @@ class HomePageState extends State<HomePage> {
   /// 从网络获取文章列表数据
   void initArticleListData() async {
     ///获取置顶文章列表数据
-    Response homeArticleTop =
-    await HttpUtils.getInstance().get(API.homeArticleTop,
-        onSuccess: (responses) {
-
-        },
-        onFailure: (msg) {
-
-        },
+    Response homeArticleTop = await HttpUtils.getInstance().get(
+        API.homeArticleTop,
+        onSuccess: (responses) {},
+        onFailure: (msg) {},
         isNeedCache: true);
 
     ///获取文章列表数据
-    Response homeArticleList =
-    await HttpUtils.getInstance().get(API.getHomeArticleList(curPageNum),
-        onSuccess: (responses) {
-
-        },
-        onFailure: (msg) {
-
-        },
+    Response homeArticleList = await HttpUtils.getInstance().get(
+        API.getHomeArticleList(curPageNum),
+        onSuccess: (responses) {},
+        onFailure: (msg) {},
         isNeedCache: true);
     print("homeArticleTop====${homeArticleTop.toString()}");
     print("homeArticleList====${homeArticleList.toString()}");
@@ -441,8 +486,7 @@ class HomePageState extends State<HomePage> {
         _articleList.addAll(homeArticleListEntity.data.datas);
       }
       print(
-          "initArticleListData-meBeanEntity转化的第一列的标题为:${_articleList[0]
-              .title},长度为:${_articleList.length}");
+          "initArticleListData-meBeanEntity转化的第一列的标题为:${_articleList[0].title},长度为:${_articleList.length}");
     });
   }
 
@@ -452,22 +496,21 @@ class HomePageState extends State<HomePage> {
     curPageNum++;
     HttpUtils.getInstance().get(API.getHomeArticleList(curPageNum),
         onSuccess: (responses) {
-          //设置数据
-          setState(() {
-            HomeArticleListEntity homeArticleListEntity = HomeArticleListEntity()
-                .fromJson(json.decode(responses.toString()));
-            if (homeArticleListEntity != null &&
-                homeArticleListEntity.data != null &&
-                homeArticleListEntity.data.datas != null) {
-              //文章数据
-              _articleList.addAll(homeArticleListEntity.data.datas);
-            }
-            _refreshController.loadComplete();
-          });
-        },
-        onFailure: (msg) {
-          _refreshController.loadFailed();
-        });
+      //设置数据
+      setState(() {
+        HomeArticleListEntity homeArticleListEntity =
+            HomeArticleListEntity().fromJson(json.decode(responses.toString()));
+        if (homeArticleListEntity != null &&
+            homeArticleListEntity.data != null &&
+            homeArticleListEntity.data.datas != null) {
+          //文章数据
+          _articleList.addAll(homeArticleListEntity.data.datas);
+        }
+        _refreshController.loadComplete();
+      });
+    }, onFailure: (msg) {
+      _refreshController.loadFailed();
+    });
   }
 
   /// 刷新数据
@@ -476,5 +519,4 @@ class HomePageState extends State<HomePage> {
     initBannerData();
     _refreshController.refreshCompleted();
   }
-
 }
