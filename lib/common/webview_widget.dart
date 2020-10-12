@@ -37,6 +37,12 @@ class _WebViewWidgetState extends State<WebViewWidget> {
           }
         });
   }
+  @override
+  void dispose() {
+    _onProgressChanged.cancel();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
