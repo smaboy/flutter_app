@@ -95,7 +95,7 @@ class _WebViewWidgetState extends State<WebViewWidget> {
                     blurRadius: 4.0)
               ]),
           child: Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(15.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -107,7 +107,7 @@ class _WebViewWidgetState extends State<WebViewWidget> {
                     '加载中$_progressValue%...',
                     textScaleFactor: 0.5,
                   ),
-                  padding: EdgeInsets.all(10.0),
+                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                 ),
               ],
             ),
