@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterapp/common/RouteHelpUtils.dart';
+import 'package:flutterapp/common/webview_widget.dart';
 
 class AboutSoftwarePage extends StatefulWidget {
   @override
@@ -39,7 +41,28 @@ class _AboutSoftwarePageState extends State<AboutSoftwarePage> {
           child: Column(
             children: <Widget>[
               ListTile(
-                title: Text("Smaboy-WanAndroid"),
+                title: Text("关于作者: Smaboy"),
+                onTap: (){
+                  RouteHelpUtils.push(context, WebViewWidget(url: "https://github.com/smaboy",title: "Smaboy",));
+                },
+              ),
+              Divider(
+                color: Colors.grey,
+              ),
+              ListTile(
+                title: Text("关于项目: flutter_app"),
+                onTap: (){
+                  RouteHelpUtils.push(context, WebViewWidget(url: "https://github.com/smaboy/flutter_app",title: "flutter_app",));
+                },
+              ),
+              Divider(
+                color: Colors.grey,
+              ),
+              ListTile(
+                title: Text("关于玩安卓"),
+                onTap: (){
+                  RouteHelpUtils.push(context, WebViewWidget(url: "https://www.wanandroid.com/index",title: "玩安卓",));
+                },
               ),
               Divider(
                 color: Colors.grey,
