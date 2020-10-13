@@ -46,10 +46,6 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>MOBAppKey</key>
-	<string>31139a87f381b</string>
-	<key>MOBAppSecret</key>
-	<string>21ee882d928dbb52fe0ffda93a6182e3</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 </dict>
