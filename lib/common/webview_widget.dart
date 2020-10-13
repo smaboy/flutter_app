@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:flutterapp/common/widget/share_widget.dart';
 
 /// webview组件
 class WebViewWidget extends StatefulWidget {
@@ -59,18 +60,13 @@ class _WebViewWidgetState extends State<WebViewWidget> {
           },
         ),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.share),
-            onPressed: () {
-              print("我是分享");
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.more_horiz),
-            onPressed: () {
-              print("我是更多");
-            },
-          ),
+          ShareWidget(),
+//          IconButton(
+//            icon: Icon(Icons.more_horiz),
+//            onPressed: () {
+//              print("我是更多");
+//            },
+//          ),
         ],
       ),
       withZoom: true,

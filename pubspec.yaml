@@ -63,6 +63,9 @@ dependencies:
   # NSUserDefaults on iOS and macOS, SharedPreferences on Android, etc.
   shared_preferences: ^0.5.12
 
+  # 集成分享 sharesdk
+  sharesdk_plugin: ^1.2.8
+
 
 dev_dependencies:
   flutter_test:

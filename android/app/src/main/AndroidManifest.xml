@@ -13,7 +13,8 @@
         android:label="flutterapp"
         android:networkSecurityConfig="@xml/network_security_config"
         android:icon="@mipmap/ic_launcher"
-        tools:ignore="UnusedAttribute">
+        tools:ignore="UnusedAttribute"
+        tools:replace="android:name">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
