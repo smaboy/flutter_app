@@ -7,8 +7,8 @@ MobSDK {
         loopShare true
         devInfo {
             SinaWeibo {
-                appKey "568898243"
-                appSecret "38a4f8204cc784f81f9f0daaf31e02e3"
+                appKey "1825309799"
+                appSecret "69f2bc416bd35a3d59c1eece9564e1ad"
                 callbackUri "http://www.sharesdk.cn"
             }
             Wechat {
@@ -26,15 +26,15 @@ MobSDK {
 //            ShortMessage {
 //                enable true
 //            }
-            Douyin {
-                appKey "aw9ivykfjvi4hpwo"
-                appSecret "42b4caa6bda60bd49f05f06d0a4956e1"
-            }
-            Dingding {
-                appId "dingoanxyrpiscaovl4qlw"
-                appSecret "7Cbf-b8zeqxj3hs0WqEgsv_Y7eQ80ubm8qPmW694MMMybjJJqrUsADoICm8W3sbN"
-                callbackUri "https://www.mob.com/sharesdk/dingding"
-            }
+//            Douyin {
+//                appKey "aw9ivykfjvi4hpwo"
+//                appSecret "42b4caa6bda60bd49f05f06d0a4956e1"
+//            }
+//            Dingding {
+//                appId "dingoanxyrpiscaovl4qlw"
+//                appSecret "7Cbf-b8zeqxj3hs0WqEgsv_Y7eQ80ubm8qPmW694MMMybjJJqrUsADoICm8W3sbN"
+//                callbackUri "https://www.mob.com/sharesdk/dingding"
+//            }
             WechatMoments {
                 appId "wx4868b35061f87885"
                 appSecret "64020361b8ec4c99936c0e3999a9f249"
