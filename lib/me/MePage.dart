@@ -133,9 +133,9 @@ class _MePageState extends State<MePage> {
 //                Toast.show("切换主题功能构建中...", context);
 //              },
 //            ),
-            Divider(
-              color: Colors.grey,
-            ),
+//            Divider(
+//              color: Colors.grey,
+//            ),
             ListTile(
               leading: Icon(MyIcons.about_software),
               title: Text("关于软件"),
