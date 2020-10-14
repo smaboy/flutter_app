@@ -20,8 +20,8 @@ MobSDK {
                 miniprogramType 2
             }
             QQ {
-                appId "100371282"
-                appKey "aed9b0303e3ed1e27bae87c33761161d"
+                appId "1106625860"
+                appKey "5THeB4KjRYiIOPab"
             }
 //            ShortMessage {
 //                enable true
@@ -44,8 +44,8 @@ MobSDK {
                 appSecret "64020361b8ec4c99936c0e3999a9f249"
             }
             QZone {
-                appId "100371282"
-                appKey "aed9b0303e3ed1e27bae87c33761161d"
+                appId "1106625860"
+                appKey "5THeB4KjRYiIOPab"
             }
         }
     }
