@@ -56,16 +56,17 @@ class _ShareWidgetState extends State<ShareWidget> {
   }
 
   /// 分享九宫格
+  /// "https://cdn.jsdelivr.net/gh/flutterchina/website@1.0/images/flutter-mark-square-100.png"
   void showShareMenu() {
     SSDKMap params = SSDKMap()
       ..setGeneral(
-        "title",
-        "text",
+        widget.title,
+        widget.text,
         [""],
-        "http://img1.2345.com/duoteimg/qqTxImg/2012/04/09/13339485237265.jpg",
-        null,
-        "http://www.baidu.com",
-        "http://www.mob.com",
+        "https://cdn.jsdelivr.net/gh/flutterchina/website@1.0/images/flutter-mark-square-100.png",
+        "android/app/src/main/res/mipmap-xhdpi/ic_launcher.png",
+        widget.url,
+        widget.url,
         null,
         null,
         null,

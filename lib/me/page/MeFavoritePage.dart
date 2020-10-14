@@ -56,7 +56,7 @@ class _MeFavoritePageState extends State<MeFavoritePage> {
                       ),
                     ),
                     onTap: (){
-                      RouteHelpUtils.push(context, WebViewWidget(url: articleList[index].link,title: articleList[index].title,));
+                      RouteHelpUtils.push(context, WebViewWidget(url: articleList[index].link,title: articleList[index].title,des: articleList[index].desc,));
                     },
                   ),
                   Divider(

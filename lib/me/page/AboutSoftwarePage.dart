@@ -57,7 +57,7 @@ class _AboutSoftwarePageState extends State<AboutSoftwarePage> {
                       )
                     ])),
                 onTap: (){
-                  RouteHelpUtils.push(context, WebViewWidget(url: "https://github.com/smaboy",title: "Smaboy",));
+                  RouteHelpUtils.push(context, WebViewWidget(url: "https://github.com/smaboy",title: "Smaboy",showShare: false,));
                 },
               ),
 //              Divider(
@@ -73,7 +73,7 @@ class _AboutSoftwarePageState extends State<AboutSoftwarePage> {
                       )
                     ])),
                 onTap: (){
-                  RouteHelpUtils.push(context, WebViewWidget(url: "https://github.com/smaboy/flutter_app",title: "flutter_app",));
+                  RouteHelpUtils.push(context, WebViewWidget(url: "https://github.com/smaboy/flutter_app",title: "flutter_app",showShare: false,));
                 },
               ),
 //              Divider(
@@ -89,7 +89,7 @@ class _AboutSoftwarePageState extends State<AboutSoftwarePage> {
                       )
                     ])),
                 onTap: (){
-                  RouteHelpUtils.push(context, WebViewWidget(url: "https://www.wanandroid.com/blog/show/2",title: "玩安卓",));
+                  RouteHelpUtils.push(context, WebViewWidget(url: "https://www.wanandroid.com/blog/show/2",title: "玩安卓",showShare: false,));
                 },
               ),
 //              Divider(

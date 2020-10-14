@@ -9,8 +9,10 @@ import 'package:flutterapp/common/widget/share_widget.dart';
 class WebViewWidget extends StatefulWidget {
   final String url;
   final String title;
+  final String des;
+  final bool showShare;
 
-  const WebViewWidget({Key key, this.url, this.title}) : super(key: key);
+  const WebViewWidget({Key key, this.url, this.title, this.des, this.showShare = true}) : super(key: key);
 
   @override
   _WebViewWidgetState createState() => _WebViewWidgetState();
@@ -60,7 +62,10 @@ class _WebViewWidgetState extends State<WebViewWidget> {
           },
         ),
         actions: <Widget>[
-          ShareWidget(),
+          Visibility(
+            visible: widget.showShare,
+            child: ShareWidget(title: widget.title,text: widget.des,url: widget.url,),
+          ),
 //          IconButton(
 //            icon: Icon(Icons.more_horiz),
 //            onPressed: () {

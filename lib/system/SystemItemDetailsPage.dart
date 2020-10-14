@@ -157,7 +157,7 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
         itemBuilder: (buildContext, index) {
           return GestureDetector(
             onTap: (){
-              RouteHelpUtils.push(context, WebViewWidget(url: contentList[index].link,title: contentList[index].title,));
+              RouteHelpUtils.push(context, WebViewWidget(url: contentList[index].link,title: contentList[index].title,des: contentList[index].desc,));
             },
             child: Container(
               padding: EdgeInsets.all(10.0),

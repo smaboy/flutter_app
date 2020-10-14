@@ -142,7 +142,7 @@ class _ContentWidgetState extends State<ContentWidget> {
         itemBuilder: (buildContext, index) {
           return index == length ? LoadMoreWidget(isVisibleProgress: curLoadMoreStatue == LoadMoreStatue.STATUE_LOADING,loadMoreMsg: loadMoreMsg,) : GestureDetector(
             onTap: (){
-              RouteHelpUtils.push(context, WebViewWidget(url: contentList[index].link,title: contentList[index].title,));
+              RouteHelpUtils.push(context, WebViewWidget(url: contentList[index].link,title: contentList[index].title,des: contentList[index].desc,));
             },
             child: Card(
               color: Colors.white,

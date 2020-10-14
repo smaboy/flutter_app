@@ -174,6 +174,7 @@ class HomePageState extends State<HomePage> {
                 WebViewWidget(
                   url: homeBannerDataList[index].url,
                   title: homeBannerDataList[index].title,
+                  des: homeBannerDataList[index].desc,
                 ));
           },
         ),
@@ -234,6 +235,7 @@ class HomePageState extends State<HomePage> {
             WebViewWidget(
               url: homeArticleDataBean.link,
               title: homeArticleDataBean.title,
+              des: homeArticleDataBean.desc,
             ));
       },
     );
