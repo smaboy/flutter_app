@@ -125,14 +125,14 @@ class _MePageState extends State<MePage> {
             Divider(
               color: Colors.grey,
             ),
-            ListTile(
-              leading: Icon(MyIcons.switch_theme),
-              title: Text("切换主题"),
-              onTap: () {
-                //切换主题
-                Toast.show("切换主题功能构建中...", context);
-              },
-            ),
+//            ListTile(
+//              leading: Icon(MyIcons.switch_theme),
+//              title: Text("切换主题"),
+//              onTap: () {
+//                //切换主题
+//                Toast.show("切换主题功能构建中...", context);
+//              },
+//            ),
             Divider(
               color: Colors.grey,
             ),
