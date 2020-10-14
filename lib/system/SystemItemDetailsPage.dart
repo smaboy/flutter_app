@@ -1,13 +1,10 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/common/RouteHelpUtils.dart';
 import 'package:flutterapp/common/webview_widget.dart';
 import 'package:flutterapp/common/widget/favorite_button_widget.dart';
-import 'package:flutterapp/http/HttpUtils.dart';
 import 'package:flutterapp/system/entity/system_list_by_cid_entity.dart';
 import 'package:flutterapp/system/service/system_service_impl.dart';
-import 'package:toast/toast.dart';
 
 import 'entity/system_tree_entity.dart';
 
@@ -49,16 +46,6 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
   //页面标签数据
   List<SystemListByCidDataData> contentList;
 
-//  final List<Tab> myTabs = <Tab>[
-//    new Tab(text: '语文'),
-//    new Tab(text: '数学'),
-//    new Tab(text: '英语'),
-//    new Tab(text: '化学'),
-//    new Tab(text: '物理'),
-//    new Tab(text: '政治'),
-//    new Tab(text: '经济'),
-//    new Tab(text: '体育'),
-//  ];
 
   @override
   void initState() {
@@ -89,11 +76,11 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.search),onPressed: (){
-            Toast.show("搜索",context,duration: Toast.LENGTH_LONG,gravity: Toast.BOTTOM);
-          },)
-        ],
+//        actions: <Widget>[
+//          IconButton(icon: Icon(Icons.search),onPressed: (){
+//            Toast.show("搜索",context,duration: Toast.LENGTH_LONG,gravity: Toast.BOTTOM);
+//          },)
+//        ],
         centerTitle: true,
         title: Text(widget.title),
         bottom: TabBar(

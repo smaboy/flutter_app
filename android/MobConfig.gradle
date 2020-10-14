@@ -23,9 +23,9 @@ MobSDK {
                 appId "100371282"
                 appKey "aed9b0303e3ed1e27bae87c33761161d"
             }
-            ShortMessage {
-                enable true
-            }
+//            ShortMessage {
+//                enable true
+//            }
             Douyin {
                 appKey "aw9ivykfjvi4hpwo"
                 appSecret "42b4caa6bda60bd49f05f06d0a4956e1"
