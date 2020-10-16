@@ -84,6 +84,7 @@ flutter:
 
   assets:
     - images/lake.jpg
+    - images/b01.jpg
     - images/net_error.png
 
   fonts:
