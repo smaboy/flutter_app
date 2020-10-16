@@ -154,8 +154,10 @@ class _ContentWidgetState extends State<ContentWidget> {
                   children: <Widget>[
                     Image.network(
                       contentList[index].envelopePic,
-                      width: 160.0,
-                      fit: BoxFit.fill,
+                      fit: BoxFit.contain,
+                      width: 130.0,
+                      height: 200.0,
+                      alignment: Alignment.center,
                     ),
                     ContentEndWidget(contentList: contentList,index : index),
                   ],
