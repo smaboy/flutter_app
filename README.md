@@ -44,7 +44,8 @@ samples, guidance on mobile development, and a full API reference.
 
 
 #### app下载体验
-[点击下载](https://www.pgyer.com/IrUX)
+<img src="images/share/QRCode_258.png">
+[点击下载](https://www.pgyer.com/Mata)
 
 
 ## 结尾
