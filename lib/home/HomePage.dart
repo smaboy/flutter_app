@@ -7,19 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutterapp/common/API.dart';
 import 'package:flutterapp/common/RouteHelpUtils.dart';
-import 'package:flutterapp/common/myIcons.dart';
 import 'package:flutterapp/common/webview_widget.dart';
 import 'package:flutterapp/common/widget/error_page_widget.dart';
 import 'package:flutterapp/common/widget/favorite_button_widget.dart';
 import 'package:flutterapp/generated/json/home_banner_entity_helper.dart';
+import 'package:flutterapp/home/MyDrawer.dart';
 import 'package:flutterapp/home/entity/home_article_data.dart';
 import 'package:flutterapp/home/entity/home_article_top_entity.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
-import 'package:flutterapp/me/page/AboutSoftwarePage.dart';
-import 'package:flutterapp/me/page/LoginPage.dart';
-import 'package:flutterapp/me/page/MeFavoritePage.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:toast/toast.dart';
 
 import 'entity/home_article_list_entity.dart';
 import 'entity/home_banner_entity.dart';
@@ -528,168 +524,5 @@ class HomePageState extends State<HomePage> {
     curPageNum++;
     initBannerData();
     _refreshController.refreshCompleted();
-  }
-}
-
-class MyDrawer extends StatelessWidget {
-  const MyDrawer({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: Stack(
-        fit: StackFit.expand,
-        overflow: Overflow.clip,
-        alignment: Alignment.topLeft,
-        children: <Widget>[
-          Image.asset(
-            "images/b01.jpg",
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
-          ),
-          SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Stack(
-                  children: <Widget>[
-                    Opacity(
-                      opacity: 0.7,
-                      child: Image.asset(
-                        "images/lake.jpg",
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: 200.0,
-                      ),
-                    ),
-                    Positioned(
-                      left: 20.0,
-                      bottom: 40.0,
-                      child: Row(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10.0),
-                            child: Icon(Icons.person_pin,color: Colors.black,size: 30.0,),
-                          ),
-                          Text("点击登录/注册",style: TextStyle(color: Colors.black,fontSize: 20.0,fontWeight: FontWeight.bold),),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                ListTile(
-//              leading: Icon(Icons.favorite),
-                  leading: Icon(
-                    MyIcons.my_favorite,
-                  ),
-                  title: Text("我的收藏",style: TextStyle(color: Colors.black87),),
-                  onTap: () async {
-                    //点击进入我的收藏页面(需要判断是否登录)
-//                    if (isLogin) {
-//                      RouteHelpUtils.push(context, MeFavoritePage());
-//                    } else {
-//                      //进入登录注册页面
-//                      bool result = await RouteHelpUtils.push(context, LoginPage());
-//                      if (result) initData();
-//                    }
-                  },
-                ),
-                Divider(
-                  color: Colors.grey,
-                ),
-//            ListTile(
-//              leading: Icon(MyIcons.switch_theme),
-//              title: Text("切换主题"),
-//              onTap: () {
-//                //切换主题
-//                Toast.show("切换主题功能构建中...", context);
-//              },
-//            ),
-//            Divider(
-//              color: Colors.grey,
-//            ),
-                ListTile(
-                  leading: Icon(MyIcons.about_software),
-                  title: Text("关于软件",style: TextStyle(color: Colors.black87),),
-                  onTap: () {
-                    //切换主题
-                    RouteHelpUtils.push(context, AboutSoftwarePage());
-                  },
-                ),
-                Divider(
-                  color: Colors.grey,
-                ),
-                ListTile(
-                  leading: Icon(MyIcons.clear_cache),
-                  title: Text("清理缓存",style: TextStyle(color: Colors.black87),),
-                  onTap: () async {
-                    //清理缓存
-                    HttpUtils.getInstance()
-                        .showProgressDialog(context, "清理中...");
-                    bool result = await HttpUtils.getInstance().clearAllCache();
-                    Navigator.pop(context);
-                    if (result) {
-                      //清理成功
-                      Toast.show("清理成功", context);
-                    } else {
-                      Toast.show("清理失败", context);
-                    }
-                  },
-                ),
-                Divider(
-                  color: Colors.grey,
-                ),
-//                Visibility(
-//                  visible: isLogin,
-//                  child: Column(
-//                    children: <Widget>[
-//                      ListTile(
-//                        leading: Icon(MyIcons.log_out),
-//                        title: Text("退出登录"),
-//                        onTap: () {
-//                          showDialog(
-//                              context: context,
-//                              builder: (buildContext) {
-//                                return AlertDialog(
-//                                  title: Text("温馨提示"),
-//                                  titlePadding: EdgeInsets.all(10.0),
-//                                  content: Text("您确定要退出登录吗?"),
-//                                  contentPadding: EdgeInsets.symmetric(
-//                                      vertical: 15.0, horizontal: 10.0),
-//                                  actions: <Widget>[
-//                                    FlatButton(
-//                                      child: Text("取消"),
-//                                      onPressed: () {
-//                                        Navigator.pop(context);
-//                                      },
-//                                    ),
-//                                    FlatButton(
-//                                      child: Text("确定"),
-//                                      onPressed: () {
-//                                        //关闭弹窗
-//                                        Navigator.pop(context);
-//                                        //退出登录操作
-//                                        logout();
-//                                      },
-//                                    )
-//                                  ],
-//                                );
-//                              });
-//                        },
-//                      ),
-//                      Divider(
-//                        color: Colors.grey,
-//                      ),
-//                    ],
-//                  ),
-//                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }
