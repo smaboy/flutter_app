@@ -56,6 +56,7 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print("homepage----------build");
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(widget.title),
@@ -90,6 +91,7 @@ class HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    print("homepage----------initState");
     super.initState();
 
     /// 初始化数据

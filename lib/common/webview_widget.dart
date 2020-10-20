@@ -64,7 +64,7 @@ class _WebViewWidgetState extends State<WebViewWidget> {
         actions: <Widget>[
           Visibility(
             visible: widget.showShare,
-            child: ShareWidget(title: widget.title,text: widget.des,url: widget.url,),
+            child: ShareWidget(),
           ),
 //          IconButton(
 //            icon: Icon(Icons.more_horiz),

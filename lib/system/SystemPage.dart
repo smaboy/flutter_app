@@ -130,7 +130,9 @@ class SystemPageState extends State<SystemPage> {
                       ],
                     ),
                   );
-                }),
+                },
+              physics: BouncingScrollPhysics(),
+                ),
           ),
           Expanded(
             child: Container(

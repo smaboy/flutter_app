@@ -34,6 +34,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    print("mainpage----------initState");
     return new Scaffold(
 //      appBar: new AppBar(
 //        title: new Text('首页'),
