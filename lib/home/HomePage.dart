@@ -54,6 +54,10 @@ class HomePageState extends State<HomePage> {
   ///默认页码
   int curPageNum = 0;
 
+  ScrollController _controller;
+  bool showFloatBtn = false;
+  double initOffSet = 0.0;
+
   @override
   Widget build(BuildContext context) {
     print("homepage----------build");
@@ -78,6 +82,7 @@ class HomePageState extends State<HomePage> {
                 onRefresh: reFreshData,
                 onLoading: loadMoreData,
                 child: ListView.builder(
+                    controller: _controller,
                     itemCount: _articleList.length + 1,
                     itemBuilder: (BuildContext context, int index) {
                       return index == 0
@@ -86,6 +91,20 @@ class HomePageState extends State<HomePage> {
                     }),
               ),
             ),
+      floatingActionButton: Visibility(
+        visible: showFloatBtn,
+        child: FloatingActionButton(
+          child: Icon(Icons.arrow_upward),
+          backgroundColor: Theme.of(context).primaryColor,
+          onPressed: () {
+            //返回到顶部时执行动画
+            _controller.animateTo(.0,
+                duration: Duration(milliseconds: 1500),
+                curve: Curves.ease
+            );
+          },
+        ),
+      ),
     );
   }
 
@@ -93,6 +112,25 @@ class HomePageState extends State<HomePage> {
   void initState() {
     print("homepage----------initState");
     super.initState();
+
+    _controller = ScrollController();
+    _controller.addListener(() {
+      //通过前后两次数据对比确定滑动方向
+
+      print(_controller.offset); //打印滚动位置
+      if (_controller.offset - initOffSet > 0 && showFloatBtn == false) {//向上滑动且按钮没有显示时，刷新显示按钮
+        setState(() {
+          showFloatBtn = true;
+        });
+      } else if (_controller.offset - initOffSet < 0 && showFloatBtn) {//向下滑动且按钮没有显示时，刷新显示按钮
+        setState(() {
+          showFloatBtn = false;
+        });
+      }
+
+      //记录位置
+      initOffSet = _controller.offset;
+    });
 
     /// 初始化数据
     initDat();
@@ -107,6 +145,7 @@ class HomePageState extends State<HomePage> {
     _swiperController.stopAutoplay();
     _swiperController.dispose();
     _refreshController.dispose();
+    _controller.dispose();
     print("dispose");
   }
 
