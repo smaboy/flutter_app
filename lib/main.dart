@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutterapp/MainPage.dart';
+import 'package:flutterapp/common/widget/my_will_pop_scope.dart';
 
 
 void main() {
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
           )
       ),
       darkTheme: ThemeData.dark(),
-      home: new MainPage(),
+      home: MyWillPopScope(child: MainPage(),),
     );
   }
 }
