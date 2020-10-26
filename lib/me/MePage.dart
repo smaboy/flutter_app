@@ -177,30 +177,7 @@ class _MePageState extends State<MePage> {
                       showDialog(
                           context: context,
                           builder: (buildContext) {
-                            return AlertDialog(
-                              title: Text("温馨提示"),
-                              titlePadding: EdgeInsets.all(10.0),
-                              content: Text("您确定要退出登录吗?"),
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 10.0),
-                              actions: <Widget>[
-                                FlatButton(
-                                  child: Text("取消"),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                                FlatButton(
-                                  child: Text("确定"),
-                                  onPressed: () {
-                                    //关闭弹窗
-                                    Navigator.pop(context);
-                                    //退出登录操作
-                                    logout();
-                                  },
-                                )
-                              ],
-                            );
+                            return buildLogOutDialog(context);
                           });
                     },
                   ),
@@ -244,5 +221,115 @@ class _MePageState extends State<MePage> {
     }, onFailure: (msg) {
       Toast.show(msg, context);
     });
+  }
+
+  Dialog buildLogOutDialog(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: Container(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment:
+          CrossAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0,top: 20.0,right: 20.0),
+              child: Text(
+                "温馨提示",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15),
+              ),
+            ),
+            Container(
+                padding: EdgeInsets.all(20.0),
+                constraints: BoxConstraints(
+                  minHeight: 100.0
+                ),
+                child: Text(
+                  "您确定要退出登录吗?" * 1,
+                  style: TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 13),
+                )),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.vertical(bottom: Radius.circular(10.0)),
+              ),
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(vertical: 20.0),
+              child: Row(
+                mainAxisAlignment:
+                MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  GestureDetector(
+                    child: new Container(
+                      padding: EdgeInsets.all(10.0),
+                      width: MediaQuery.of(context).size.width/3,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        border: Border.all(
+                            color: Theme.of(context)
+                                .primaryColor,
+                            width: 1),
+                        borderRadius:
+                        BorderRadius.circular(5.0),
+                      ),
+                      child: Text(
+                        "取消",
+                        style: TextStyle(
+                            color: Theme.of(context)
+                                .primaryColor,
+                            fontSize: 15.0),
+                      ),
+                    ),
+                    onTap: (){
+                      //关闭弹窗
+                      Navigator.pop(context);
+                    },
+                  ),
+                  GestureDetector(
+                    child: new Container(
+                      padding: EdgeInsets.all(10.0),
+                      width: MediaQuery.of(context).size.width/3,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          borderRadius:
+                          BorderRadius.circular(
+                              5.0),
+                          color: Theme.of(context)
+                              .primaryColor),
+                      child: Text(
+                        "确定",
+                        style: TextStyle(
+                            color: (Theme.of(context)
+                                .primaryColor
+                                .computeLuminance()) >
+                                0.5
+                                ? Colors.black
+                                : Colors.white,
+                            fontSize: 15.0),
+                      ),
+                    ),
+                    onTap: (){
+                      //关闭弹窗
+                      Navigator.pop(context);
+                      //退出登录操作
+                      logout();
+                    },
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

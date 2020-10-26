@@ -13,7 +13,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
 class MyDrawer extends StatefulWidget {
-
   const MyDrawer({
     Key key,
   }) : super(key: key);
@@ -34,6 +33,7 @@ class _MyDrawerState extends State<MyDrawer> {
 
   //  记住密码
   var rememberPassword = false;
+
   @override
   void initState() {
     super.initState();
@@ -88,17 +88,28 @@ class _MyDrawerState extends State<MyDrawer> {
                           children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.only(right: 10.0),
-                              child: Icon(Icons.person_pin,color: Colors.black,size: 30.0,),
+                              child: Icon(
+                                Icons.person_pin,
+                                color: Colors.black,
+                                size: 30.0,
+                              ),
                             ),
-                            Text(isLogin ? userName : "点击登录/注册",style: TextStyle(color: Colors.black,fontSize: 20.0,fontWeight: FontWeight.bold),),
+                            Text(
+                              isLogin ? userName : "点击登录/注册",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ],
                         ),
-                        onTap: () async{
+                        onTap: () async {
                           //已经登录,不做操作
                           if (isLogin) return;
                           //进入登录注册页面
                           //进入登录注册页面
-                          bool result = await RouteHelpUtils.push(context, LoginPage());
+                          bool result =
+                              await RouteHelpUtils.push(context, LoginPage());
                           if (result) initData();
                         },
                       ),
@@ -110,14 +121,18 @@ class _MyDrawerState extends State<MyDrawer> {
                   leading: Icon(
                     MyIcons.my_favorite,
                   ),
-                  title: Text("我的收藏",style: TextStyle(color: Colors.black87),),
+                  title: Text(
+                    "我的收藏",
+                    style: TextStyle(color: Colors.black87),
+                  ),
                   onTap: () async {
                     //点击进入我的收藏页面(需要判断是否登录)
                     if (isLogin) {
                       RouteHelpUtils.push(context, MeFavoritePage());
                     } else {
                       //进入登录注册页面
-                      bool result = await RouteHelpUtils.push(context, LoginPage());
+                      bool result =
+                          await RouteHelpUtils.push(context, LoginPage());
                       if (result) initData();
                     }
                   },
@@ -138,7 +153,10 @@ class _MyDrawerState extends State<MyDrawer> {
 //            ),
                 ListTile(
                   leading: Icon(MyIcons.about_software),
-                  title: Text("关于软件",style: TextStyle(color: Colors.black87),),
+                  title: Text(
+                    "关于软件",
+                    style: TextStyle(color: Colors.black87),
+                  ),
                   onTap: () {
                     //切换主题
                     RouteHelpUtils.push(context, AboutSoftwarePage());
@@ -149,7 +167,10 @@ class _MyDrawerState extends State<MyDrawer> {
                 ),
                 ListTile(
                   leading: Icon(MyIcons.clear_cache),
-                  title: Text("清理缓存",style: TextStyle(color: Colors.black87),),
+                  title: Text(
+                    "清理缓存",
+                    style: TextStyle(color: Colors.black87),
+                  ),
                   onTap: () async {
                     //清理缓存
                     HttpUtils.getInstance()
@@ -175,34 +196,21 @@ class _MyDrawerState extends State<MyDrawer> {
                         leading: Icon(MyIcons.log_out),
                         title: Text("退出登录"),
                         onTap: () {
-                          showDialog(
-                              context: context,
-                              builder: (buildContext) {
-                                return AlertDialog(
-                                  title: Text("温馨提示"),
-                                  titlePadding: EdgeInsets.all(10.0),
-                                  content: Text("您确定要退出登录吗?"),
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 10.0),
-                                  actions: <Widget>[
-                                    FlatButton(
-                                      child: Text("取消"),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                    ),
-                                    FlatButton(
-                                      child: Text("确定"),
-                                      onPressed: () {
-                                        //关闭弹窗
-                                        Navigator.pop(context);
-                                        //退出登录操作
-                                        logout();
-                                      },
-                                    )
-                                  ],
-                                );
-                              });
+                          
+                          showGeneralDialog(
+                            context: context,
+                            barrierLabel: "标题",
+                            barrierDismissible: true,
+                            transitionDuration: Duration(milliseconds: 400),
+                            //这个是时间
+                            barrierColor: Colors.black.withOpacity(0.5),
+                            // 添加这个属性是颜色
+                            pageBuilder: (BuildContext context,
+                                Animation animation,
+                                Animation secondaryAnimation) {
+                              return buildLogOutDialog(context);
+                            },
+                          );
                         },
                       ),
                       Divider(
@@ -247,5 +255,115 @@ class _MyDrawerState extends State<MyDrawer> {
     }, onFailure: (msg) {
       Toast.show(msg, context);
     });
+  }
+
+  Dialog buildLogOutDialog(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: Container(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment:
+          CrossAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0,top: 20.0,right: 20.0),
+              child: Text(
+                "温馨提示",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15),
+              ),
+            ),
+            Container(
+                padding: EdgeInsets.all(20.0),
+                constraints: BoxConstraints(
+                  minHeight: 100.0
+                ),
+                child: Text(
+                  "您确定要退出登录吗?" * 1,
+                  style: TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 13),
+                )),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.vertical(bottom: Radius.circular(10.0)),
+              ),
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(vertical: 20.0),
+              child: Row(
+                mainAxisAlignment:
+                MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  GestureDetector(
+                    child: new Container(
+                      padding: EdgeInsets.all(10.0),
+                      width: MediaQuery.of(context).size.width/3,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        border: Border.all(
+                            color: Theme.of(context)
+                                .primaryColor,
+                            width: 1),
+                        borderRadius:
+                        BorderRadius.circular(5.0),
+                      ),
+                      child: Text(
+                        "取消",
+                        style: TextStyle(
+                            color: Theme.of(context)
+                                .primaryColor,
+                            fontSize: 15.0),
+                      ),
+                    ),
+                    onTap: (){
+                      //关闭弹窗
+                      Navigator.pop(context);
+                    },
+                  ),
+                  GestureDetector(
+                    child: new Container(
+                      padding: EdgeInsets.all(10.0),
+                      width: MediaQuery.of(context).size.width/3,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          borderRadius:
+                          BorderRadius.circular(
+                              5.0),
+                          color: Theme.of(context)
+                              .primaryColor),
+                      child: Text(
+                        "确定",
+                        style: TextStyle(
+                            color: (Theme.of(context)
+                                .primaryColor
+                                .computeLuminance()) >
+                                0.5
+                                ? Colors.black
+                                : Colors.white,
+                            fontSize: 15.0),
+                      ),
+                    ),
+                    onTap: (){
+                      //关闭弹窗
+                      Navigator.pop(context);
+                      //退出登录操作
+                      logout();
+                    },
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
