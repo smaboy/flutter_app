@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 
 # version统一版本名称和版本号，'+'前面的为版本名称，后面的为版本号
-version: 1.0.3+4
+version: 1.0.4+5
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -68,6 +68,9 @@ dependencies:
 
   # 集成分享 sharesdk
 #  sharesdk_plugin: ^1.2.8
+
+  # 事件总线
+  event_bus: ^1.1.1
 
 
 dev_dependencies:

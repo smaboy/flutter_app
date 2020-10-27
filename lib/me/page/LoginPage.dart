@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutterapp/common/API.dart';
 import 'package:flutterapp/common/SPUtils.dart';
+import 'package:flutterapp/common/event_bus_utils.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
 import 'package:flutterapp/me/entity/register_entity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -307,6 +308,9 @@ class _LoginPageState extends State<LoginPage> {
 
         //关闭当前页面
         Navigator.pop(context,true);
+
+        //发出通知
+        EventBusUtils.instance.fire(BusIEvent(busIEventID: BusIEventID.login_success));
       }else{
         Toast.show(loginEntity?.errorMsg ?? "登录失败", context);
       }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/common/API.dart';
 import 'package:flutterapp/common/RouteHelpUtils.dart';
 import 'package:flutterapp/common/SPUtils.dart';
+import 'package:flutterapp/common/event_bus_utils.dart';
 import 'package:flutterapp/common/myIcons.dart';
 import 'package:flutterapp/common/widget/error_page_widget.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
@@ -39,11 +41,28 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin{
   //  记住密码
   var rememberPassword = false;
 
+  StreamSubscription loginSubscription;
+
   @override
   void initState() {
     super.initState();
 
+    //添加监听
+    initEvent();
+
     initData();
+
+  }
+
+  void initEvent(){
+    //注册EventBus
+    loginSubscription = EventBusUtils.instance.register((BusIEvent event) {
+      if(event.busIEventID == BusIEventID.login_success){
+        initData();
+      }else if(event.busIEventID == BusIEventID.logout_success){
+        initData();
+      }
+    });
   }
 
   Future initData() async {
@@ -55,6 +74,13 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin{
       rememberPassword =
           sharedPreferences.getBool(SPUtils.rememberPassword) ?? false;
     });
+  }
+
+  @override
+  void dispose() {
+    loginSubscription.cancel();
+
+    super.dispose();
   }
 
   @override
@@ -119,8 +145,7 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin{
                   RouteHelpUtils.push(context, MeFavoritePage());
                 } else {
                   //进入登录注册页面
-                  bool result = await RouteHelpUtils.push(context, LoginPage());
-                  if (result) initData();
+                  RouteHelpUtils.push(context, LoginPage());
                 }
               },
             ),
@@ -210,12 +235,8 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin{
           SPUtils.getInstance().setValue(SPUtils.password, "");
         }
 
-        //更新当前组件状态
-        setState(() {
-          isLogin = false;
-          userName = "";
-          password = "";
-        });
+        //发出通知
+        EventBusUtils.instance.fire(BusIEvent(busIEventID: BusIEventID.logout_success));
       } else {
         //退出失败
         Toast.show(logoutBean['errorMsg'] ?? "退出失败", context);

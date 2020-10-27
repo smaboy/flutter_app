@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutterapp/common/API.dart';
 import 'package:flutterapp/common/RouteHelpUtils.dart';
 import 'package:flutterapp/common/SPUtils.dart';
+import 'package:flutterapp/common/event_bus_utils.dart';
 import 'package:flutterapp/common/myIcons.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
 import 'package:flutterapp/me/page/AboutSoftwarePage.dart';
@@ -34,12 +36,29 @@ class _MyDrawerState extends State<MyDrawer> {
   //  记住密码
   var rememberPassword = false;
 
+  StreamSubscription loginSubscription;
+
   @override
   void initState() {
     super.initState();
 
     initData();
+
+    //注册EventBus
+    initEvent();
   }
+
+  void initEvent(){
+     //注册EventBus
+    loginSubscription = EventBusUtils.instance.register((BusIEvent event) {
+      if(event.busIEventID == BusIEventID.login_success){
+        initData();
+      }else if(event.busIEventID == BusIEventID.logout_success){
+        initData();
+      }
+    });
+  }
+
 
   Future initData() async {
     SharedPreferences sharedPreferences = await SPUtils.getInstance().getSP();
@@ -50,6 +69,13 @@ class _MyDrawerState extends State<MyDrawer> {
       rememberPassword =
           sharedPreferences.getBool(SPUtils.rememberPassword) ?? false;
     });
+  }
+
+  @override
+  void dispose() {
+    loginSubscription.cancel();
+
+    super.dispose();
   }
 
   @override
@@ -107,10 +133,7 @@ class _MyDrawerState extends State<MyDrawer> {
                           //已经登录,不做操作
                           if (isLogin) return;
                           //进入登录注册页面
-                          //进入登录注册页面
-                          bool result =
-                              await RouteHelpUtils.push(context, LoginPage());
-                          if (result) initData();
+                          RouteHelpUtils.push(context, LoginPage());
                         },
                       ),
                     )
@@ -196,7 +219,6 @@ class _MyDrawerState extends State<MyDrawer> {
                         leading: Icon(MyIcons.log_out),
                         title: Text("退出登录"),
                         onTap: () {
-                          
                           showGeneralDialog(
                             context: context,
                             barrierLabel: "标题",
@@ -242,12 +264,8 @@ class _MyDrawerState extends State<MyDrawer> {
           SPUtils.getInstance().setValue(SPUtils.password, "");
         }
 
-        //更新当前组件状态
-        setState(() {
-          isLogin = false;
-          userName = "";
-          password = "";
-        });
+        //发出通知
+        EventBusUtils.instance.fire(BusIEvent(busIEventID: BusIEventID.logout_success));
       } else {
         //退出失败
         Toast.show(logoutBean['errorMsg'] ?? "退出失败", context);
@@ -265,11 +283,11 @@ class _MyDrawerState extends State<MyDrawer> {
       child: Container(
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment:
-          CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(left: 20.0,top: 20.0,right: 20.0),
+              padding:
+                  const EdgeInsets.only(left: 20.0, top: 20.0, right: 20.0),
               child: Text(
                 "温馨提示",
                 style: TextStyle(
@@ -280,9 +298,7 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
             Container(
                 padding: EdgeInsets.all(20.0),
-                constraints: BoxConstraints(
-                  minHeight: 100.0
-                ),
+                constraints: BoxConstraints(minHeight: 100.0),
                 child: Text(
                   "您确定要退出登录吗?" * 1,
                   style: TextStyle(
@@ -293,37 +309,33 @@ class _MyDrawerState extends State<MyDrawer> {
             Container(
               decoration: BoxDecoration(
                 color: Colors.grey[100],
-                borderRadius: BorderRadius.vertical(bottom: Radius.circular(10.0)),
+                borderRadius:
+                    BorderRadius.vertical(bottom: Radius.circular(10.0)),
               ),
               width: double.infinity,
               padding: EdgeInsets.symmetric(vertical: 20.0),
               child: Row(
-                mainAxisAlignment:
-                MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   GestureDetector(
                     child: new Container(
                       padding: EdgeInsets.all(10.0),
-                      width: MediaQuery.of(context).size.width/3,
+                      width: MediaQuery.of(context).size.width / 3,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         border: Border.all(
-                            color: Theme.of(context)
-                                .primaryColor,
-                            width: 1),
-                        borderRadius:
-                        BorderRadius.circular(5.0),
+                            color: Theme.of(context).primaryColor, width: 1),
+                        borderRadius: BorderRadius.circular(5.0),
                       ),
                       child: Text(
                         "取消",
                         style: TextStyle(
-                            color: Theme.of(context)
-                                .primaryColor,
+                            color: Theme.of(context).primaryColor,
                             fontSize: 15.0),
                       ),
                     ),
-                    onTap: (){
+                    onTap: () {
                       //关闭弹窗
                       Navigator.pop(context);
                     },
@@ -331,27 +343,24 @@ class _MyDrawerState extends State<MyDrawer> {
                   GestureDetector(
                     child: new Container(
                       padding: EdgeInsets.all(10.0),
-                      width: MediaQuery.of(context).size.width/3,
+                      width: MediaQuery.of(context).size.width / 3,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                          borderRadius:
-                          BorderRadius.circular(
-                              5.0),
-                          color: Theme.of(context)
-                              .primaryColor),
+                          borderRadius: BorderRadius.circular(5.0),
+                          color: Theme.of(context).primaryColor),
                       child: Text(
                         "确定",
                         style: TextStyle(
                             color: (Theme.of(context)
-                                .primaryColor
-                                .computeLuminance()) >
-                                0.5
+                                        .primaryColor
+                                        .computeLuminance()) >
+                                    0.5
                                 ? Colors.black
                                 : Colors.white,
                             fontSize: 15.0),
                       ),
                     ),
-                    onTap: (){
+                    onTap: () {
                       //关闭弹窗
                       Navigator.pop(context);
                       //退出登录操作
