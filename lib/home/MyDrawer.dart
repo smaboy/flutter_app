@@ -11,6 +11,7 @@ import 'package:flutterapp/http/HttpUtils.dart';
 import 'package:flutterapp/me/page/AboutSoftwarePage.dart';
 import 'package:flutterapp/me/page/LoginPage.dart';
 import 'package:flutterapp/me/page/MeFavoritePage.dart';
+import 'package:flutterapp/me/page/UpdateThemePage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
@@ -163,17 +164,17 @@ class _MyDrawerState extends State<MyDrawer> {
                 Divider(
                   color: Colors.grey,
                 ),
-//            ListTile(
-//              leading: Icon(MyIcons.switch_theme),
-//              title: Text("切换主题"),
-//              onTap: () {
-//                //切换主题
-//                Toast.show("切换主题功能构建中...", context);
-//              },
-//            ),
-//            Divider(
-//              color: Colors.grey,
-//            ),
+           ListTile(
+             leading: Icon(MyIcons.switch_theme),
+             title: Text("切换主题"),
+             onTap: () {
+               //切换主题
+               RouteHelpUtils.push(context, UpdateThemePage());
+             },
+           ),
+           Divider(
+             color: Colors.grey,
+           ),
                 ListTile(
                   leading: Icon(MyIcons.about_software),
                   title: Text(
