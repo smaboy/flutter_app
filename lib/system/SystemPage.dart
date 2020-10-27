@@ -45,7 +45,6 @@ class SystemPageState extends State<SystemPage> {
     //初始化数据
     initTreeData();
 
-    print("initState");
   }
 
   ///初始化标题数据

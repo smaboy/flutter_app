@@ -41,9 +41,9 @@ class _MePageState extends State<MePage> {
 
   @override
   void initState() {
-    initData();
-
     super.initState();
+
+    initData();
   }
 
   Future initData() async {

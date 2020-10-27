@@ -60,7 +60,6 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    print("homepage----------build");
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(widget.title),
@@ -110,7 +109,6 @@ class HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    print("homepage----------initState");
     super.initState();
 
     _controller = ScrollController();
@@ -135,7 +133,6 @@ class HomePageState extends State<HomePage> {
     /// 初始化数据
     initDat();
 
-    print("initState");
   }
 
   @override
@@ -146,7 +143,6 @@ class HomePageState extends State<HomePage> {
     _swiperController.dispose();
     _refreshController.dispose();
     _controller.dispose();
-    print("dispose");
   }
 
   /// 初始化数据
