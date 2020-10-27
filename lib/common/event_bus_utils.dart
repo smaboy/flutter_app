@@ -53,5 +53,6 @@ class BusIEvent {
 enum BusIEventID {
   login_success,
   logout_success,
+  theme_update,
 
 }

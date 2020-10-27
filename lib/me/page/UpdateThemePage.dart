@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/common/RouteHelpUtils.dart';
+import 'package:flutterapp/common/SPUtils.dart';
+import 'package:flutterapp/common/event_bus_utils.dart';
+import 'package:flutterapp/common/widget/theme_data_color.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UpdateThemePage extends StatefulWidget {
   @override
@@ -7,7 +11,6 @@ class UpdateThemePage extends StatefulWidget {
 }
 
 class _UpdateThemePageState extends State<UpdateThemePage> {
-  List<Color> colors;
 
   int _selectedIndex;
 
@@ -15,23 +18,22 @@ class _UpdateThemePageState extends State<UpdateThemePage> {
   void initState() {
     super.initState();
 
-    //初始化颜色
-    colors = [
-      Colors.red,
-      Colors.blue,
-      Colors.amber,
-      Colors.cyan,
-      Colors.deepPurple,
-      Colors.green,
-      Colors.pinkAccent,
-      Colors.white,
-      Colors.blueAccent,
+
+    init();
+  }
+
+  void init() async {
+
+    //初始化主题数据
+    SharedPreferences sharedPreferences = await SPUtils.getInstance().getSP();
+    try {
+      _selectedIndex = sharedPreferences.getInt(SPUtils.themeData);
+    } catch (e) {
+      _selectedIndex = 0;
+    }
 
 
-    ];
 
-    //初始化被选中的位置
-    _selectedIndex = 0;
   }
 
   @override
@@ -50,7 +52,6 @@ class _UpdateThemePageState extends State<UpdateThemePage> {
       body: ListView.separated(
         separatorBuilder: (BuildContext context, int index) {
 
-          print("index == $index");
           return Divider(
             color: index % 2 == 0 ? Colors.red : Colors.blue,
             height: 1,
@@ -67,7 +68,7 @@ class _UpdateThemePageState extends State<UpdateThemePage> {
                     height: 40.0,
                     width: 40.0,
                     decoration: BoxDecoration(
-                      color: colors.elementAt(index),
+                      color: MyColors.getColorByIndex(index),
                       borderRadius: BorderRadius.circular(20.0),
                       border: Border.all(color: Theme.of(context).primaryColor,width: 0.5)
                     ),
@@ -88,7 +89,7 @@ class _UpdateThemePageState extends State<UpdateThemePage> {
             ),
           );
         },
-        itemCount: colors.length ?? 0,
+        itemCount: MyColors.colors.length,
       ),
     );
   }
@@ -96,6 +97,12 @@ class _UpdateThemePageState extends State<UpdateThemePage> {
   updateSelectedTheme(int value){
     setState(() {
       _selectedIndex = value;
+
+      //将选择的主题保存
+      SPUtils.getInstance().setValue(SPUtils.themeData, value);
+
+      // 发送通知，主题改变了
+      EventBusUtils.instance.fire(BusIEvent(busIEventID: BusIEventID.theme_update));
     });
   }
 }
