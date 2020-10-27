@@ -25,12 +25,20 @@ class _MainPageState extends State<MainPage> {
   static final pageTitles = ["首页", "体系", "项目", "我的"];
 
   ///所有主页面
-  final pages = [
+  List<Widget> pages = [
     HomePage(pageTitles[0]),
-    SystemPage(title: pageTitles[1],),
-    ItemPage(title: pageTitles[2],),
-    MePage(title: pageTitles[3],)
+    SystemPage(
+      title: pageTitles[1],
+    ),
+    ItemPage(
+      title: pageTitles[2],
+    ),
+    MePage(
+      title: pageTitles[3],
+    )
   ];
+
+  PageController _pageController = PageController();
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +47,16 @@ class _MainPageState extends State<MainPage> {
 //        title: new Text('首页'),
 //        centerTitle: true,
 //      ),
-      body: pages[_currentPage],
+//       body: pages[_currentPage],
+      body: PageView(
+        //禁用横向滑动切换
+        physics: NeverScrollableScrollPhysics(),
+        controller: _pageController,
+        children: pages,
+      ),
       backgroundColor: mainColor,
       bottomNavigationBar: BottomNavigationBar(
-        onTap: (value) => setState(() {
-          _currentPage = value;
-        }),
+        onTap: _switchPage,
         currentIndex: _currentPage,
         items: [
           const BottomNavigationBarItem(
@@ -78,11 +90,20 @@ class _MainPageState extends State<MainPage> {
     _currentPage = 0;
   }
 
+  @override
+  void dispose() {
+    //销毁控制器
+    if (_pageController != null) _pageController.dispose();
+
+    super.dispose();
+  }
+
   /// 处理底部tab点击
   void _switchPage(int value) {
     if (value != _currentPage) {
       setState(() {
         _currentPage = value;
+        _pageController.jumpToPage(_currentPage);
       });
     }
   }

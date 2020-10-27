@@ -23,12 +23,14 @@ class ItemPage extends StatefulWidget {
   _ItemPageState createState() => _ItemPageState();
 }
 
-class _ItemPageState extends State<ItemPage> {
+class _ItemPageState extends State<ItemPage> with AutomaticKeepAliveClientMixin{
   //项目子项集合
   List<ItemTreeData> data;
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return DefaultTabController(
       length: data?.length ?? 0,
       initialIndex: 0,
@@ -91,6 +93,9 @@ class _ItemPageState extends State<ItemPage> {
     print("tabViewChildren的长度为:${tabViewChildren.length}");
     return tabViewChildren;
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 /// 加载状态

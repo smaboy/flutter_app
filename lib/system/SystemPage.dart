@@ -17,7 +17,7 @@ class SystemPage extends StatefulWidget {
   }
 }
 
-class SystemPageState extends State<SystemPage> {
+class SystemPageState extends State<SystemPage> with AutomaticKeepAliveClientMixin{
   /// 标题数据
   SystemTreeEntity _systemTreeEntity;
 
@@ -29,6 +29,8 @@ class SystemPageState extends State<SystemPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -154,4 +156,7 @@ class SystemPageState extends State<SystemPage> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

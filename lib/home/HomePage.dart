@@ -32,7 +32,7 @@ class HomePage extends StatefulWidget {
   }
 }
 
-class HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
   /// 轮播图数据
   HomeBannerEntity _homeBannerEntity = HomeBannerEntity();
 
@@ -60,6 +60,8 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(widget.title),
@@ -562,4 +564,7 @@ class HomePageState extends State<HomePage> {
     initBannerData();
     _refreshController.refreshCompleted();
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

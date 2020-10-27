@@ -26,7 +26,7 @@ class MePage extends StatefulWidget {
   _MePageState createState() => _MePageState();
 }
 
-class _MePageState extends State<MePage> {
+class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin{
   //判断用户是否登录
   var isLogin = false;
 
@@ -59,6 +59,8 @@ class _MePageState extends State<MePage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Scaffold(
 //      appBar: AppBar(
 //        title: Text(title),
@@ -332,4 +334,7 @@ class _MePageState extends State<MePage> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
