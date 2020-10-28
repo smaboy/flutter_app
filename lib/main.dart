@@ -55,9 +55,10 @@ class _MyAppState extends State<MyApp> {
     } catch (e) {
       position = 0;
     }
-    primaryColor = MyColors.getColorByIndex(position);
-    primarySwatch = MyColors.getColorByIndex(position);
-
+    setState(() {
+      primaryColor = MyColors.getColorByIndex(position);
+      primarySwatch = MyColors.getColorByIndex(position);
+    });
     print("_MyAppState--init--获取到的主题位置为==$position");
 
 
