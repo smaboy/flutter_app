@@ -112,97 +112,65 @@ class _LoginPageState extends State<LoginPage> {
             Container(
               padding: const EdgeInsets.all(8.0),
               margin: const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0.0),
-              child: TextField(
-                controller: _userNameControl,
-                focusNode: userNameFocusNode,
-                decoration: InputDecoration(
-                  labelText: "用户名",
-                  hintText: "请输入用户名",
-                  helperText: "亲,请输入您的用户名!",
-                  prefixIcon: Icon(
-                    Icons.person,
-                  ),
-                  contentPadding: EdgeInsets.all(10.0),
-                  enabledBorder: OutlineInputBorder(
-                    gapPadding: 5.0,
-                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                    borderSide: BorderSide(color: Colors.grey, width: 0.5),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    gapPadding: 5.0,
-                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                    borderSide: BorderSide(
-                        color: Theme.of(context).primaryColor == MyColors.white
-                            ? Colors.blueAccent
-                            : Theme.of(context).primaryColor,
-                        width: 1.0),
-                  ),
+              child: Theme(
+                data: ThemeData(
+                  primaryColor: Theme.of(context).primaryColor == MyColors.white
+                      ? Colors.blueAccent
+                      : Theme.of(context).primaryColor,
                 ),
-                keyboardType: TextInputType.text,
-                onEditingComplete: () {
-                  //编辑完成，焦点自动到密码输入框
-                  FocusScope.of(context).requestFocus(pwFocusNode);
-                },
-                onChanged: (str) {},
+                child: TextField(
+                  controller: _userNameControl,
+                  focusNode: userNameFocusNode,
+                  decoration: InputDecoration(
+                    labelText: "用户名",
+                    hintText: "请输入用户名",
+                    helperText: "亲,请输入您的用户名!",
+                    prefixIcon: Icon(
+                      Icons.person,
+                    ),
+                    contentPadding: EdgeInsets.all(10.0),
+                    enabledBorder: OutlineInputBorder(
+                      gapPadding: 5.0,
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                      borderSide: BorderSide(color: Colors.grey, width: 0.5),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      gapPadding: 5.0,
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                      borderSide: BorderSide(
+                          color: Theme.of(context).primaryColor == MyColors.white
+                              ? Colors.blueAccent
+                              : Theme.of(context).primaryColor,
+                          width: 1.0),
+                    ),
+                  ),
+                  keyboardType: TextInputType.text,
+                  onEditingComplete: () {
+                    //编辑完成，焦点自动到密码输入框
+                    FocusScope.of(context).requestFocus(pwFocusNode);
+                  },
+                  cursorColor: Theme.of(context).primaryColor == MyColors.white
+                      ? Colors.blueAccent
+                      : Theme.of(context).primaryColor,
+                ),
               ),
             ),
             Container(
               padding: const EdgeInsets.all(8.0),
               margin: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-              child: TextField(
-                controller: _pwControl,
-                focusNode: pwFocusNode,
-                decoration: InputDecoration(
-                  labelText: "登录密码",
-                  hintText: "请输入密码",
-                  helperText: "亲,请输入您的密码!",
-                  prefixIcon: Icon(Icons.vpn_key),
-                  suffixIcon: IconButton(
-                    icon: isLock
-                        ? Icon(Icons.lock_outline)
-                        : Icon(Icons.lock_open),
-                    onPressed: () {
-                      setState(() {
-                        isLock = !isLock;
-                      });
-                    },
-                  ),
-                  contentPadding: EdgeInsets.all(10.0),
-                  enabledBorder: OutlineInputBorder(
-                    gapPadding: 5.0,
-                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                    borderSide: BorderSide(color: Colors.grey, width: 0.5),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    gapPadding: 5.0,
-                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                    borderSide: BorderSide(
-                        color: Theme.of(context).primaryColor == MyColors.white
-                            ? Colors.blueAccent
-                            : Theme.of(context).primaryColor,
-                        width: 1.0),
-                  ),
+              child: Theme(
+                data: ThemeData(
+                  primaryColor: Theme.of(context).primaryColor == MyColors.white
+                      ? Colors.blueAccent
+                      : Theme.of(context).primaryColor,
                 ),
-                keyboardType: TextInputType.visiblePassword,
-                obscureText: isLock,
-                onEditingComplete: () {
-                  //编辑完成，焦点自动到密码输入框
-                  FocusScope.of(context).requestFocus(pw2FocusNode);
-                },
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(10.0),
-              margin: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-              child: Visibility(
-                visible: !isLoginPage,
                 child: TextField(
-                  controller: _pw2Control,
-                  focusNode: pw2FocusNode,
+                  controller: _pwControl,
+                  focusNode: pwFocusNode,
                   decoration: InputDecoration(
-                    labelText: "确认密码",
+                    labelText: "登录密码",
                     hintText: "请输入密码",
-                    helperText: "亲,请确保输入的密码和前面一致哦!",
+                    helperText: "亲,请输入您的密码!",
                     prefixIcon: Icon(Icons.vpn_key),
                     suffixIcon: IconButton(
                       icon: isLock
@@ -224,15 +192,76 @@ class _LoginPageState extends State<LoginPage> {
                       gapPadding: 5.0,
                       borderRadius: BorderRadius.all(Radius.circular(5.0)),
                       borderSide: BorderSide(
-                          color:
-                              Theme.of(context).primaryColor == MyColors.white
-                                  ? Colors.blueAccent
-                                  : Theme.of(context).primaryColor,
+                          color: Theme.of(context).primaryColor == MyColors.white
+                              ? Colors.blueAccent
+                              : Theme.of(context).primaryColor,
                           width: 1.0),
                     ),
                   ),
                   keyboardType: TextInputType.visiblePassword,
                   obscureText: isLock,
+                  cursorColor: Theme.of(context).primaryColor == MyColors.white
+                      ? Colors.blueAccent
+                      : Theme.of(context).primaryColor,
+                  onEditingComplete: () {
+                    //编辑完成，焦点自动到密码输入框
+                    FocusScope.of(context).requestFocus(pw2FocusNode);
+                  },
+                ),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(10.0),
+              margin: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+              child: Theme(
+                data: ThemeData(
+                  primaryColor: Theme.of(context).primaryColor == MyColors.white
+                      ? Colors.blueAccent
+                      : Theme.of(context).primaryColor,
+                ),
+                child: Visibility(
+                  visible: !isLoginPage,
+                  child: TextField(
+                    controller: _pw2Control,
+                    focusNode: pw2FocusNode,
+                    decoration: InputDecoration(
+                      labelText: "确认密码",
+                      hintText: "请输入密码",
+                      helperText: "亲,请确保输入的密码和前面一致哦!",
+                      prefixIcon: Icon(Icons.vpn_key),
+                      suffixIcon: IconButton(
+                        icon: isLock
+                            ? Icon(Icons.lock_outline)
+                            : Icon(Icons.lock_open),
+                        onPressed: () {
+                          setState(() {
+                            isLock = !isLock;
+                          });
+                        },
+                      ),
+                      contentPadding: EdgeInsets.all(10.0),
+                      enabledBorder: OutlineInputBorder(
+                        gapPadding: 5.0,
+                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                        borderSide: BorderSide(color: Colors.grey, width: 0.5),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        gapPadding: 5.0,
+                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                        borderSide: BorderSide(
+                            color:
+                                Theme.of(context).primaryColor == MyColors.white
+                                    ? Colors.blueAccent
+                                    : Theme.of(context).primaryColor,
+                            width: 1.0),
+                      ),
+                    ),
+                    keyboardType: TextInputType.visiblePassword,
+                    cursorColor: Theme.of(context).primaryColor == MyColors.white
+                        ? Colors.blueAccent
+                        : Theme.of(context).primaryColor,
+                    obscureText: isLock,
+                  ),
                 ),
               ),
             ),
@@ -245,7 +274,9 @@ class _LoginPageState extends State<LoginPage> {
                 children: <Widget>[
                   Checkbox(
                     value: rPWChecked,
-                    activeColor: Colors.blue,
+                    activeColor: Theme.of(context).primaryColor == MyColors.white
+                        ? Colors.blueAccent
+                        : Theme.of(context).primaryColor,
                     onChanged: (b) {
                       if (b) {
                         //记住密码
@@ -276,7 +307,9 @@ class _LoginPageState extends State<LoginPage> {
               margin: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
               child: RaisedButton(
                 padding: EdgeInsets.all(10.0),
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).primaryColor == MyColors.white
+                    ? Colors.blueAccent
+                    : Theme.of(context).primaryColor,
                 onPressed: () {
                   btnSubmit();
                 },
