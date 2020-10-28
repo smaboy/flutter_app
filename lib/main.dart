@@ -28,6 +28,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Color primaryColor;
+  MaterialColor primarySwatch;
   StreamSubscription _streamSubscription;
 
   @override
@@ -48,13 +49,16 @@ class _MyAppState extends State<MyApp> {
 
     //初始化主题数据
     SharedPreferences sharedPreferences = await SPUtils.getInstance().getSP();
-    int index;
+    int position;
     try {
-      index = sharedPreferences.getInt(SPUtils.themeData);
+      position = sharedPreferences.getInt(SPUtils.themeData);
     } catch (e) {
-      index = 0;
+      position = 0;
     }
-    primaryColor = MyColors.getColorByIndex(index);
+    primaryColor = MyColors.getColorByIndex(position);
+    primarySwatch = MyColors.getColorByIndex(position);
+
+    print("_MyAppState--init--获取到的主题位置为==$position");
 
 
 
@@ -62,14 +66,12 @@ class _MyAppState extends State<MyApp> {
     _streamSubscription = EventBusUtils.instance.register((event) {
       if (event.busIEventID == BusIEventID.theme_update) {
         int index;
-        try {
-          index = sharedPreferences.getInt(SPUtils.themeData);
-        } catch (e) {
-          index = 0;
-        }
+        index = event.id ?? 0;
+        print("_MyAppState--init--event-获取到的主题位置为==$index");
         setState(() {
           primaryColor = MyColors.getColorByIndex(index);
         });
+
       }
     });
   }
@@ -85,8 +87,8 @@ class _MyAppState extends State<MyApp> {
           primarySwatch: primaryColor,
           // 3.primaryColor: 单独设置导航和TabBar的颜色
           primaryColor: primaryColor,
-          // 4.accentColor: 单独设置FloatingActionButton\Switch
-          accentColor: Colors.green,
+          // // 4.accentColor: 单独设置FloatingActionButton\Switch
+          // accentColor: Colors.green,
           // 5.Button的主题
           buttonTheme: ButtonThemeData(
               height: 25, minWidth: 10, buttonColor: Colors.blueAccent),
