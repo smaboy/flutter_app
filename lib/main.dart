@@ -46,7 +46,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   void init() async {
-
     //初始化主题数据
     SharedPreferences sharedPreferences = await SPUtils.getInstance().getSP();
     int position;
@@ -61,8 +60,6 @@ class _MyAppState extends State<MyApp> {
     });
     print("_MyAppState--init--获取到的主题位置为==$position");
 
-
-
     //设置监听
     _streamSubscription = EventBusUtils.instance.register((event) {
       if (event.busIEventID == BusIEventID.theme_update) {
@@ -72,7 +69,6 @@ class _MyAppState extends State<MyApp> {
         setState(() {
           primaryColor = MyColors.getColorByIndex(index);
         });
-
       }
     });
   }
@@ -82,29 +78,30 @@ class _MyAppState extends State<MyApp> {
     return new MaterialApp(
       title: "my flutter",
       theme: new ThemeData(
-          // 1.亮度
-          brightness: Brightness.light,
-          // 2.primarySwatch传入不是Color, 而是MaterialColor(包含了primaryColor和accentColor)
-          primarySwatch: primaryColor,
-          // 3.primaryColor: 单独设置导航和TabBar的颜色
-          primaryColor: primaryColor,
-          // // 4.accentColor: 单独设置FloatingActionButton\Switch
-          // accentColor: Colors.green,
-          // 5.Button的主题
-          buttonTheme: ButtonThemeData(
-              height: 25, minWidth: 10, buttonColor: Colors.blueAccent),
-          // 6.Card的主题
-          cardTheme: CardTheme(color: Colors.greenAccent, elevation: 10),
-          // 7.Text的主题
-          textTheme: TextTheme(
-            bodyText1: TextStyle(fontSize: 16, color: Colors.red),
-            bodyText2: TextStyle(fontSize: 20),
-//
-            headline4: TextStyle(fontSize: 14),
-            headline3: TextStyle(fontSize: 16),
-            headline2: TextStyle(fontSize: 18),
-            headline1: TextStyle(fontSize: 20),
-          )),
+        // 1.亮度
+        brightness: Brightness.light,
+        // 2.primarySwatch传入不是Color, 而是MaterialColor(包含了primaryColor和accentColor)
+        primarySwatch: primaryColor,
+        // 3.primaryColor: 单独设置导航和TabBar的颜色
+        primaryColor: primaryColor,
+        // // 4.accentColor: 单独设置FloatingActionButton\Switch
+        // accentColor: Colors.green,
+//         // 5.Button的主题
+//         buttonTheme: ButtonThemeData(
+//             height: 25, minWidth: 10, buttonColor: Colors.blueAccent),
+//         // 6.Card的主题
+//         cardTheme: CardTheme(color: Colors.greenAccent, elevation: 10),
+//         // 7.Text的主题
+//         textTheme: TextTheme(
+//           bodyText1: TextStyle(fontSize: 16, color: Colors.red),
+//           bodyText2: TextStyle(fontSize: 20),
+// //
+//           headline4: TextStyle(fontSize: 14),
+//           headline3: TextStyle(fontSize: 16),
+//           headline2: TextStyle(fontSize: 18),
+//           headline1: TextStyle(fontSize: 20),
+//         ),
+      ),
       darkTheme: ThemeData.dark(),
       home: MyWillPopScope(
         child: MainPage(),

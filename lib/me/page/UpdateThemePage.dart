@@ -32,6 +32,9 @@ class _UpdateThemePageState extends State<UpdateThemePage> {
     } catch (e) {
       _selectedIndex = 0;
     }
+    setState(() {
+
+    });
 
     print("_UpdateThemePageState--init--获取到的主题坐标为:$_selectedIndex");
 
