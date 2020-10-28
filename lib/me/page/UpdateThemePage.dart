@@ -47,10 +47,10 @@ class _UpdateThemePageState extends State<UpdateThemePage> {
       appBar: AppBar(
         title: Text("修改主题"),
         centerTitle: true,
-        leading: IconButton(icon: Icon(Icons.keyboard_backspace),
-        onPressed: (){
-          RouteHelpUtils.pop(context);
-        },),
+        // leading: IconButton(icon: Icon(Icons.arrow_back_ios),
+        // onPressed: (){
+        //   RouteHelpUtils.pop(context);
+        // },),
       ),
       body: ListView.separated(
         separatorBuilder: (BuildContext context, int index) {
@@ -81,7 +81,7 @@ class _UpdateThemePageState extends State<UpdateThemePage> {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: IconButton(
                     icon: Icon(_selectedIndex == index ? Icons.check_box : Icons.check_box_outline_blank,),
-                    color: Theme.of(context).primaryColor,
+                    color: Colors.black,
                     iconSize: 25.0,
                     onPressed: (){
                       updateSelectedTheme(index);
