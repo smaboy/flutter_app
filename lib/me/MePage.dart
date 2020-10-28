@@ -1,15 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
 
-import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/common/API.dart';
 import 'package:flutterapp/common/RouteHelpUtils.dart';
 import 'package:flutterapp/common/SPUtils.dart';
 import 'package:flutterapp/common/event_bus_utils.dart';
 import 'package:flutterapp/common/myIcons.dart';
-import 'package:flutterapp/common/widget/error_page_widget.dart';
+import 'package:flutterapp/common/widget/theme_data_color.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
 import 'package:flutterapp/me/page/AboutSoftwarePage.dart';
 import 'package:flutterapp/me/page/LoginPage.dart';
@@ -29,7 +27,7 @@ class MePage extends StatefulWidget {
   _MePageState createState() => _MePageState();
 }
 
-class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin{
+class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin {
   //判断用户是否登录
   var isLogin = false;
 
@@ -52,15 +50,14 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin{
     initEvent();
 
     initData();
-
   }
 
-  void initEvent(){
+  void initEvent() {
     //注册EventBus
     loginSubscription = EventBusUtils.instance.register((BusIEvent event) {
-      if(event.busIEventID == BusIEventID.login_success){
+      if (event.busIEventID == BusIEventID.login_success) {
         initData();
-      }else if(event.busIEventID == BusIEventID.logout_success){
+      } else if (event.busIEventID == BusIEventID.logout_success) {
         initData();
       }
     });
@@ -100,7 +97,10 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin{
             expandedHeight: 200.0,
             pinned: true,
             leading: IconButton(
-              icon: Icon(Icons.account_circle),
+              icon: Icon(
+                Icons.account_circle,
+                color: Colors.black,
+              ),
               onPressed: () async {
                 //进入登录注册页面
                 RouteHelpUtils.push(context, LoginPage());
@@ -115,7 +115,6 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin{
                   if (isLogin) return;
                   //进入登录注册页面
                   RouteHelpUtils.push(context, LoginPage());
-
                 },
               ),
               background: Image(
@@ -136,7 +135,12 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin{
           children: <Widget>[
             ListTile(
 //              leading: Icon(Icons.favorite),
-              leading: Icon(MyIcons.my_favorite,),
+              leading: Icon(
+                MyIcons.my_favorite,
+                color: Theme.of(context).primaryColor == MyColors.white
+                    ? Colors.blueAccent
+                    : Theme.of(context).primaryColor,
+              ),
               title: Text("我的收藏"),
               onTap: () async {
                 //点击进入我的收藏页面(需要判断是否登录)
@@ -151,19 +155,29 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin{
             Divider(
               color: Colors.grey,
             ),
-           ListTile(
-             leading: Icon(MyIcons.switch_theme),
-             title: Text("切换主题"),
-             onTap: () {
-               //切换主题
-               RouteHelpUtils.push(context, UpdateThemePage());
-             },
-           ),
-           Divider(
-             color: Colors.grey,
-           ),
             ListTile(
-              leading: Icon(MyIcons.about_software),
+              leading: Icon(
+                MyIcons.switch_theme,
+                color: Theme.of(context).primaryColor == MyColors.white
+                    ? Colors.blueAccent
+                    : Theme.of(context).primaryColor,
+              ),
+              title: Text("切换主题"),
+              onTap: () {
+                //切换主题
+                RouteHelpUtils.push(context, UpdateThemePage());
+              },
+            ),
+            Divider(
+              color: Colors.grey,
+            ),
+            ListTile(
+              leading: Icon(
+                MyIcons.about_software,
+                color: Theme.of(context).primaryColor == MyColors.white
+                    ? Colors.blueAccent
+                    : Theme.of(context).primaryColor,
+              ),
               title: Text("关于软件"),
               onTap: () {
                 //切换主题
@@ -174,7 +188,12 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin{
               color: Colors.grey,
             ),
             ListTile(
-              leading: Icon(MyIcons.clear_cache),
+              leading: Icon(
+                MyIcons.clear_cache,
+                color: Theme.of(context).primaryColor == MyColors.white
+                    ? Colors.blueAccent
+                    : Theme.of(context).primaryColor,
+              ),
               title: Text("清理缓存"),
               onTap: () async {
                 //清理缓存
@@ -197,7 +216,12 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin{
               child: Column(
                 children: <Widget>[
                   ListTile(
-                    leading: Icon(MyIcons.log_out),
+                    leading: Icon(
+                      MyIcons.log_out,
+                      color: Theme.of(context).primaryColor == MyColors.white
+                          ? Colors.blueAccent
+                          : Theme.of(context).primaryColor,
+                    ),
                     title: Text("退出登录"),
                     onTap: () {
                       showDialog(
@@ -235,7 +259,8 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin{
         }
 
         //发出通知
-        EventBusUtils.instance.fire(BusIEvent(busIEventID: BusIEventID.logout_success));
+        EventBusUtils.instance
+            .fire(BusIEvent(busIEventID: BusIEventID.logout_success));
       } else {
         //退出失败
         Toast.show(logoutBean['errorMsg'] ?? "退出失败", context);
@@ -253,11 +278,11 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin{
       child: Container(
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment:
-          CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(left: 20.0,top: 20.0,right: 20.0),
+              padding:
+                  const EdgeInsets.only(left: 20.0, top: 20.0, right: 20.0),
               child: Text(
                 "温馨提示",
                 style: TextStyle(
@@ -268,9 +293,7 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin{
             ),
             Container(
                 padding: EdgeInsets.all(20.0),
-                constraints: BoxConstraints(
-                  minHeight: 100.0
-                ),
+                constraints: BoxConstraints(minHeight: 100.0),
                 child: Text(
                   "您确定要退出登录吗?" * 1,
                   style: TextStyle(
@@ -281,37 +304,33 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin{
             Container(
               decoration: BoxDecoration(
                 color: Colors.grey[100],
-                borderRadius: BorderRadius.vertical(bottom: Radius.circular(10.0)),
+                borderRadius:
+                    BorderRadius.vertical(bottom: Radius.circular(10.0)),
               ),
               width: double.infinity,
               padding: EdgeInsets.symmetric(vertical: 20.0),
               child: Row(
-                mainAxisAlignment:
-                MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   GestureDetector(
                     child: new Container(
                       padding: EdgeInsets.all(10.0),
-                      width: MediaQuery.of(context).size.width/3,
+                      width: MediaQuery.of(context).size.width / 3,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         border: Border.all(
-                            color: Theme.of(context)
-                                .primaryColor,
-                            width: 1),
-                        borderRadius:
-                        BorderRadius.circular(5.0),
+                            color: Theme.of(context).primaryColor, width: 1),
+                        borderRadius: BorderRadius.circular(5.0),
                       ),
                       child: Text(
                         "取消",
                         style: TextStyle(
-                            color: Theme.of(context)
-                                .primaryColor,
+                            color: Theme.of(context).primaryColor,
                             fontSize: 15.0),
                       ),
                     ),
-                    onTap: (){
+                    onTap: () {
                       //关闭弹窗
                       Navigator.pop(context);
                     },
@@ -319,27 +338,24 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin{
                   GestureDetector(
                     child: new Container(
                       padding: EdgeInsets.all(10.0),
-                      width: MediaQuery.of(context).size.width/3,
+                      width: MediaQuery.of(context).size.width / 3,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                          borderRadius:
-                          BorderRadius.circular(
-                              5.0),
-                          color: Theme.of(context)
-                              .primaryColor),
+                          borderRadius: BorderRadius.circular(5.0),
+                          color: Theme.of(context).primaryColor),
                       child: Text(
                         "确定",
                         style: TextStyle(
                             color: (Theme.of(context)
-                                .primaryColor
-                                .computeLuminance()) >
-                                0.5
+                                        .primaryColor
+                                        .computeLuminance()) >
+                                    0.5
                                 ? Colors.black
                                 : Colors.white,
                             fontSize: 15.0),
                       ),
                     ),
-                    onTap: (){
+                    onTap: () {
                       //关闭弹窗
                       Navigator.pop(context);
                       //退出登录操作

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterapp/common/widget/theme_data_color.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
 import 'package:flutterapp/me/page/LoginPage.dart';
 import 'package:toast/toast.dart';
@@ -37,7 +38,9 @@ class _FavoriteButtonWidgetState extends State<FavoriteButtonWidget> {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(curIsFavorite ? Icons.favorite : Icons.favorite_border,color: Colors.red,),
+      icon: Icon(curIsFavorite ? Icons.favorite : Icons.favorite_border,color: Theme.of(context).primaryColor == MyColors.white
+          ? Colors.blueAccent
+          : Theme.of(context).primaryColor,),
       onPressed: (){
         //点击收藏的事件
         if(curIsFavorite){

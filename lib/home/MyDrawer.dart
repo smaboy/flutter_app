@@ -7,6 +7,7 @@ import 'package:flutterapp/common/RouteHelpUtils.dart';
 import 'package:flutterapp/common/SPUtils.dart';
 import 'package:flutterapp/common/event_bus_utils.dart';
 import 'package:flutterapp/common/myIcons.dart';
+import 'package:flutterapp/common/widget/theme_data_color.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
 import 'package:flutterapp/me/page/AboutSoftwarePage.dart';
 import 'package:flutterapp/me/page/LoginPage.dart';
@@ -49,17 +50,16 @@ class _MyDrawerState extends State<MyDrawer> {
     initEvent();
   }
 
-  void initEvent(){
-     //注册EventBus
+  void initEvent() {
+    //注册EventBus
     loginSubscription = EventBusUtils.instance.register((BusIEvent event) {
-      if(event.busIEventID == BusIEventID.login_success){
+      if (event.busIEventID == BusIEventID.login_success) {
         initData();
-      }else if(event.busIEventID == BusIEventID.logout_success){
+      } else if (event.busIEventID == BusIEventID.logout_success) {
         initData();
       }
     });
   }
-
 
   Future initData() async {
     SharedPreferences sharedPreferences = await SPUtils.getInstance().getSP();
@@ -144,6 +144,9 @@ class _MyDrawerState extends State<MyDrawer> {
 //              leading: Icon(Icons.favorite),
                   leading: Icon(
                     MyIcons.my_favorite,
+                    color: Theme.of(context).primaryColor == MyColors.white
+                        ? Colors.blueAccent
+                        : Theme.of(context).primaryColor,
                   ),
                   title: Text(
                     "我的收藏",
@@ -164,19 +167,29 @@ class _MyDrawerState extends State<MyDrawer> {
                 Divider(
                   color: Colors.grey,
                 ),
-           ListTile(
-             leading: Icon(MyIcons.switch_theme),
-             title: Text("切换主题"),
-             onTap: () {
-               //切换主题
-               RouteHelpUtils.push(context, UpdateThemePage());
-             },
-           ),
-           Divider(
-             color: Colors.grey,
-           ),
                 ListTile(
-                  leading: Icon(MyIcons.about_software),
+                  leading: Icon(
+                    MyIcons.switch_theme,
+                    color: Theme.of(context).primaryColor == MyColors.white
+                        ? Colors.blueAccent
+                        : Theme.of(context).primaryColor,
+                  ),
+                  title: Text("切换主题"),
+                  onTap: () {
+                    //切换主题
+                    RouteHelpUtils.push(context, UpdateThemePage());
+                  },
+                ),
+                Divider(
+                  color: Colors.grey,
+                ),
+                ListTile(
+                  leading: Icon(
+                    MyIcons.about_software,
+                    color: Theme.of(context).primaryColor == MyColors.white
+                        ? Colors.blueAccent
+                        : Theme.of(context).primaryColor,
+                  ),
                   title: Text(
                     "关于软件",
                     style: TextStyle(color: Colors.black87),
@@ -190,7 +203,12 @@ class _MyDrawerState extends State<MyDrawer> {
                   color: Colors.grey,
                 ),
                 ListTile(
-                  leading: Icon(MyIcons.clear_cache),
+                  leading: Icon(
+                    MyIcons.clear_cache,
+                    color: Theme.of(context).primaryColor == MyColors.white
+                        ? Colors.blueAccent
+                        : Theme.of(context).primaryColor,
+                  ),
                   title: Text(
                     "清理缓存",
                     style: TextStyle(color: Colors.black87),
@@ -217,7 +235,13 @@ class _MyDrawerState extends State<MyDrawer> {
                   child: Column(
                     children: <Widget>[
                       ListTile(
-                        leading: Icon(MyIcons.log_out),
+                        leading: Icon(
+                          MyIcons.log_out,
+                          color:
+                              Theme.of(context).primaryColor == MyColors.white
+                                  ? Colors.blueAccent
+                                  : Theme.of(context).primaryColor,
+                        ),
                         title: Text("退出登录"),
                         onTap: () {
                           showGeneralDialog(
@@ -266,7 +290,8 @@ class _MyDrawerState extends State<MyDrawer> {
         }
 
         //发出通知
-        EventBusUtils.instance.fire(BusIEvent(busIEventID: BusIEventID.logout_success));
+        EventBusUtils.instance
+            .fire(BusIEvent(busIEventID: BusIEventID.logout_success));
       } else {
         //退出失败
         Toast.show(logoutBean['errorMsg'] ?? "退出失败", context);
