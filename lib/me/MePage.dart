@@ -103,8 +103,7 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin{
               icon: Icon(Icons.account_circle),
               onPressed: () async {
                 //进入登录注册页面
-                bool result = await RouteHelpUtils.push(context, LoginPage());
-                if (result) initData();
+                RouteHelpUtils.push(context, LoginPage());
               },
             ),
 //            title: Text("我是标题"),
@@ -115,9 +114,8 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin{
                   //已经登录,不做操作
                   if (isLogin) return;
                   //进入登录注册页面
-                  //进入登录注册页面
-                  bool result = await RouteHelpUtils.push(context, LoginPage());
-                  if (result) initData();
+                  RouteHelpUtils.push(context, LoginPage());
+
                 },
               ),
               background: Image(

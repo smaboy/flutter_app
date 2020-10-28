@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:flutterapp/common/RouteHelpUtils.dart';
+import 'package:flutterapp/common/widget/theme_data_color.dart';
 import 'package:flutterapp/system/SystemItemDetailsPage.dart';
 import 'package:flutterapp/system/entity/system_tree_entity.dart';
 import 'package:flutterapp/system/service/system_service_impl.dart';
@@ -71,11 +72,11 @@ class SystemPageState extends State<SystemPage> with AutomaticKeepAliveClientMix
       for(var i =0 ;i < systemTreeData.children.length ; i++){
         var child = systemTreeData.children[i];
         titleTreeWidgets.add(RaisedButton(
-            child: Text(child.name),
-            color: Colors.blue,
+            child: Text(child.name,),
+            color: Theme.of(context).primaryColor == MyColors.white ? Colors.blueAccent : Theme.of(context).primaryColor,
             highlightColor: Theme.of(context).primaryColor,
             colorBrightness: Brightness.dark,
-            splashColor: Colors.grey,
+            splashColor: Colors.grey[700],
             shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
             onPressed: () {
               RouteHelpUtils.push(context, SystemItemDetailsPage(title: systemTreeData.name,tabList: systemTreeData.children,position: i,));
@@ -109,14 +110,17 @@ class SystemPageState extends State<SystemPage> with AutomaticKeepAliveClientMix
                     color: index == _selectedPosition ? Colors.grey[100] : Colors.white,
                     child: Row(
                       children: <Widget>[
-                        Container(
-                          color: index == _selectedPosition ? Theme.of(context).primaryColor : Colors.white,
-                          width: 5.0,
-                          height: 30.0,
+                        Visibility(
+                          visible: index == _selectedPosition,
+                          child: Container(
+                            color: Theme.of(context).primaryColor == MyColors.white ? Colors.blueAccent : Theme.of(context).primaryColor,
+                            width: 5.0,
+                            height: 30.0,
+                          ),
                         ),
                         Expanded(
                           child: ListTile(
-                            title: Text(_systemTreeEntity?.data[index].name,style: TextStyle(color: index == _selectedPosition ? Theme.of(context).primaryColor : Colors.black, fontSize: 13.0)),
+                            title: Text(_systemTreeEntity?.data[index].name,style: TextStyle(color: index == _selectedPosition ? (Theme.of(context).primaryColor == MyColors.white ? Colors.blueAccent : Theme.of(context).primaryColor) : Colors.black, fontSize: 13.0)),
                             onTap: (){
                               setState(() {
                                 //设置被点击位置

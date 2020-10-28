@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/common/myIcons.dart';
+import 'package:flutterapp/common/widget/theme_data_color.dart';
 import 'package:flutterapp/me/MePage.dart';
 import 'package:flutterapp/system/SystemPage.dart';
 
@@ -75,9 +76,11 @@ class _MainPageState extends State<MainPage> {
           ),
           const BottomNavigationBarItem(
             icon: Icon(MyIcons.me),
-            title: Text("我的"),
+            title: Text("我的",),
           ),
         ],
+        selectedItemColor: Theme.of(context).primaryColor == MyColors.white ? Colors.blueAccent : Theme.of(context).primaryColor,
+        unselectedItemColor: Colors.black87,
         type: BottomNavigationBarType.fixed,
 //        fixedColor: Colors.blue,
       ),

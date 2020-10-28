@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/common/RouteHelpUtils.dart';
 import 'package:flutterapp/common/webview_widget.dart';
+import 'package:flutterapp/common/widget/theme_data_color.dart';
 
 class AboutSoftwarePage extends StatefulWidget {
   @override
@@ -53,7 +54,7 @@ class _AboutSoftwarePageState extends State<AboutSoftwarePage> {
                     children: [
                       TextSpan(
                         text: "Smaboy",
-                        style: TextStyle(color: Theme.of(context).primaryColor),
+                        style: TextStyle(color: Theme.of(context).primaryColor == MyColors.white ? Colors.blueAccent : Theme.of(context).primaryColor),
                       )
                     ])),
                 onTap: (){
@@ -69,7 +70,7 @@ class _AboutSoftwarePageState extends State<AboutSoftwarePage> {
                     children: [
                       TextSpan(
                         text: "flutter_app",
-                        style: TextStyle(color: Theme.of(context).primaryColor),
+                        style: TextStyle(color: Theme.of(context).primaryColor == MyColors.white ? Colors.blueAccent : Theme.of(context).primaryColor),
                       )
                     ])),
                 onTap: (){
@@ -85,7 +86,7 @@ class _AboutSoftwarePageState extends State<AboutSoftwarePage> {
                     children: [
                       TextSpan(
                         text: "玩安卓开发API",
-                        style: TextStyle(color: Theme.of(context).primaryColor),
+                        style: TextStyle(color: Theme.of(context).primaryColor == MyColors.white ? Colors.blueAccent : Theme.of(context).primaryColor),
                       )
                     ])),
                 onTap: (){
