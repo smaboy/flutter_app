@@ -7,6 +7,7 @@ import 'package:flutterapp/common/constant/API.dart';
 import 'package:flutterapp/common/util/RouteHelpUtils.dart';
 import 'package:flutterapp/common/util/SPUtils.dart';
 import 'package:flutterapp/common/util/event_bus_utils.dart';
+import 'package:flutterapp/common/util/image_picker_utils.dart';
 import 'package:flutterapp/common/widget/myIcons.dart';
 import 'package:flutterapp/common/widget/theme_data_color.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
@@ -67,6 +68,10 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin {
         initData();
       } else if (event.busIEventID == BusIEventID.logout_success) {
         initData();
+      } else if(event.busIEventID == BusIEventID.update_head_back_ground){
+        setState(() {
+
+        });
       }
     });
   }
@@ -129,7 +134,16 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin {
               background: GestureDetector(
                 child: _backGroundImage,
                 onTap: () {
-                  getImage();
+                  // getImage();
+                  ImagePickerUtils.getInstance().showImagePickerDialog(
+                      context,
+                      (image){
+                        if (image != null) {
+                          _backGroundImage = image;
+                          EventBusUtils.instance.fire(BusIEvent(busIEventID: BusIEventID.update_head_back_ground));
+                      }
+                      },
+                      showError: true);
                 },
               ),
 //              background: Image.network(

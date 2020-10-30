@@ -54,5 +54,6 @@ enum BusIEventID {
   login_success,
   logout_success,
   theme_update,
+  update_head_back_ground,
 
 }
