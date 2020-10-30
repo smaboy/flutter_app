@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutterapp/common/API.dart';
-import 'package:flutterapp/common/RouteHelpUtils.dart';
-import 'package:flutterapp/common/SPUtils.dart';
-import 'package:flutterapp/common/event_bus_utils.dart';
-import 'package:flutterapp/common/myIcons.dart';
+import 'package:flutterapp/common/constant/API.dart';
+import 'package:flutterapp/common/util/RouteHelpUtils.dart';
+import 'package:flutterapp/common/util/SPUtils.dart';
+import 'package:flutterapp/common/util/event_bus_utils.dart';
+import 'package:flutterapp/common/widget/myIcons.dart';
 import 'package:flutterapp/common/widget/theme_data_color.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
 import 'package:flutterapp/me/page/AboutSoftwarePage.dart';

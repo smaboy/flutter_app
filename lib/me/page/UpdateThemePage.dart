@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/common/RouteHelpUtils.dart';
-import 'package:flutterapp/common/SPUtils.dart';
-import 'package:flutterapp/common/event_bus_utils.dart';
+import 'package:flutterapp/common/util/RouteHelpUtils.dart';
+import 'package:flutterapp/common/util/SPUtils.dart';
+import 'package:flutterapp/common/util/event_bus_utils.dart';
 import 'package:flutterapp/common/widget/theme_data_color.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

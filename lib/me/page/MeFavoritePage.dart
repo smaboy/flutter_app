@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutterapp/common/API.dart';
-import 'package:flutterapp/common/RouteHelpUtils.dart';
-import 'package:flutterapp/common/webview_widget.dart';
+import 'package:flutterapp/common/constant/API.dart';
+import 'package:flutterapp/common/util/RouteHelpUtils.dart';
+import 'package:flutterapp/common/widget/webview_widget.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
 import 'package:flutterapp/me/entity/collect_article_list_entity.dart';
 import 'package:toast/toast.dart';

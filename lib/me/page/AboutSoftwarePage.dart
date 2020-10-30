@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/common/RouteHelpUtils.dart';
-import 'package:flutterapp/common/webview_widget.dart';
+import 'package:flutterapp/common/util/RouteHelpUtils.dart';
+import 'package:flutterapp/common/widget/webview_widget.dart';
 import 'package:flutterapp/common/widget/theme_data_color.dart';
 
 class AboutSoftwarePage extends StatefulWidget {

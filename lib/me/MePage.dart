@@ -1,17 +1,19 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutterapp/common/API.dart';
-import 'package:flutterapp/common/RouteHelpUtils.dart';
-import 'package:flutterapp/common/SPUtils.dart';
-import 'package:flutterapp/common/event_bus_utils.dart';
-import 'package:flutterapp/common/myIcons.dart';
+import 'package:flutterapp/common/constant/API.dart';
+import 'package:flutterapp/common/util/RouteHelpUtils.dart';
+import 'package:flutterapp/common/util/SPUtils.dart';
+import 'package:flutterapp/common/util/event_bus_utils.dart';
+import 'package:flutterapp/common/widget/myIcons.dart';
 import 'package:flutterapp/common/widget/theme_data_color.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
 import 'package:flutterapp/me/page/AboutSoftwarePage.dart';
 import 'package:flutterapp/me/page/LoginPage.dart';
 import 'package:flutterapp/me/page/UpdateThemePage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
@@ -28,6 +30,12 @@ class MePage extends StatefulWidget {
 }
 
 class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin {
+  Image _backGroundImage = Image(
+    image: AssetImage("images/lake.jpg"),
+    fit: BoxFit.fill,
+  );
+  final picker = ImagePicker();
+
   //判断用户是否登录
   var isLogin = false;
 
@@ -100,6 +108,7 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin {
               icon: Icon(
                 Icons.account_circle,
                 color: Colors.black,
+                size: 30.0,
               ),
               onPressed: () async {
                 //进入登录注册页面
@@ -117,9 +126,11 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin {
                   RouteHelpUtils.push(context, LoginPage());
                 },
               ),
-              background: Image(
-                image: AssetImage("images/lake.jpg"),
-                fit: BoxFit.fill,
+              background: GestureDetector(
+                child: _backGroundImage,
+                onTap: () {
+                  getImage();
+                },
               ),
 //              background: Image.network(
 //                'http://img.haote.com/upload/20180918/2018091815372344164.jpg',
@@ -241,6 +252,20 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin {
         ),
       ),
     ));
+  }
+
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
+    setState(() {
+      if (pickedFile != null) {
+        _backGroundImage = Image.file(
+          File(pickedFile.path),
+          fit: BoxFit.fill,
+        );
+      } else {
+        Toast.show("No image selected.", context);
+      }
+    });
   }
 
   /// 退出登录操作

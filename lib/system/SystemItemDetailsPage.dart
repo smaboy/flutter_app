@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/common/RouteHelpUtils.dart';
-import 'package:flutterapp/common/webview_widget.dart';
+import 'package:flutterapp/common/util/RouteHelpUtils.dart';
+import 'package:flutterapp/common/widget/webview_widget.dart';
 import 'package:flutterapp/common/widget/favorite_button_widget.dart';
 import 'package:flutterapp/system/entity/system_list_by_cid_entity.dart';
 import 'package:flutterapp/system/service/system_service_impl.dart';

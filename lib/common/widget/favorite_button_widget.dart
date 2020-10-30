@@ -7,8 +7,8 @@ import 'package:flutterapp/http/HttpUtils.dart';
 import 'package:flutterapp/me/page/LoginPage.dart';
 import 'package:toast/toast.dart';
 
-import '../API.dart';
-import '../RouteHelpUtils.dart';
+import '../constant/API.dart';
+import '../util/RouteHelpUtils.dart';
 
 ///收藏按钮组件
 class FavoriteButtonWidget extends StatefulWidget {
