@@ -7,9 +7,20 @@ class RouteHelpUtils{
 
   static Future<dynamic> push(BuildContext context , Widget widget){
     return Navigator.of(context).push(
-        MaterialPageRoute(builder: (buildContext) {
-          return widget;
-        })
+        PageRouteBuilder(
+          transitionDuration: Duration(milliseconds: 500), //动画时间为500毫秒
+          pageBuilder: (BuildContext context, Animation animation,
+              Animation secondaryAnimation) {
+            return new FadeTransition(
+              //使用渐隐渐入过渡,
+              opacity: animation,
+              child: widget, //路由B
+            );
+          },
+        )
+        // MaterialPageRoute(builder: (buildContext) {
+        //   return widget;
+        // })
     );
   }
 

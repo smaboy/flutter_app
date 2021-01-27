@@ -23,4 +23,6 @@ class MyIcons{
   static const IconData my_favorite = IconData(0xe90d, fontFamily: 'myIcon');
   /// 退出登录 &#xe63c
   static const IconData log_out = IconData(0xe63c, fontFamily: 'myIcon');
+  /// 监测更新 &#xe6aa
+  static const IconData check_update = IconData(0xe6aa, fontFamily: 'myIcon');
 }

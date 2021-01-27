@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutterapp/common/widget/myIcons.dart';
 import 'package:flutterapp/common/widget/theme_data_color.dart';
 import 'package:flutterapp/me/MePage.dart';
@@ -13,6 +14,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  static const platform = const MethodChannel('samples.flutter.io/battery');
   /// 当前页面
   int _currentPage = 0;
 

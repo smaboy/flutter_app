@@ -68,10 +68,8 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin {
         initData();
       } else if (event.busIEventID == BusIEventID.logout_success) {
         initData();
-      } else if(event.busIEventID == BusIEventID.update_head_back_ground){
-        setState(() {
-
-        });
+      } else if (event.busIEventID == BusIEventID.update_head_back_ground) {
+        setState(() {});
       }
     });
   }
@@ -135,15 +133,14 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin {
                 child: _backGroundImage,
                 onTap: () {
                   // getImage();
-                  ImagePickerUtils.getInstance().showImagePickerDialog(
-                      context,
-                      (image){
-                        if (image != null) {
-                          _backGroundImage = image;
-                          EventBusUtils.instance.fire(BusIEvent(busIEventID: BusIEventID.update_head_back_ground));
-                      }
-                      },
-                      showError: true);
+                  ImagePickerUtils.getInstance().showImagePickerDialog(context,
+                      (image) {
+                    if (image != null) {
+                      _backGroundImage = image;
+                      EventBusUtils.instance.fire(BusIEvent(
+                          busIEventID: BusIEventID.update_head_back_ground));
+                    }
+                  }, showError: true);
                 },
               ),
 //              background: Image.network(
@@ -220,6 +217,30 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin {
                     : Theme.of(context).primaryColor,
               ),
               title: Text("清理缓存"),
+              onTap: () async {
+                //清理缓存
+                HttpUtils.getInstance().showProgressDialog(context, "清理中...");
+                bool result = await HttpUtils.getInstance().clearAllCache();
+                Navigator.pop(context);
+                if (result) {
+                  //清理成功
+                  Toast.show("清理成功", context);
+                } else {
+                  Toast.show("清理失败", context);
+                }
+              },
+            ),
+            Divider(
+              color: Colors.grey,
+            ),
+            ListTile(
+              leading: Icon(
+                MyIcons.check_update,
+                color: Theme.of(context).primaryColor == MyColors.white
+                    ? Colors.blueAccent
+                    : Theme.of(context).primaryColor,
+              ),
+              title: Text("检测更新"),
               onTap: () async {
                 //清理缓存
                 HttpUtils.getInstance().showProgressDialog(context, "清理中...");
