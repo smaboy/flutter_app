@@ -290,7 +290,7 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin {
   }
 
   Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
+    final pickedFile = await picker.pickImage(source: ImageSource.camera);
     setState(() {
       if (pickedFile != null) {
         _backGroundImage = Image.file(

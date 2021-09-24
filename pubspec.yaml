@@ -27,53 +27,53 @@ dependencies:
   flutter:
     sdk: flutter
 
-  english_words: ^3.1.0
+  english_words: ^4.0.0
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.3
+  cupertino_icons: ^1.0.3
 
   # https://github.com/best-flutter/flutter_swiper/blob/master/README-ZH.md 轮播图组件
   flutter_swiper : ^1.1.6
 
   # webview插件 （在android9.0以上和ios需配置一些内容）
   # 该插件无法加载网络的异常处理 https://blog.csdn.net/weixin_30642267/article/details/101941152
-  flutter_webview_plugin: ^0.3.11
+  flutter_webview_plugin: ^0.4.0
 
   # 网络请求框架
-  dio: ^3.0.10
+  dio: ^4.0.0
 
   # 网络请求框架 cookie管理框架
-  dio_cookie_manager: ^1.0.0
+  dio_cookie_manager: ^2.0.0
 
   # http缓存库
-  dio_http_cache: ^0.2.11
+  dio_http_cache: ^0.3.0
 
 #  # 刷新框架
 #  flutter_easyrefresh: ^2.1.5
 
   # 刷新框架
-  pull_to_refresh: ^1.6.1
+  pull_to_refresh: ^2.0.0
 
   # toast框架
   toast: ^0.1.5
 
   # 文件操作插件
-  path_provider: ^0.4.1
+  path_provider: ^2.0.4
 
   # 简单数据存储插件
   # NSUserDefaults on iOS and macOS, SharedPreferences on Android, etc.
-  shared_preferences: ^0.5.12
+  shared_preferences: ^2.0.7
 
   # 集成分享 sharesdk
 #  sharesdk_plugin: ^1.2.8
 
   # 事件总线
-  event_bus: ^1.1.1
+  event_bus: ^2.0.0
 
   # 图片选择器
-  image_picker: ^0.6.7+12
+  image_picker: ^0.8.4+1
 
 
 dev_dependencies:

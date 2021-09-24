@@ -41,31 +41,26 @@ class HttpUtils {
     //添加拦截器
     dio.interceptors
 //      ..add(CookieManager(CookieJar())) //cookie管理
-      ..add(InterceptorsWrapper(onRequest: (RequestOptions options) {
+      ..add(InterceptorsWrapper(onRequest: (options, handler) {
         //请求拦截器
         print("------------------>>>>>>>>发送请求<<<<<<<————————————————————");
         print("请求方法:${options.method}");
         print("请求头:${options.headers}");
-        print("请求参数:${options.queryParameters}");
+        print("请求参数:${options.queryParameters.toString()}");
         print("请求路径:${options.baseUrl}${options.path}");
-        // Do something before request is sent
-        return options; //continue
-      }, onResponse: (Response response) {
+      }, onResponse: (response, handler) {
         print("------------------>>>>>>>>接收响应<<<<<<<————————————————————");
-        print("请求方法:${response.request.method}");
-        print("请求头:${response.request.headers}");
-        print("请求参数:${response.request.queryParameters}");
-        print("请求路径:${response.request.baseUrl}${response.request.path}");
+        print("请求头:${response.requestOptions.headers.toString()}");
+        print("请求参数:${response.requestOptions.queryParameters.toString()}");
+        print(
+            "请求路径:${response.requestOptions.baseUrl}${response.requestOptions.path}");
         print("响应状态码:${response.statusCode}");
         print("响应状态信息:${response.statusMessage}");
         print("响应头:${response.headers.toString()}");
         print("响应数据:${response.toString()}");
-        // Do something with response data
-        return response; // continue
-      }, onError: (DioError e) {
+      }, onError: (error, handler) {
         print("------------------>>>>>>>>发生错误<<<<<<<————————————————————");
-        // Do something with response error
-        return e; //continue
+        print("${error.message}");
       }))
       ..add(_dioCacheManager.interceptor); //缓存拦截器
   }
@@ -78,7 +73,9 @@ class HttpUtils {
     //cookie持久化，保存在文件中,用户手动销毁
     Directory appDocDir = await getApplicationDocumentsDirectory();
     String appDocPath = appDocDir.path;
-    _cookieJar=PersistCookieJar(dir:"$appDocPath\/cookies/");
+    // _cookieJar = PersistCookieJar(dir: "$appDocPath\/cookies/");
+    _cookieJar =
+        PersistCookieJar(storage: FileStorage("$appDocPath\/cookies/"));
     dio.interceptors.add(CookieManager(_cookieJar));
   }
 
@@ -97,7 +94,10 @@ class HttpUtils {
       //  subKey: dio-http-cache 默认使用 url 作为缓存 key ,但当 url 不够用的时候，比如 post 请求分页数据的时候，就需要配合subKey使用。
       //  forceRefresh默认为false,开启后先获取后台数据当后台数据获取不到或者网络出现问题,再去本地获取
       var optionTemp = buildCacheOptions(Duration(days: 7),
-          maxStale: Duration(days: 10), subKey: "subPage", options: options,forceRefresh: true);
+          maxStale: Duration(days: 10),
+          subKey: "subPage",
+          options: options,
+          forceRefresh: true);
       //开始请求
       response = await dio.get(path,
           queryParameters: queryParameters,
@@ -168,22 +168,22 @@ class HttpUtils {
   String handleError(DioError e) {
     String errorMsg = "";
     switch (e.type) {
-      case DioErrorType.CONNECT_TIMEOUT:
+      case DioErrorType.connectTimeout:
         errorMsg = "连接超时";
         break;
-      case DioErrorType.RECEIVE_TIMEOUT:
+      case DioErrorType.receiveTimeout:
         errorMsg = "接收超时";
         break;
-      case DioErrorType.SEND_TIMEOUT:
+      case DioErrorType.sendTimeout:
         errorMsg = "发送超时";
         break;
-      case DioErrorType.CANCEL:
+      case DioErrorType.cancel:
         errorMsg = "请求取消";
         break;
-      case DioErrorType.RESPONSE:
+      case DioErrorType.response:
         errorMsg = "服务器状态码错误";
         break;
-      case DioErrorType.DEFAULT:
+      case DioErrorType.other:
         errorMsg = e.message;
         break;
       default:
@@ -195,32 +195,35 @@ class HttpUtils {
   }
 
   /// 显示加载对话框
-  void showProgressDialog(BuildContext context , String content){
-    showDialog(context: context,builder: (context){
-      return UnconstrainedBox(
-        constrainedAxis: Axis.vertical,
-        child: SizedBox(
-          width: 280,
-          child: AlertDialog(
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                CircularProgressIndicator(value: .8,),
-                Padding(
-                  padding: const EdgeInsets.only(top: 26.0),
-                  child: Text(content),
-                )
-              ],
+  void showProgressDialog(BuildContext context, String content) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return UnconstrainedBox(
+            constrainedAxis: Axis.vertical,
+            child: SizedBox(
+              width: 280,
+              child: AlertDialog(
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    CircularProgressIndicator(
+                      value: .8,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 26.0),
+                      child: Text(content),
+                    )
+                  ],
+                ),
+              ),
             ),
-          ),
-        ),
-      );
-    });
-
+          );
+        });
   }
 
   ///清除缓存
-  Future<bool> clearAllCache() async{
+  Future<bool> clearAllCache() async {
     //清理所有缓存不管有没有过期
     return _dioCacheManager.clearAll();
 
@@ -229,8 +232,8 @@ class HttpUtils {
   }
 
   /// 清除cookie
-  clearAllCookie(){
-    if(_cookieJar != null){
+  clearAllCookie() {
+    if (_cookieJar != null) {
       _cookieJar.deleteAll();
     }
   }
