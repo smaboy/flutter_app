@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:flutterapp/common/util/RouteHelpUtils.dart';
 import 'package:flutterapp/common/widget/theme_data_color.dart';
 import 'package:flutterapp/system/SystemItemDetailsPage.dart';
@@ -18,7 +17,8 @@ class SystemPage extends StatefulWidget {
   }
 }
 
-class SystemPageState extends State<SystemPage> with AutomaticKeepAliveClientMixin{
+class SystemPageState extends State<SystemPage>
+    with AutomaticKeepAliveClientMixin {
   /// 标题数据
   SystemTreeEntity _systemTreeEntity;
 
@@ -47,7 +47,6 @@ class SystemPageState extends State<SystemPage> with AutomaticKeepAliveClientMix
 
     //初始化数据
     initTreeData();
-
   }
 
   ///初始化标题数据
@@ -57,7 +56,9 @@ class SystemPageState extends State<SystemPage> with AutomaticKeepAliveClientMix
       //设置标题数据
       _systemTreeEntity = data;
       //设置二级标题数据
-      if(_systemTreeEntity != null && _systemTreeEntity.data != null && _systemTreeEntity.data.length >0){
+      if (_systemTreeEntity != null &&
+          _systemTreeEntity.data != null &&
+          _systemTreeEntity.data.length > 0) {
         _secondTitleData = _systemTreeEntity.data[_selectedPosition];
       }
     });
@@ -69,19 +70,26 @@ class SystemPageState extends State<SystemPage> with AutomaticKeepAliveClientMix
     if (systemTreeData != null &&
         systemTreeData.children != null &&
         systemTreeData.children.length > 0) {
-      for(var i =0 ;i < systemTreeData.children.length ; i++){
+      for (var i = 0; i < systemTreeData.children.length; i++) {
         var child = systemTreeData.children[i];
-        titleTreeWidgets.add(RaisedButton(
-            child: Text(child.name,),
-            color: Theme.of(context).primaryColor == MyColors.white ? Colors.blueAccent : Theme.of(context).primaryColor,
-            highlightColor: Theme.of(context).primaryColor,
-            colorBrightness: Brightness.dark,
-            splashColor: Colors.grey[700],
-            shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        titleTreeWidgets.add(ElevatedButton(
+            child: Text(
+              child.name,
+            ),
+            // color: Theme.of(context).primaryColor == MyColors.white ? Colors.blueAccent : Theme.of(context).primaryColor,
+            // highlightColor: Theme.of(context).primaryColor,
+            // colorBrightness: Brightness.dark,
+            // splashColor: Colors.grey[700],
+            // shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
             onPressed: () {
-              RouteHelpUtils.push(context, SystemItemDetailsPage(title: systemTreeData.name,tabList: systemTreeData.children,position: i,));
-            }
-        ));
+              RouteHelpUtils.push(
+                  context,
+                  SystemItemDetailsPage(
+                    title: systemTreeData.name,
+                    tabList: systemTreeData.children,
+                    position: i,
+                  ));
+            }));
       }
 
       print("第一个标题为:${systemTreeData.children[0].name}");
@@ -101,43 +109,58 @@ class SystemPageState extends State<SystemPage> with AutomaticKeepAliveClientMix
           Container(
             width: 100.0,
             child: ListView.separated(
-                itemCount: _systemTreeEntity?.data?.length ?? 0,
-                separatorBuilder: (buildContext, index) {
-                  return Divider(height: 2.0, color: Colors.grey[400],);
-                },
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    color: index == _selectedPosition ? Colors.grey[100] : Colors.white,
-                    child: Row(
-                      children: <Widget>[
-                        Visibility(
-                          visible: index == _selectedPosition,
-                          child: Container(
-                            color: Theme.of(context).primaryColor == MyColors.white ? Colors.blueAccent : Theme.of(context).primaryColor,
-                            width: 5.0,
-                            height: 30.0,
-                          ),
+              itemCount: _systemTreeEntity?.data?.length ?? 0,
+              separatorBuilder: (buildContext, index) {
+                return Divider(
+                  height: 2.0,
+                  color: Colors.grey[400],
+                );
+              },
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  color: index == _selectedPosition
+                      ? Colors.grey[100]
+                      : Colors.white,
+                  child: Row(
+                    children: <Widget>[
+                      Visibility(
+                        visible: index == _selectedPosition,
+                        child: Container(
+                          color:
+                              Theme.of(context).primaryColor == MyColors.white
+                                  ? Colors.blueAccent
+                                  : Theme.of(context).primaryColor,
+                          width: 5.0,
+                          height: 30.0,
                         ),
-                        Expanded(
-                          child: ListTile(
-                            title: Text(_systemTreeEntity?.data[index].name,style: TextStyle(color: index == _selectedPosition ? (Theme.of(context).primaryColor == MyColors.white ? Colors.blueAccent : Theme.of(context).primaryColor) : Colors.black, fontSize: 13.0)),
-                            onTap: (){
-                              setState(() {
-                                //设置被点击位置
-                                _selectedPosition = index;
-                                //设置应该被展示的二级标题
-                                _secondTitleData = _systemTreeEntity.data[index];
-                              });
-
-                            },
-                          ),
+                      ),
+                      Expanded(
+                        child: ListTile(
+                          title: Text(_systemTreeEntity?.data[index].name,
+                              style: TextStyle(
+                                  color: index == _selectedPosition
+                                      ? (Theme.of(context).primaryColor ==
+                                              MyColors.white
+                                          ? Colors.blueAccent
+                                          : Theme.of(context).primaryColor)
+                                      : Colors.black,
+                                  fontSize: 13.0)),
+                          onTap: () {
+                            setState(() {
+                              //设置被点击位置
+                              _selectedPosition = index;
+                              //设置应该被展示的二级标题
+                              _secondTitleData = _systemTreeEntity.data[index];
+                            });
+                          },
                         ),
-                      ],
-                    ),
-                  );
-                },
+                      ),
+                    ],
+                  ),
+                );
+              },
               physics: BouncingScrollPhysics(),
-                ),
+            ),
           ),
           Expanded(
             child: Container(

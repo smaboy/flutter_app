@@ -46,7 +46,6 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
   //页面标签数据
   List<SystemListByCidDataData> contentList;
 
-
   @override
   void initState() {
     super.initState();
@@ -156,8 +155,14 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
         addAutomaticKeepAlives: true,
         itemBuilder: (buildContext, index) {
           return GestureDetector(
-            onTap: (){
-              RouteHelpUtils.push(context, WebViewWidget(url: contentList[index].link,title: contentList[index].title,des: contentList[index].desc,));
+            onTap: () {
+              RouteHelpUtils.push(
+                  context,
+                  WebViewWidget(
+                    url: contentList[index].link,
+                    title: contentList[index].title,
+                    des: contentList[index].desc,
+                  ));
             },
             child: Container(
               padding: EdgeInsets.all(10.0),
@@ -175,7 +180,10 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
               child: Row(
                 children: <Widget>[
                   Center(
-                    child: FavoriteButtonWidget(isFavorite: contentList[index].collect ?? false,id: contentList[index].id,),
+                    child: FavoriteButtonWidget(
+                      isFavorite: contentList[index].collect ?? false,
+                      id: contentList[index].id,
+                    ),
                   ),
                   Expanded(
                       child: Column(
@@ -191,8 +199,8 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
                       ),
                       Padding(
                         child: getListViewItemBottomWidget(contentList[index]),
-                        padding:
-                            EdgeInsets.symmetric(vertical: 5.0, horizontal: 0.0),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 5.0, horizontal: 0.0),
                       )
                     ],
                   ))
@@ -207,7 +215,6 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     tabController.dispose();
     pageController.dispose();

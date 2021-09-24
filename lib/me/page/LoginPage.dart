@@ -138,9 +138,10 @@ class _LoginPageState extends State<LoginPage> {
                       gapPadding: 5.0,
                       borderRadius: BorderRadius.all(Radius.circular(5.0)),
                       borderSide: BorderSide(
-                          color: Theme.of(context).primaryColor == MyColors.white
-                              ? Colors.blueAccent
-                              : Theme.of(context).primaryColor,
+                          color:
+                              Theme.of(context).primaryColor == MyColors.white
+                                  ? Colors.blueAccent
+                                  : Theme.of(context).primaryColor,
                           width: 1.0),
                     ),
                   ),
@@ -192,9 +193,10 @@ class _LoginPageState extends State<LoginPage> {
                       gapPadding: 5.0,
                       borderRadius: BorderRadius.all(Radius.circular(5.0)),
                       borderSide: BorderSide(
-                          color: Theme.of(context).primaryColor == MyColors.white
-                              ? Colors.blueAccent
-                              : Theme.of(context).primaryColor,
+                          color:
+                              Theme.of(context).primaryColor == MyColors.white
+                                  ? Colors.blueAccent
+                                  : Theme.of(context).primaryColor,
                           width: 1.0),
                     ),
                   ),
@@ -257,9 +259,10 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     keyboardType: TextInputType.visiblePassword,
-                    cursorColor: Theme.of(context).primaryColor == MyColors.white
-                        ? Colors.blueAccent
-                        : Theme.of(context).primaryColor,
+                    cursorColor:
+                        Theme.of(context).primaryColor == MyColors.white
+                            ? Colors.blueAccent
+                            : Theme.of(context).primaryColor,
                     obscureText: isLock,
                   ),
                 ),
@@ -274,9 +277,10 @@ class _LoginPageState extends State<LoginPage> {
                 children: <Widget>[
                   Checkbox(
                     value: rPWChecked,
-                    activeColor: Theme.of(context).primaryColor == MyColors.white
-                        ? Colors.blueAccent
-                        : Theme.of(context).primaryColor,
+                    activeColor:
+                        Theme.of(context).primaryColor == MyColors.white
+                            ? Colors.blueAccent
+                            : Theme.of(context).primaryColor,
                     onChanged: (b) {
                       if (b) {
                         //记住密码
@@ -305,11 +309,11 @@ class _LoginPageState extends State<LoginPage> {
             Container(
               width: double.infinity,
               margin: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
-              child: RaisedButton(
-                padding: EdgeInsets.all(10.0),
-                color: Theme.of(context).primaryColor == MyColors.white
-                    ? Colors.blueAccent
-                    : Theme.of(context).primaryColor,
+              child: ElevatedButton(
+                // padding: EdgeInsets.all(10.0),
+                // color: Theme.of(context).primaryColor == MyColors.white
+                //     ? Colors.blueAccent
+                //     : Theme.of(context).primaryColor,
                 onPressed: () {
                   btnSubmit();
                 },

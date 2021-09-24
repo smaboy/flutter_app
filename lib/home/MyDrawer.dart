@@ -83,8 +83,8 @@ class _MyDrawerState extends State<MyDrawer> {
   Widget build(BuildContext context) {
     return Drawer(
       child: Stack(
+        clipBehavior: Clip.hardEdge,
         fit: StackFit.expand,
-        overflow: Overflow.clip,
         alignment: Alignment.topLeft,
         children: <Widget>[
           Image.asset(

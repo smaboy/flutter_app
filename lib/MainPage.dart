@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutterapp/common/widget/myIcons.dart';
 import 'package:flutterapp/common/widget/theme_data_color.dart';
 import 'package:flutterapp/me/MePage.dart';
@@ -14,7 +13,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  static const platform = const MethodChannel('samples.flutter.io/battery');
   /// 当前页面
   int _currentPage = 0;
 
@@ -66,22 +64,24 @@ class _MainPageState extends State<MainPage> {
             icon: Icon(
               MyIcons.home,
             ),
-            title: Text("首页"),
+            label: "首页",
           ),
           const BottomNavigationBarItem(
             icon: Icon(MyIcons.item),
-            title: Text("体系"),
+            label: "体系",
           ),
           const BottomNavigationBarItem(
             icon: Icon(MyIcons.project),
-            title: Text("项目"),
+            label: "项目",
           ),
           const BottomNavigationBarItem(
             icon: Icon(MyIcons.me),
-            title: Text("我的",),
+            label: "我的",
           ),
         ],
-        selectedItemColor: Theme.of(context).primaryColor == MyColors.white ? Colors.blueAccent : Theme.of(context).primaryColor,
+        selectedItemColor: Theme.of(context).primaryColor == MyColors.white
+            ? Colors.blueAccent
+            : Theme.of(context).primaryColor,
         unselectedItemColor: Colors.black87,
         type: BottomNavigationBarType.fixed,
 //        fixedColor: Colors.blue,

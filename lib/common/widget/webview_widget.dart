@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
-import 'package:flutterapp/common/widget/share_widget.dart';
 
 /// webview组件
 class WebViewWidget extends StatefulWidget {
@@ -12,7 +11,9 @@ class WebViewWidget extends StatefulWidget {
   final String des;
   final bool showShare;
 
-  const WebViewWidget({Key key, this.url, this.title, this.des, this.showShare = true}) : super(key: key);
+  const WebViewWidget(
+      {Key key, this.url, this.title, this.des, this.showShare = true})
+      : super(key: key);
 
   @override
   _WebViewWidgetState createState() => _WebViewWidgetState();

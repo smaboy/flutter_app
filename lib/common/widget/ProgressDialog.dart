@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class ProgressDialog extends Dialog {
-
   final String title;
   final String content;
 
@@ -22,47 +21,44 @@ class ProgressDialog extends Dialog {
   Widget build(BuildContext context) {
     _showTimer(context);
 
-    void close(){
-      Navigator.pop(context);
-    }
     return Material(
       child: Center(
           child: Container(
-            height: 200,
-            width: 200,
-            color: Colors.white,
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Stack(
-                    children: <Widget>[
-                      Align(
-                        child: Text(title),
-                        alignment: Alignment.topCenter,
-                      ),
-                      Align(
-                        child: InkWell(
-                          child: Icon(Icons.close),
-                          onTap: () => Navigator.pop(context),
-                        ),
-                        alignment: Alignment.topRight,
-                      ),
-                    ],
+        height: 200,
+        width: 200,
+        color: Colors.white,
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Stack(
+                children: <Widget>[
+                  Align(
+                    child: Text(title),
+                    alignment: Alignment.topCenter,
                   ),
-                ),
-                Divider(),
-                Container(
-                  width: double.infinity,
-                  child: Text(
-                    content,
-                    textAlign: TextAlign.left,
+                  Align(
+                    child: InkWell(
+                      child: Icon(Icons.close),
+                      onTap: () => Navigator.pop(context),
+                    ),
+                    alignment: Alignment.topRight,
                   ),
-                  padding: EdgeInsets.all(10),
-                )
-              ],
+                ],
+              ),
             ),
-          )),
+            Divider(),
+            Container(
+              width: double.infinity,
+              child: Text(
+                content,
+                textAlign: TextAlign.left,
+              ),
+              padding: EdgeInsets.all(10),
+            )
+          ],
+        ),
+      )),
       type: MaterialType.transparency,
     );
   }

@@ -32,7 +32,7 @@ class HomePage extends StatefulWidget {
   }
 }
 
-class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
+class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
   /// 轮播图数据
   HomeBannerEntity _homeBannerEntity = HomeBannerEntity();
 
@@ -100,9 +100,7 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
           onPressed: () {
             //返回到顶部时执行动画
             _controller.animateTo(.0,
-                duration: Duration(milliseconds: 1500),
-                curve: Curves.ease
-            );
+                duration: Duration(milliseconds: 1500), curve: Curves.ease);
           },
         ),
       ),
@@ -118,11 +116,13 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
       //通过前后两次数据对比确定滑动方向
 
       print(_controller.offset); //打印滚动位置
-      if (_controller.offset - initOffSet > 0 && showFloatBtn == false) {//向上滑动且按钮没有显示时，刷新显示按钮
+      if (_controller.offset - initOffSet > 0 && showFloatBtn == false) {
+        //向上滑动且按钮没有显示时，刷新显示按钮
         setState(() {
           showFloatBtn = true;
         });
-      } else if (_controller.offset - initOffSet < 0 && showFloatBtn) {//向下滑动且按钮没有显示时，刷新显示按钮
+      } else if (_controller.offset - initOffSet < 0 && showFloatBtn) {
+        //向下滑动且按钮没有显示时，刷新显示按钮
         setState(() {
           showFloatBtn = false;
         });
@@ -134,7 +134,6 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
 
     /// 初始化数据
     initDat();
-
   }
 
   @override
@@ -285,15 +284,6 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
   /// 获取ListView的子view布局中底部的详情组件（如:作者、分类、时间等）
   List<Widget> getListViewItemBottomWidget(
       HomeArticleDataBean homeArticleDataBean) {
-    Widget tag = DecoratedBox(
-      child: Text("新"),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(3.0),
-        border: Border.all(color: Colors.red, width: 0.5),
-        color: Colors.white,
-        shape: BoxShape.rectangle,
-      ),
-    );
     var tags = <Widget>[];
     var spaceWidget = Container(
       width: 6.0,

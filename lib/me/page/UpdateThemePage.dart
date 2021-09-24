@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/common/util/RouteHelpUtils.dart';
 import 'package:flutterapp/common/util/SPUtils.dart';
 import 'package:flutterapp/common/util/event_bus_utils.dart';
 import 'package:flutterapp/common/widget/theme_data_color.dart';
@@ -11,7 +10,6 @@ class UpdateThemePage extends StatefulWidget {
 }
 
 class _UpdateThemePageState extends State<UpdateThemePage> {
-
   /// 当前选中的主题
   int _selectedIndex;
 
@@ -24,7 +22,6 @@ class _UpdateThemePageState extends State<UpdateThemePage> {
   }
 
   void init() async {
-
     //初始化主题数据
     SharedPreferences sharedPreferences = await SPUtils.getInstance().getSP();
     try {
@@ -37,14 +34,10 @@ class _UpdateThemePageState extends State<UpdateThemePage> {
     });
 
     print("_UpdateThemePageState--init--获取到的主题坐标为:$_selectedIndex");
-
-
-
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.blueGrey[50],
       appBar: AppBar(
@@ -57,7 +50,6 @@ class _UpdateThemePageState extends State<UpdateThemePage> {
       ),
       body: ListView.separated(
         separatorBuilder: (BuildContext context, int index) {
-
           return Divider(
             color: index % 2 == 0 ? Colors.red : Colors.blue,
             height: 1,
@@ -74,19 +66,24 @@ class _UpdateThemePageState extends State<UpdateThemePage> {
                     height: 40.0,
                     width: 40.0,
                     decoration: BoxDecoration(
-                      color: MyColors.getColorByIndex(index),
-                      borderRadius: BorderRadius.circular(20.0),
-                      border: _selectedIndex == index ? Border.all(color: Colors.black45,width: 1.0) : null
-                    ),
+                        color: MyColors.getColorByIndex(index),
+                        borderRadius: BorderRadius.circular(20.0),
+                        border: _selectedIndex == index
+                            ? Border.all(color: Colors.black45, width: 1.0)
+                            : null),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: IconButton(
-                    icon: Icon(_selectedIndex == index ? Icons.check_box : Icons.check_box_outline_blank,),
+                    icon: Icon(
+                      _selectedIndex == index
+                          ? Icons.check_box
+                          : Icons.check_box_outline_blank,
+                    ),
                     color: Colors.black,
                     iconSize: 25.0,
-                    onPressed: (){
+                    onPressed: () {
                       updateSelectedTheme(index);
                     },
                   ),
@@ -100,19 +97,19 @@ class _UpdateThemePageState extends State<UpdateThemePage> {
     );
   }
 
-
   // 更新主题
-  updateSelectedTheme(int value){
-
+  updateSelectedTheme(int value) {
     //更新选中位置
     setState(() {
       _selectedIndex = value;
     });
 
     // 发送通知，主题改变了
-    EventBusUtils.instance.fire(BusIEvent(busIEventID: BusIEventID.theme_update,id: _selectedIndex));
+    EventBusUtils.instance.fire(
+        BusIEvent(busIEventID: BusIEventID.theme_update, id: _selectedIndex));
 
-    print("_UpdateThemePageState--updateSelectedTheme--当前点击的位置是==$value--_selectedIndex==$_selectedIndex");
+    print(
+        "_UpdateThemePageState--updateSelectedTheme--当前点击的位置是==$value--_selectedIndex==$_selectedIndex");
   }
 
   @override

@@ -1,17 +1,11 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/common/constant/API.dart';
 import 'package:flutterapp/common/util/RouteHelpUtils.dart';
 import 'package:flutterapp/common/widget/webview_widget.dart';
 import 'package:flutterapp/common/widget/favorite_button_widget.dart';
-import 'package:flutterapp/http/HttpUtils.dart';
 import 'package:flutterapp/item/entity/item_list_entity.dart';
 import 'package:flutterapp/item/entity/item_tree_entity.dart';
 import 'package:flutterapp/item/service/item_service_impl.dart';
-import 'package:flutterapp/me/page/LoginPage.dart';
-import 'package:toast/toast.dart';
 
 /// 项目页面
 class ItemPage extends StatefulWidget {
@@ -23,7 +17,8 @@ class ItemPage extends StatefulWidget {
   _ItemPageState createState() => _ItemPageState();
 }
 
-class _ItemPageState extends State<ItemPage> with AutomaticKeepAliveClientMixin{
+class _ItemPageState extends State<ItemPage>
+    with AutomaticKeepAliveClientMixin {
   //项目子项集合
   List<ItemTreeData> data;
 
@@ -99,7 +94,7 @@ class _ItemPageState extends State<ItemPage> with AutomaticKeepAliveClientMixin{
 }
 
 /// 加载状态
-enum LoadMoreStatue{
+enum LoadMoreStatue {
   //加载中
   STATUE_LOADING,
   //加载完成
@@ -138,38 +133,52 @@ class _ContentWidgetState extends State<ContentWidget> {
   Widget build(BuildContext context) {
     var length = contentList?.length ?? 0;
     return RefreshIndicator(
-      onRefresh: () async{
+      onRefresh: () async {
         initData();
       },
       child: ListView.builder(
         controller: _scrollController,
-        itemCount: length >0 ? length+1 : 0,
+        itemCount: length > 0 ? length + 1 : 0,
         itemBuilder: (buildContext, index) {
-          return index == length ? LoadMoreWidget(isVisibleProgress: curLoadMoreStatue == LoadMoreStatue.STATUE_LOADING,loadMoreMsg: loadMoreMsg,) : GestureDetector(
-            onTap: (){
-              RouteHelpUtils.push(context, WebViewWidget(url: contentList[index].link,title: contentList[index].title,des: contentList[index].desc,));
-            },
-            child: Card(
-              color: Colors.white,
-              margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-              child: Container(
-                height: 200.0,
-                padding: EdgeInsets.all(10.0),
-                child: Row(
-                  children: <Widget>[
-                    Image.network(
-                      contentList[index].envelopePic,
-                      fit: BoxFit.contain,
-                      width: 130.0,
+          return index == length
+              ? LoadMoreWidget(
+                  isVisibleProgress:
+                      curLoadMoreStatue == LoadMoreStatue.STATUE_LOADING,
+                  loadMoreMsg: loadMoreMsg,
+                )
+              : GestureDetector(
+                  onTap: () {
+                    RouteHelpUtils.push(
+                        context,
+                        WebViewWidget(
+                          url: contentList[index].link,
+                          title: contentList[index].title,
+                          des: contentList[index].desc,
+                        ));
+                  },
+                  child: Card(
+                    color: Colors.white,
+                    margin:
+                        EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                    child: Container(
                       height: 200.0,
-                      alignment: Alignment.center,
+                      padding: EdgeInsets.all(10.0),
+                      child: Row(
+                        children: <Widget>[
+                          Image.network(
+                            contentList[index].envelopePic,
+                            fit: BoxFit.contain,
+                            width: 130.0,
+                            height: 200.0,
+                            alignment: Alignment.center,
+                          ),
+                          ContentEndWidget(
+                              contentList: contentList, index: index),
+                        ],
+                      ),
                     ),
-                    ContentEndWidget(contentList: contentList,index : index),
-                  ],
-                ),
-              ),
-            ),
-          );
+                  ),
+                );
         },
       ),
     );
@@ -182,9 +191,11 @@ class _ContentWidgetState extends State<ContentWidget> {
     //listview控制器
     _scrollController = ScrollController();
     _voidCallback = () {
-      if(_scrollController.position.pixels >= _scrollController.position.maxScrollExtent){
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent) {
         //此时加载下一页数据
-        if(curLoadMoreStatue == LoadMoreStatue.STATUE_IDEL && mounted){//空闲状态才改变
+        if (curLoadMoreStatue == LoadMoreStatue.STATUE_IDEL && mounted) {
+          //空闲状态才改变
           setState(() {
             loadMoreMsg = "加载中...";
             curLoadMoreStatue = LoadMoreStatue.STATUE_LOADING;
@@ -202,19 +213,17 @@ class _ContentWidgetState extends State<ContentWidget> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
 
     _scrollController.removeListener(_voidCallback);
     _scrollController.dispose();
   }
 
-
   void initData() async {
     curPageNum = 1;
     ItemListEntity itemListByCid = await ItemServiceImpl.getInstance()
         .getItemListByCid(curPageNum, widget.id);
-    if(mounted){
+    if (mounted) {
       setState(() {
         if (itemListByCid != null &&
             itemListByCid.data != null &&
@@ -224,7 +233,6 @@ class _ContentWidgetState extends State<ContentWidget> {
         }
       });
     }
-
   }
 
   Future loadMoreData() async {
@@ -232,31 +240,28 @@ class _ContentWidgetState extends State<ContentWidget> {
     print("加载更多-当前页码为:$curPageNum");
     ItemListEntity itemListByCid = await ItemServiceImpl.getInstance()
         .getItemListByCid(curPageNum, widget.id);
-    if(mounted){
+    if (mounted) {
       setState(() {
         if (itemListByCid != null &&
             itemListByCid.data != null &&
             itemListByCid.data.datas != null &&
             itemListByCid.data.datas.length > 0) {
-
           curLoadMoreStatue = LoadMoreStatue.STATUE_IDEL;
           contentList.addAll(itemListByCid.data.datas);
-
-        }else{
+        } else {
           loadMoreMsg = "已经到底了!!";
           curLoadMoreStatue = LoadMoreStatue.STATUE_COMPLETE;
         }
       });
     }
-
   }
 }
 
-
-
 class LoadMoreWidget extends StatelessWidget {
   const LoadMoreWidget({
-    Key key,this.isVisibleProgress = false, this.loadMoreMsg = "",
+    Key key,
+    this.isVisibleProgress = false,
+    this.loadMoreMsg = "",
   }) : super(key: key);
 
   final bool isVisibleProgress;
@@ -276,13 +281,18 @@ class LoadMoreWidget extends StatelessWidget {
               width: 13.0,
               height: 13.0,
               child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor),
+                valueColor:
+                    AlwaysStoppedAnimation(Theme.of(context).primaryColor),
               ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(10.0),
-            child: Text(loadMoreMsg,style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 12.0),),
+            child: Text(
+              loadMoreMsg,
+              style: TextStyle(
+                  color: Theme.of(context).primaryColor, fontSize: 12.0),
+            ),
           )
         ],
       ),
@@ -293,7 +303,8 @@ class LoadMoreWidget extends StatelessWidget {
 class ContentEndWidget extends StatelessWidget {
   const ContentEndWidget({
     Key key,
-    @required this.contentList, @required this.index,
+    @required this.contentList,
+    @required this.index,
   }) : super(key: key);
 
   final List<ItemListDataData> contentList;
@@ -345,7 +356,10 @@ class ContentEndWidget extends StatelessWidget {
                           fontWeight: FontWeight.normal),
                     ),
                   ),
-                  FavoriteButtonWidget(id : contentList[index].id,isFavorite: contentList[index]?.collect ?? false,),
+                  FavoriteButtonWidget(
+                    id: contentList[index].id,
+                    isFavorite: contentList[index]?.collect ?? false,
+                  ),
                 ],
               ),
               padding: EdgeInsets.all(5.0),
