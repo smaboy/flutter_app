@@ -48,6 +48,7 @@ class HttpUtils {
         print("请求头:${options.headers}");
         print("请求参数:${options.queryParameters.toString()}");
         print("请求路径:${options.baseUrl}${options.path}");
+        return handler.next(options);
       }, onResponse: (response, handler) {
         print("------------------>>>>>>>>接收响应<<<<<<<————————————————————");
         print("请求头:${response.requestOptions.headers.toString()}");
@@ -58,9 +59,11 @@ class HttpUtils {
         print("响应状态信息:${response.statusMessage}");
         print("响应头:${response.headers.toString()}");
         print("响应数据:${response.toString()}");
+        return handler.next(response);
       }, onError: (error, handler) {
         print("------------------>>>>>>>>发生错误<<<<<<<————————————————————");
         print("${error.message}");
+        return handler.next(error);
       }))
       ..add(_dioCacheManager.interceptor); //缓存拦截器
   }
