@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterapp/common/util/log_utils.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 /// webview组件
@@ -37,6 +38,15 @@ class _WebViewWidgetState extends State<WebViewWidget> {
       body: WebView(
         initialUrl: widget.url ?? '',
         javascriptMode: JavascriptMode.unrestricted,
+        onProgress: (value) {
+          LogUtils.d('onProgress--$value');
+        },
+        onPageStarted: (value) {
+          LogUtils.d('onPageStarted--$value');
+        },
+        onPageFinished: (value) {
+          LogUtils.d('onPageFinished--$value');
+        },
       ),
     );
   }

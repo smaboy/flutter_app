@@ -497,8 +497,6 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
         onSuccess: (responses) {},
         onFailure: (msg) {},
         isNeedCache: true);
-    print("homeArticleTop====${homeArticleTop.toString()}");
-    print("homeArticleList====${homeArticleList.toString()}");
 
     //设置数据
     setState(() {
