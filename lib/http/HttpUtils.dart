@@ -6,6 +6,7 @@ import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/common/constant/API.dart';
 import 'package:cookie_jar/cookie_jar.dart';
+import 'package:flutterapp/http/LoggerInterceptor.dart';
 import 'package:path_provider/path_provider.dart';
 
 /// Http工具类
@@ -41,30 +42,7 @@ class HttpUtils {
     //添加拦截器
     dio.interceptors
 //      ..add(CookieManager(CookieJar())) //cookie管理
-      ..add(InterceptorsWrapper(onRequest: (options, handler) {
-        //请求拦截器
-        print("------------------>>>>>>>>发送请求<<<<<<<————————————————————");
-        print("请求方法:${options.method}");
-        print("请求头:${options.headers}");
-        print("请求参数:${options.queryParameters.toString()}");
-        print("请求路径:${options.baseUrl}${options.path}");
-        return handler.next(options);
-      }, onResponse: (response, handler) {
-        print("------------------>>>>>>>>接收响应<<<<<<<————————————————————");
-        print("请求头:${response.requestOptions.headers.toString()}");
-        print("请求参数:${response.requestOptions.queryParameters.toString()}");
-        print(
-            "请求路径:${response.requestOptions.baseUrl}${response.requestOptions.path}");
-        print("响应状态码:${response.statusCode}");
-        print("响应状态信息:${response.statusMessage}");
-        print("响应头:${response.headers.toString()}");
-        print("响应数据:${response.toString()}");
-        return handler.next(response);
-      }, onError: (error, handler) {
-        print("------------------>>>>>>>>发生错误<<<<<<<————————————————————");
-        print("${error.message}");
-        return handler.next(error);
-      }))
+      ..add(LoggerInterceptor())
       ..add(_dioCacheManager.interceptor); //缓存拦截器
   }
 
