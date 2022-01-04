@@ -54,6 +54,11 @@ class LoggerInterceptor extends Interceptor {
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
+    errLog.clear();
+    repLog.writeln("------------------>>>>>>>>发生错误<<<<<<<————————————————————");
+    errLog.writeln(err);
+    LogUtils.e(errLog);
+
     super.onError(err, handler);
   }
 }
