@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutterapp/MainPage.dart';
 import 'package:flutterapp/common/util/SPUtils.dart';
 import 'package:flutterapp/common/util/event_bus_utils.dart';
+import 'package:flutterapp/common/util/log_utils.dart';
 import 'package:flutterapp/common/widget/my_will_pop_scope.dart';
 import 'package:flutterapp/common/widget/theme_data_color.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -58,14 +59,14 @@ class _MyAppState extends State<MyApp> {
       primaryColor = MyColors.getColorByIndex(position ?? 0);
       primarySwatch = MyColors.getColorByIndex(position ?? 0);
     });
-    print("_MyAppState--init--获取到的主题位置为==$position");
+    LogUtils.d("_MyAppState--init--获取到的主题位置为==$position");
 
     //设置监听
     _streamSubscription = EventBusUtils.instance.register((event) {
       if (event.busIEventID == BusIEventID.theme_update) {
         int index;
         index = event.id ?? 0;
-        print("_MyAppState--init--event-获取到的主题位置为==$index");
+        LogUtils.d("_MyAppState--init--event-获取到的主题位置为==$index");
         setState(() {
           primaryColor = MyColors.getColorByIndex(index);
         });

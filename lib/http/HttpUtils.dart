@@ -6,6 +6,7 @@ import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/common/constant/API.dart';
 import 'package:cookie_jar/cookie_jar.dart';
+import 'package:flutterapp/common/util/log_utils.dart';
 import 'package:flutterapp/http/LoggerInterceptor.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -97,7 +98,7 @@ class HttpUtils {
       }
 
       //打印请求报错信息
-      print(e);
+      LogUtils.e(e);
     }
 
     return response;
@@ -140,7 +141,7 @@ class HttpUtils {
       }
 
       //打印请求报错信息
-      print(e);
+      LogUtils.e(e);
     }
     return response;
   }

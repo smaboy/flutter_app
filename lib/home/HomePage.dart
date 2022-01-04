@@ -115,7 +115,6 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
     _controller.addListener(() {
       //通过前后两次数据对比确定滑动方向
 
-      print(_controller.offset); //打印滚动位置
       if (_controller.offset - initOffSet > 0 && showFloatBtn == false) {
         //向上滑动且按钮没有显示时，刷新显示按钮
         setState(() {
@@ -466,7 +465,6 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
       setState(() {
         _homeBannerEntity = homeBannerEntityFromJson(
             _homeBannerEntity, json.decode(responses.toString()));
-        print("meBeanEntity转化的第一列的标题为:${_homeBannerEntity.data[0].title}");
       });
 
       _swiperController.startAutoplay();
@@ -518,8 +516,6 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
         //文章数据
         _articleList.addAll(homeArticleListEntity.data.datas);
       }
-      print(
-          "initArticleListData-meBeanEntity转化的第一列的标题为:${_articleList[0].title},长度为:${_articleList.length}");
     });
   }
 

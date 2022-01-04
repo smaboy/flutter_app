@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutterapp/common/util/log_utils.dart';
 
 class ProgressDialog extends Dialog {
   final String title;
@@ -9,7 +10,7 @@ class ProgressDialog extends Dialog {
   _showTimer(context) {
     var timer;
     timer = Timer.periodic(Duration(seconds: 3), (t) {
-      print("关闭");
+      LogUtils.d("关闭");
       Navigator.pop(context);
       timer.cancel();
     });

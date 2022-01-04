@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/common/util/RouteHelpUtils.dart';
+import 'package:flutterapp/common/util/log_utils.dart';
 import 'package:flutterapp/common/widget/webview_widget.dart';
 import 'package:flutterapp/common/widget/favorite_button_widget.dart';
 import 'package:flutterapp/item/entity/item_list_entity.dart';
@@ -61,7 +62,7 @@ class _ItemPageState extends State<ItemPage>
         this.data = itemTreeEntity.data;
       }
     });
-    print("ItemTreeEntity==第一个标题==${itemTreeEntity.data[0].name}");
+    LogUtils.d("ItemTreeEntity==第一个标题==${itemTreeEntity.data[0].name}");
   }
 
   /// 项目页面标题组件子项集合
@@ -85,7 +86,7 @@ class _ItemPageState extends State<ItemPage>
         tabViewChildren.add(ContentWidget(id: itemTreeData.id));
       }
     }
-    print("tabViewChildren的长度为:${tabViewChildren.length}");
+    LogUtils.d("tabViewChildren的长度为:${tabViewChildren.length}");
     return tabViewChildren;
   }
 
@@ -237,7 +238,7 @@ class _ContentWidgetState extends State<ContentWidget> {
 
   Future loadMoreData() async {
     curPageNum++;
-    print("加载更多-当前页码为:$curPageNum");
+    LogUtils.d("加载更多-当前页码为:$curPageNum");
     ItemListEntity itemListByCid = await ItemServiceImpl.getInstance()
         .getItemListByCid(curPageNum, widget.id);
     if (mounted) {

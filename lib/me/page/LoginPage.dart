@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutterapp/common/constant/API.dart';
 import 'package:flutterapp/common/util/SPUtils.dart';
 import 'package:flutterapp/common/util/event_bus_utils.dart';
+import 'package:flutterapp/common/util/log_utils.dart';
 import 'package:flutterapp/common/widget/theme_data_color.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
 import 'package:flutterapp/me/entity/register_entity.dart';
@@ -70,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
       _userNameControl.text = localUserName;
       _pwControl.text = localPassword;
 
-      print(
+      LogUtils.d(
           "拿到的SP数据:rPWChecked=$rPWChecked,localUserName=$localUserName,localPassword=$localPassword");
     });
   }

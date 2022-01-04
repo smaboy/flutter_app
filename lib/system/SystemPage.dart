@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/common/util/RouteHelpUtils.dart';
+import 'package:flutterapp/common/util/log_utils.dart';
 import 'package:flutterapp/common/widget/theme_data_color.dart';
 import 'package:flutterapp/system/SystemItemDetailsPage.dart';
 import 'package:flutterapp/system/entity/system_tree_entity.dart';
@@ -92,10 +93,10 @@ class SystemPageState extends State<SystemPage>
             }));
       }
 
-      print("第一个标题为:${systemTreeData.children[0].name}");
+      LogUtils.d("第一个标题为:${systemTreeData.children[0].name}");
     }
 
-    print("titleTreeWidgets的长度为:${titleTreeWidgets.length}");
+    LogUtils.d("titleTreeWidgets的长度为:${titleTreeWidgets.length}");
 
     return titleTreeWidgets;
   }

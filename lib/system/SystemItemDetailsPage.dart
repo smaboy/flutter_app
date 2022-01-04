@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/common/util/RouteHelpUtils.dart';
+import 'package:flutterapp/common/util/log_utils.dart';
 import 'package:flutterapp/common/widget/webview_widget.dart';
 import 'package:flutterapp/common/widget/favorite_button_widget.dart';
 import 'package:flutterapp/system/entity/system_list_by_cid_entity.dart';
@@ -98,7 +99,7 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
 //          indicatorPadding: EdgeInsets.only(left: 6, right: 6),
           // 点击item
           onTap: (int index) {
-            print("system-tabbar-ontap-index-$index");
+            LogUtils.d("system-tabbar-ontap-index-$index");
             curPosition = index;
             getListDataByCid();
           },
@@ -112,7 +113,7 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
 //        physics: NeverScrollableScrollPhysics(),
           itemCount: widget.tabList.length,
           onPageChanged: (index) {
-            print("system-pageview-onPageChanged-index-$index");
+            LogUtils.d("system-pageview-onPageChanged-index-$index");
             curPosition = index;
             getListDataByCid();
             tabController.animateTo(index);
@@ -132,7 +133,7 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
         await SystemServiceImpl.getInstance()
             .getSystemListByCid(curPageNum, widget.tabList[curPosition].id);
 
-    print("当前选中的position==$curPosition");
+    LogUtils.d("当前选中的position==$curPosition");
 
     //设置数据
     setState(() {
@@ -145,7 +146,7 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
       }
     });
 
-    print("第一个标题==${systemListByCidEntity.data.datas[0].title}");
+    LogUtils.d("第一个标题==${systemListByCidEntity.data.datas[0].title}");
   }
 
   ///获取内容组件

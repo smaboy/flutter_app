@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/common/util/SPUtils.dart';
 import 'package:flutterapp/common/util/event_bus_utils.dart';
+import 'package:flutterapp/common/util/log_utils.dart';
 import 'package:flutterapp/common/widget/theme_data_color.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,7 +34,7 @@ class _UpdateThemePageState extends State<UpdateThemePage> {
       _selectedIndex = _selectedIndex ?? 0;
     });
 
-    print("_UpdateThemePageState--init--获取到的主题坐标为:$_selectedIndex");
+    LogUtils.d("_UpdateThemePageState--init--获取到的主题坐标为:$_selectedIndex");
   }
 
   @override
@@ -108,13 +109,14 @@ class _UpdateThemePageState extends State<UpdateThemePage> {
     EventBusUtils.instance.fire(
         BusIEvent(busIEventID: BusIEventID.theme_update, id: _selectedIndex));
 
-    print(
+    LogUtils.d(
         "_UpdateThemePageState--updateSelectedTheme--当前点击的位置是==$value--_selectedIndex==$_selectedIndex");
   }
 
   @override
   void dispose() {
-    print("_UpdateThemePageState--dispose--_selectedIndex==$_selectedIndex");
+    LogUtils.d(
+        "_UpdateThemePageState--dispose--_selectedIndex==$_selectedIndex");
 
     //页面销毁时，将选中的主题保存
     SPUtils.getInstance().setValue(SPUtils.themeData, _selectedIndex);
