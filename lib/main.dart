@@ -28,9 +28,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Color primaryColor;
-  MaterialColor primarySwatch;
-  StreamSubscription _streamSubscription;
+  late MaterialColor? primaryColor;
+  late MaterialColor primarySwatch;
+  late StreamSubscription _streamSubscription;
 
   @override
   void initState() {
@@ -51,13 +51,13 @@ class _MyAppState extends State<MyApp> {
     SharedPreferences sharedPreferences = await SPUtils.getInstance().getSP();
     int position;
     try {
-      position = sharedPreferences.getInt(SPUtils.themeData);
+      position = sharedPreferences.getInt(SPUtils.themeData) ?? 0;
     } catch (e) {
       position = 0;
     }
     setState(() {
-      primaryColor = MyColors.getColorByIndex(position ?? 0);
-      primarySwatch = MyColors.getColorByIndex(position ?? 0);
+      primaryColor = MyColors.getColorByIndex(position);
+      primarySwatch = MyColors.getColorByIndex(position);
     });
     LogUtils.d("_MyAppState--init--获取到的主题位置为==$position");
 

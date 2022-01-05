@@ -4,7 +4,7 @@ systemTreeEntityFromJson(SystemTreeEntity data, Map<String, dynamic> json) {
   if (json['data'] != null) {
     data.data = <SystemTreeData>[];
     (json['data'] as List).forEach((v) {
-      data.data.add(new SystemTreeData().fromJson(v));
+      data.data?.add(new SystemTreeData().fromJson(v));
     });
   }
   if (json['errorCode'] != null) {
@@ -19,7 +19,7 @@ systemTreeEntityFromJson(SystemTreeEntity data, Map<String, dynamic> json) {
 Map<String, dynamic> systemTreeEntityToJson(SystemTreeEntity entity) {
   final Map<String, dynamic> data = new Map<String, dynamic>();
   if (entity.data != null) {
-    data['data'] = entity.data.map((v) => v.toJson()).toList();
+    data['data'] = entity.data?.map((v) => v.toJson()).toList();
   }
   data['errorCode'] = entity.errorCode;
   data['errorMsg'] = entity.errorMsg;
@@ -30,7 +30,7 @@ systemTreeDataFromJson(SystemTreeData data, Map<String, dynamic> json) {
   if (json['children'] != null) {
     data.children = <SystemTreeDataChild>[];
     (json['children'] as List).forEach((v) {
-      data.children.add(new SystemTreeDataChild().fromJson(v));
+      data.children?.add(new SystemTreeDataChild().fromJson(v));
     });
   }
   if (json['courseId'] != null) {
@@ -60,7 +60,7 @@ systemTreeDataFromJson(SystemTreeData data, Map<String, dynamic> json) {
 Map<String, dynamic> systemTreeDataToJson(SystemTreeData entity) {
   final Map<String, dynamic> data = new Map<String, dynamic>();
   if (entity.children != null) {
-    data['children'] = entity.children.map((v) => v.toJson()).toList();
+    data['children'] = entity.children?.map((v) => v.toJson()).toList();
   }
   data['courseId'] = entity.courseId;
   data['id'] = entity.id;
@@ -76,7 +76,7 @@ systemTreeDataChildFromJson(
     SystemTreeDataChild data, Map<String, dynamic> json) {
   if (json['children'] != null) {
     data.children = <dynamic>[];
-    data.children.addAll(json['children']);
+    data.children?.addAll(json['children']);
   }
   if (json['courseId'] != null) {
     data.courseId = json['courseId']?.toInt();

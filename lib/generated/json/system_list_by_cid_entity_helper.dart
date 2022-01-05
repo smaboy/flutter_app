@@ -17,7 +17,7 @@ systemListByCidEntityFromJson(
 Map<String, dynamic> systemListByCidEntityToJson(SystemListByCidEntity entity) {
   final Map<String, dynamic> data = new Map<String, dynamic>();
   if (entity.data != null) {
-    data['data'] = entity.data.toJson();
+    data['data'] = entity.data?.toJson();
   }
   data['errorCode'] = entity.errorCode;
   data['errorMsg'] = entity.errorMsg;
@@ -32,7 +32,7 @@ systemListByCidDataFromJson(
   if (json['datas'] != null) {
     data.datas = <SystemListByCidDataData>[];
     (json['datas'] as List).forEach((v) {
-      data.datas.add(new SystemListByCidDataData().fromJson(v));
+      data.datas?.add(new SystemListByCidDataData().fromJson(v));
     });
   }
   if (json['offset'] != null) {
@@ -57,7 +57,7 @@ Map<String, dynamic> systemListByCidDataToJson(SystemListByCidData entity) {
   final Map<String, dynamic> data = new Map<String, dynamic>();
   data['curPage'] = entity.curPage;
   if (entity.datas != null) {
-    data['datas'] = entity.datas.map((v) => v.toJson()).toList();
+    data['datas'] = entity.datas?.map((v) => v.toJson()).toList();
   }
   data['offset'] = entity.offset;
   data['over'] = entity.over;
@@ -149,7 +149,7 @@ systemListByCidDataDataFromJson(
   }
   if (json['tags'] != null) {
     data.tags = <dynamic>[];
-    data.tags.addAll(json['tags']);
+    data.tags?.addAll(json['tags']);
   }
   if (json['title'] != null) {
     data.title = json['title']?.toString();

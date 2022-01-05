@@ -15,14 +15,14 @@ import 'package:path_provider/path_provider.dart';
 /// dio的使用参考 https://github.com/flutterchina/dio/blob/master/README-ZH.md
 ///
 class HttpUtils {
-  static HttpUtils _instance;
-  Dio dio;
-  DioCacheManager _dioCacheManager;
-  PersistCookieJar _cookieJar;
+  static late HttpUtils? _instance;
+  late Dio dio;
+  late DioCacheManager _dioCacheManager;
+  late PersistCookieJar _cookieJar;
 
   static HttpUtils getInstance() {
     if (_instance == null) _instance = HttpUtils();
-    return _instance;
+    return _instance!;
   }
 
   /// 构造器初始化配置在此内进行
@@ -48,7 +48,7 @@ class HttpUtils {
   }
 
   ///添加cookie拦截器
-  Future addCookieInterceptors(Dio dio) async {
+  Future addCookieInterceptors(Dio? dio) async {
     //默认cookie拦截器，将cookie保存在运存中，应用退出cookie销毁
 //    add(CookieManager(CookieJar()))
 
@@ -58,19 +58,19 @@ class HttpUtils {
     // _cookieJar = PersistCookieJar(dir: "$appDocPath\/cookies/");
     _cookieJar =
         PersistCookieJar(storage: FileStorage("$appDocPath\/cookies/"));
-    dio.interceptors.add(CookieManager(_cookieJar));
+    dio?.interceptors.add(CookieManager(_cookieJar));
   }
 
   /// get 请求方法
   Future<Response> get(String path,
-      {Map<String, dynamic> queryParameters,
-      Options options,
-      CancelToken cancelToken,
+      {Map<String, dynamic>? queryParameters,
+      Options? options,
+      CancelToken? cancelToken,
       bool isNeedCache = false,
-      void Function(int, int) onReceiveProgress,
-      void Function(Response) onSuccess,
-      void Function(String) onFailure}) async {
-    Response response;
+      void Function(int, int)? onReceiveProgress,
+      void Function(Response)? onSuccess,
+      void Function(String)? onFailure}) async {
+    late Response response;
     try {
       //  添加缓存配置 MaxAge：设置缓存的时间，MaxStale: 设置过期时常
       //  subKey: dio-http-cache 默认使用 url 作为缓存 key ,但当 url 不够用的时候，比如 post 请求分页数据的时候，就需要配合subKey使用。
@@ -107,15 +107,15 @@ class HttpUtils {
   /// post 请求方法
   Future<Response> post(String path,
       {dynamic data,
-      Map<String, dynamic> queryParameters,
-      Options options,
-      CancelToken cancelToken,
+      Map<String, dynamic>? queryParameters,
+      Options? options,
+      CancelToken? cancelToken,
       bool isNeedCache = false,
-      void Function(int, int) onSendProgress,
-      void Function(int, int) onReceiveProgress,
-      void Function(Response) onSuccess,
-      void Function(String) onFailure}) async {
-    Response response;
+      void Function(int, int)? onSendProgress,
+      void Function(int, int)? onReceiveProgress,
+      void Function(Response)? onSuccess,
+      void Function(String)? onFailure}) async {
+    late Response response;
     try {
       //  添加缓存配置 MaxAge：设置缓存的时间，MaxStale: 设置过期时常
       var optionTemp = buildCacheOptions(Duration(days: 7),
@@ -215,8 +215,6 @@ class HttpUtils {
 
   /// 清除cookie
   clearAllCookie() {
-    if (_cookieJar != null) {
-      _cookieJar.deleteAll();
-    }
+    _cookieJar.deleteAll();
   }
 }

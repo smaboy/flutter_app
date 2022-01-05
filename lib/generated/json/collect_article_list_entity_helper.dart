@@ -18,7 +18,7 @@ Map<String, dynamic> collectArticleListEntityToJson(
     CollectArticleListEntity entity) {
   final Map<String, dynamic> data = new Map<String, dynamic>();
   if (entity.data != null) {
-    data['data'] = entity.data.toJson();
+    data['data'] = entity.data?.toJson();
   }
   data['errorCode'] = entity.errorCode;
   data['errorMsg'] = entity.errorMsg;
@@ -33,7 +33,7 @@ collectArticleListDataFromJson(
   if (json['datas'] != null) {
     data.datas = <CollectArticleListDataData>[];
     (json['datas'] as List).forEach((v) {
-      data.datas.add(new CollectArticleListDataData().fromJson(v));
+      data.datas?.add(new CollectArticleListDataData().fromJson(v));
     });
   }
   if (json['offset'] != null) {
@@ -59,7 +59,7 @@ Map<String, dynamic> collectArticleListDataToJson(
   final Map<String, dynamic> data = new Map<String, dynamic>();
   data['curPage'] = entity.curPage;
   if (entity.datas != null) {
-    data['datas'] = entity.datas.map((v) => v.toJson()).toList();
+    data['datas'] = entity.datas?.map((v) => v.toJson()).toList();
   }
   data['offset'] = entity.offset;
   data['over'] = entity.over;

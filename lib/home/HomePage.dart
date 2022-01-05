@@ -54,7 +54,7 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
   ///默认页码
   int curPageNum = 0;
 
-  ScrollController _controller;
+  late ScrollController _controller;
   bool showFloatBtn = false;
   double initOffSet = 0.0;
 
@@ -173,7 +173,8 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular((10.0)), // 圆角度
                 image: DecorationImage(
-                  image: NetworkImage(homeBannerDataList[index].imagePath),
+                  image:
+                      NetworkImage(homeBannerDataList![index].imagePath ?? ''),
                   fit: BoxFit.fill,
                 ),
               ),
@@ -211,7 +212,7 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
             RouteHelpUtils.push(
                 context,
                 WebViewWidget(
-                  url: homeBannerDataList[index].url,
+                  url: homeBannerDataList![index].url,
                   title: homeBannerDataList[index].title,
                   des: homeBannerDataList[index].desc,
                 ));
@@ -232,7 +233,7 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
             boxShadow: [
               //阴影
               BoxShadow(
-                  color: Colors.grey[300],
+                  color: Colors.grey[300]!,
                   offset: Offset(2.0, 2.0),
                   blurRadius: 2.0)
             ],
@@ -251,7 +252,7 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  homeArticleDataBean.title,
+                  homeArticleDataBean.title ?? '',
                   style: TextStyle(
                       fontWeight: FontWeight.w700,
                       color: Colors.black,
@@ -300,7 +301,7 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(3.0),
-          border: Border.all(color: Colors.red[400], width: 1.0),
+          border: Border.all(color: Colors.red[400]!, width: 1.0),
           color: Colors.white,
           shape: BoxShape.rectangle,
         ),
@@ -331,13 +332,13 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
       tags.add(tag);
     }
     if (homeArticleDataBean.tags != null &&
-        homeArticleDataBean.tags.length > 0) {
+        (homeArticleDataBean.tags?.length ?? 0) > 0) {
       //tags中的
-      for (HomeArticleDataBeanTag tag in homeArticleDataBean.tags) {
+      for (HomeArticleDataBeanTag tag in homeArticleDataBean.tags!) {
         Widget tempTag = DecoratedBox(
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 1.0, horizontal: 3.0),
-            child: Text(tag.name,
+            child: Text(tag.name ?? '',
                 style: TextStyle(fontSize: 10.0, color: Colors.green)),
           ),
           decoration: BoxDecoration(
@@ -354,7 +355,7 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
             RouteHelpUtils.push(
                 context,
                 WebViewWidget(
-                  url: API.baseUrl + tag.url,
+                  url: API.baseUrl + (tag.url ?? ''),
                   title: tag.name,
                 ));
           },
@@ -374,7 +375,7 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
 
     ///分享人
     if (homeArticleDataBean.shareUser != null &&
-        homeArticleDataBean.shareUser.isNotEmpty) {
+        homeArticleDataBean.shareUser!.isNotEmpty) {
 //      desc += "  分享人: ${homeArticleDataBean.shareUser}";
       TextSpan shareUserTS = TextSpan(
           text: "  分享人: ",
@@ -390,7 +391,7 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
 
     ///作者
     if (homeArticleDataBean.author != null &&
-        homeArticleDataBean.author.isNotEmpty) {
+        homeArticleDataBean.author!.isNotEmpty) {
 //      desc += "  作者: ${homeArticleDataBean.author}";
       TextSpan authorTS = TextSpan(
           text: "  作者: ",
@@ -406,9 +407,9 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
 
     ///分类
     if (homeArticleDataBean.superChapterName != null &&
-        homeArticleDataBean.superChapterName.isNotEmpty &&
+        homeArticleDataBean.superChapterName!.isNotEmpty &&
         homeArticleDataBean.chapterName != null &&
-        homeArticleDataBean.chapterName.isNotEmpty) {
+        homeArticleDataBean.chapterName!.isNotEmpty) {
 //      desc +=
 //          "  分类: ${homeArticleDataBean.superChapterName}/${homeArticleDataBean.chapterName}";
       TextSpan chapterTS = TextSpan(
@@ -426,7 +427,7 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
 
     ///时间
     if (homeArticleDataBean.niceDate != null &&
-        homeArticleDataBean.niceDate.isNotEmpty) {
+        homeArticleDataBean.niceDate!.isNotEmpty) {
 //      desc += "  时间: ${homeArticleDataBean.niceDate}";
       TextSpan timeTS = TextSpan(
           text: "  时间: ",
@@ -506,15 +507,15 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
       // 清空集合
       _articleList.clear();
       //添加数据到集合
-      if (homeArticleTopEntity != null && homeArticleTopEntity.data != null) {
+      if (homeArticleTopEntity.data != null) {
         //置顶文章数据
-        _articleList.addAll(homeArticleTopEntity.data);
+        _articleList.addAll(homeArticleTopEntity.data!);
       }
       if (homeArticleListEntity != null &&
           homeArticleListEntity.data != null &&
-          homeArticleListEntity.data.datas != null) {
+          homeArticleListEntity.data!.datas != null) {
         //文章数据
-        _articleList.addAll(homeArticleListEntity.data.datas);
+        _articleList.addAll(homeArticleListEntity.data!.datas!);
       }
     });
   }
@@ -529,11 +530,10 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
       setState(() {
         HomeArticleListEntity homeArticleListEntity =
             HomeArticleListEntity().fromJson(json.decode(responses.toString()));
-        if (homeArticleListEntity != null &&
-            homeArticleListEntity.data != null &&
-            homeArticleListEntity.data.datas != null) {
+        if (homeArticleListEntity.data != null &&
+            homeArticleListEntity.data!.datas != null) {
           //文章数据
-          _articleList.addAll(homeArticleListEntity.data.datas);
+          _articleList.addAll(homeArticleListEntity.data!.datas!);
         }
         _refreshController.loadComplete();
       });

@@ -16,7 +16,7 @@ registerEntityFromJson(RegisterEntity data, Map<String, dynamic> json) {
 Map<String, dynamic> registerEntityToJson(RegisterEntity entity) {
   final Map<String, dynamic> data = new Map<String, dynamic>();
   if (entity.data != null) {
-    data['data'] = entity.data.toJson();
+    data['data'] = entity.data?.toJson();
   }
   data['errorCode'] = entity.errorCode;
   data['errorMsg'] = entity.errorMsg;
@@ -29,14 +29,14 @@ registerDataFromJson(RegisterData data, Map<String, dynamic> json) {
   }
   if (json['chapterTops'] != null) {
     data.chapterTops = <dynamic>[];
-    data.chapterTops.addAll(json['chapterTops']);
+    data.chapterTops?.addAll(json['chapterTops']);
   }
   if (json['coinCount'] != null) {
     data.coinCount = json['coinCount']?.toInt();
   }
   if (json['collectIds'] != null) {
     data.collectIds = <dynamic>[];
-    data.collectIds.addAll(json['collectIds']);
+    data.collectIds?.addAll(json['collectIds']);
   }
   if (json['email'] != null) {
     data.email = json['email']?.toString();

@@ -7,9 +7,9 @@ import 'package:toast/toast.dart';
 
 /// 图片选择工具类
 class ImagePickerUtils {
-  static ImagePicker _imagePicker;
+  static late ImagePicker _imagePicker;
 
-  static ImagePickerUtils _instance;
+  static late ImagePickerUtils _instance;
 
   static ImagePickerUtils getInstance() {
     if (null == _instance) {
@@ -91,9 +91,9 @@ class ImagePickerUtils {
   /// type :  0 --> camera ; 1 --> gallery
   Future getImageByCamera(
       int type, BuildContext context, Function(Image) onSuccess,
-      {bool showError}) async {
+      {bool? showError}) async {
     // PickedFile pickedFile = await _imagePicker.getImage(source: type == 0 ? ImageSource.gallery : ImageSource.camera);
-    XFile pickedFile = await _imagePicker.pickImage(
+    XFile? pickedFile = await _imagePicker.pickImage(
         source: type == 0 ? ImageSource.gallery : ImageSource.camera);
     if (pickedFile != null) {
       if (onSuccess != null)
@@ -102,7 +102,7 @@ class ImagePickerUtils {
           fit: BoxFit.fill,
         ));
     } else {
-      if (showError) Toast.show("No image selected.", context);
+      if (showError ?? false) Toast.show("No image selected.", context);
     }
 
     //关闭弹窗

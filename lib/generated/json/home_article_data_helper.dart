@@ -83,7 +83,7 @@ homeArticleDataBeanFromJson(
   if (json['tags'] != null) {
     data.tags = <HomeArticleDataBeanTag>[];
     (json['tags'] as List).forEach((v) {
-      data.tags.add(new HomeArticleDataBeanTag().fromJson(v));
+      data.tags?.add(new HomeArticleDataBeanTag().fromJson(v));
     });
   }
   if (json['title'] != null) {
@@ -133,7 +133,7 @@ Map<String, dynamic> homeArticleDataBeanToJson(HomeArticleDataBean entity) {
   data['superChapterId'] = entity.superChapterId;
   data['superChapterName'] = entity.superChapterName;
   if (entity.tags != null) {
-    data['tags'] = entity.tags.map((v) => v.toJson()).toList();
+    data['tags'] = entity.tags?.map((v) => v.toJson()).toList();
   }
   data['title'] = entity.title;
   data['type'] = entity.type;

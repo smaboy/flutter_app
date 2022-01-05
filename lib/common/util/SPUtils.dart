@@ -2,14 +2,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// 数据存储工具类
 class SPUtils {
-
   static final String userName = "username";
   static String password = "password";
   static String isLogin = "isLogin";
   static String rememberPassword = "rememberPassword";
   static String themeData = "themeData";
 
-  static SPUtils _instance;
+  static late SPUtils _instance;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   static SPUtils getInstance() {
@@ -17,7 +16,7 @@ class SPUtils {
     return _instance;
   }
 
-  Future<SharedPreferences> getSP() async{
+  Future<SharedPreferences> getSP() async {
     return await _prefs;
   }
 

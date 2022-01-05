@@ -6,7 +6,7 @@ homeArticleTopEntityFromJson(
   if (json['data'] != null) {
     data.data = <HomeArticleDataBean>[];
     (json['data'] as List).forEach((v) {
-      data.data.add(new HomeArticleDataBean().fromJson(v));
+      data.data?.add(new HomeArticleDataBean().fromJson(v));
     });
   }
   if (json['errorCode'] != null) {
@@ -21,7 +21,7 @@ homeArticleTopEntityFromJson(
 Map<String, dynamic> homeArticleTopEntityToJson(HomeArticleTopEntity entity) {
   final Map<String, dynamic> data = new Map<String, dynamic>();
   if (entity.data != null) {
-    data['data'] = entity.data.map((v) => v.toJson()).toList();
+    data['data'] = entity.data?.map((v) => v.toJson()).toList();
   }
   data['errorCode'] = entity.errorCode;
   data['errorMsg'] = entity.errorMsg;

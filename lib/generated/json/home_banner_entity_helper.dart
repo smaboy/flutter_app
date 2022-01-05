@@ -4,7 +4,7 @@ homeBannerEntityFromJson(HomeBannerEntity data, Map<String, dynamic> json) {
   if (json['data'] != null) {
     data.data = <HomeBannerData>[];
     (json['data'] as List).forEach((v) {
-      data.data.add(new HomeBannerData().fromJson(v));
+      data.data?.add(new HomeBannerData().fromJson(v));
     });
   }
   if (json['errorCode'] != null) {
@@ -19,7 +19,7 @@ homeBannerEntityFromJson(HomeBannerEntity data, Map<String, dynamic> json) {
 Map<String, dynamic> homeBannerEntityToJson(HomeBannerEntity entity) {
   final Map<String, dynamic> data = new Map<String, dynamic>();
   if (entity.data != null) {
-    data['data'] = entity.data.map((v) => v.toJson()).toList();
+    data['data'] = entity.data?.map((v) => v.toJson()).toList();
   }
   data['errorCode'] = entity.errorCode;
   data['errorMsg'] = entity.errorMsg;

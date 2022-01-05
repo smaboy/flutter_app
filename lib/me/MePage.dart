@@ -24,9 +24,9 @@ import 'page/MeFavoritePage.dart';
 
 class MePage extends StatefulWidget {
   ///标题
-  final String title;
+  final String? title;
 
-  const MePage({Key key, this.title}) : super(key: key);
+  const MePage({Key? key, this.title}) : super(key: key);
 
   @override
   _MePageState createState() => _MePageState();
@@ -51,7 +51,7 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin {
   //  记住密码
   var rememberPassword = false;
 
-  StreamSubscription loginSubscription;
+  late StreamSubscription loginSubscription;
 
   @override
   void initState() {

@@ -12,7 +12,7 @@ class UpdateThemePage extends StatefulWidget {
 
 class _UpdateThemePageState extends State<UpdateThemePage> {
   /// 当前选中的主题
-  int _selectedIndex;
+  late int _selectedIndex;
 
   @override
   void initState() {
@@ -26,12 +26,12 @@ class _UpdateThemePageState extends State<UpdateThemePage> {
     //初始化主题数据
     SharedPreferences sharedPreferences = await SPUtils.getInstance().getSP();
     try {
-      _selectedIndex = sharedPreferences.getInt(SPUtils.themeData);
+      _selectedIndex = sharedPreferences.getInt(SPUtils.themeData) ?? 0;
     } catch (e) {
       _selectedIndex = 0;
     }
     setState(() {
-      _selectedIndex = _selectedIndex ?? 0;
+      _selectedIndex = _selectedIndex;
     });
 
     LogUtils.d("_UpdateThemePageState--init--获取到的主题坐标为:$_selectedIndex");

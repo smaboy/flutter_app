@@ -5,13 +5,13 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 /// webview组件
 class WebViewWidget extends StatefulWidget {
-  final String url;
-  final String title;
-  final String des;
+  final String? url;
+  final String? title;
+  final String? des;
   final bool showShare;
 
   const WebViewWidget(
-      {Key key, this.url, this.title, this.des, this.showShare = true})
+      {Key? key, this.url, this.title, this.des, this.showShare = true})
       : super(key: key);
 
   @override

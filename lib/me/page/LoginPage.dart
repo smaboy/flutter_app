@@ -26,15 +26,15 @@ class _LoginPageState extends State<LoginPage> {
 
   //用户名输入框控制器
   var userNameFocusNode = FocusNode();
-  TextEditingController _userNameControl;
+  late TextEditingController _userNameControl;
 
   //密码输入框焦点
   var pwFocusNode = FocusNode();
-  TextEditingController _pwControl;
+  late TextEditingController _pwControl;
 
   //密码输入确认框焦点
   var pw2FocusNode = FocusNode();
-  TextEditingController _pw2Control;
+  late TextEditingController _pw2Control;
 
   String userNameErrorText = "";
 
@@ -283,7 +283,7 @@ class _LoginPageState extends State<LoginPage> {
                             ? Colors.blueAccent
                             : Theme.of(context).primaryColor,
                     onChanged: (b) {
-                      if (b) {
+                      if (b ?? false) {
                         //记住密码
                         SPUtils.getInstance()
                             .setValue(SPUtils.rememberPassword, true);
@@ -376,7 +376,7 @@ class _LoginPageState extends State<LoginPage> {
     }, onSuccess: (response) {
       LoginEntity loginEntity =
           LoginEntity().fromJson(json.decode(response.toString()));
-      if (loginEntity?.errorCode == 0) {
+      if (loginEntity.errorCode == 0) {
         Toast.show("登录成功", context);
         SPUtils.getInstance().setValue(SPUtils.isLogin, true);
         SPUtils.getInstance().setValue(SPUtils.userName, _userNameControl.text);
@@ -389,7 +389,7 @@ class _LoginPageState extends State<LoginPage> {
         EventBusUtils.instance
             .fire(BusIEvent(busIEventID: BusIEventID.login_success));
       } else {
-        Toast.show(loginEntity?.errorMsg ?? "登录失败", context);
+        Toast.show(loginEntity.errorMsg ?? "登录失败", context);
       }
     }, onFailure: (msg) {
       Toast.show(msg, context);
@@ -430,7 +430,7 @@ class _LoginPageState extends State<LoginPage> {
     }, onSuccess: (response) {
       RegisterEntity registerEntity =
           RegisterEntity().fromJson(json.decode(response.toString()));
-      if (registerEntity?.errorCode == 0) {
+      if (registerEntity.errorCode == 0) {
         Toast.show("注册成功", context);
         SPUtils.getInstance().setValue(SPUtils.isLogin, true);
         SPUtils.getInstance().setValue(SPUtils.userName, _userNameControl.text);
@@ -439,7 +439,7 @@ class _LoginPageState extends State<LoginPage> {
         //关闭当前页面
         Navigator.pop(context, true);
       } else {
-        Toast.show(registerEntity?.errorMsg ?? "注册失败", context);
+        Toast.show(registerEntity.errorMsg ?? "注册失败", context);
       }
     }, onFailure: (msg) {
       Toast.show(msg, context);

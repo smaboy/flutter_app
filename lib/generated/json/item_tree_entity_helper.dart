@@ -4,7 +4,7 @@ itemTreeEntityFromJson(ItemTreeEntity data, Map<String, dynamic> json) {
   if (json['data'] != null) {
     data.data = <ItemTreeData>[];
     (json['data'] as List).forEach((v) {
-      data.data.add(new ItemTreeData().fromJson(v));
+      data.data?.add(new ItemTreeData().fromJson(v));
     });
   }
   if (json['errorCode'] != null) {
@@ -19,7 +19,7 @@ itemTreeEntityFromJson(ItemTreeEntity data, Map<String, dynamic> json) {
 Map<String, dynamic> itemTreeEntityToJson(ItemTreeEntity entity) {
   final Map<String, dynamic> data = new Map<String, dynamic>();
   if (entity.data != null) {
-    data['data'] = entity.data.map((v) => v.toJson()).toList();
+    data['data'] = entity.data?.map((v) => v.toJson()).toList();
   }
   data['errorCode'] = entity.errorCode;
   data['errorMsg'] = entity.errorMsg;
@@ -29,7 +29,7 @@ Map<String, dynamic> itemTreeEntityToJson(ItemTreeEntity entity) {
 itemTreeDataFromJson(ItemTreeData data, Map<String, dynamic> json) {
   if (json['children'] != null) {
     data.children = <dynamic>[];
-    data.children.addAll(json['children']);
+    data.children?.addAll(json['children']);
   }
   if (json['courseId'] != null) {
     data.courseId = json['courseId']?.toInt();

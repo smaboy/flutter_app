@@ -18,7 +18,7 @@ import 'package:toast/toast.dart';
 
 class MyDrawer extends StatefulWidget {
   const MyDrawer({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -38,7 +38,7 @@ class _MyDrawerState extends State<MyDrawer> {
   //  记住密码
   var rememberPassword = false;
 
-  StreamSubscription loginSubscription;
+  late StreamSubscription loginSubscription;
 
   @override
   void initState() {

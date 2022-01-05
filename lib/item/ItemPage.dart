@@ -10,9 +10,9 @@ import 'package:flutterapp/item/service/item_service_impl.dart';
 
 /// 项目页面
 class ItemPage extends StatefulWidget {
-  final String title;
+  final String? title;
 
-  const ItemPage({Key key, this.title}) : super(key: key);
+  const ItemPage({Key? key, this.title}) : super(key: key);
 
   @override
   _ItemPageState createState() => _ItemPageState();
@@ -21,7 +21,7 @@ class ItemPage extends StatefulWidget {
 class _ItemPageState extends State<ItemPage>
     with AutomaticKeepAliveClientMixin {
   //项目子项集合
-  List<ItemTreeData> data;
+  List<ItemTreeData>? data;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class _ItemPageState extends State<ItemPage>
       initialIndex: 0,
       child: Scaffold(
           appBar: AppBar(
-            title: Text(widget.title),
+            title: Text(widget.title ?? ''),
             centerTitle: true,
             bottom: TabBar(
               isScrollable: true,
@@ -56,22 +56,21 @@ class _ItemPageState extends State<ItemPage>
     ItemTreeEntity itemTreeEntity =
         await ItemServiceImpl.getInstance().getItemTree();
     setState(() {
-      if (itemTreeEntity != null &&
-          itemTreeEntity.data != null &&
-          itemTreeEntity.data.length > 0) {
+      if (itemTreeEntity.data != null &&
+          (itemTreeEntity.data?.length ?? 0) > 0) {
         this.data = itemTreeEntity.data;
       }
     });
-    LogUtils.d("ItemTreeEntity==第一个标题==${itemTreeEntity.data[0].name}");
+    LogUtils.d("ItemTreeEntity==第一个标题==${itemTreeEntity.data![0].name}");
   }
 
   /// 项目页面标题组件子项集合
   List<Widget> getTitleItems() {
     var tabs = <Tab>[];
-    if (data != null && data.length > 0) {
-      for (ItemTreeData itemTreeData in data) {
+    if (data != null && (data?.length ?? 0) > 0) {
+      for (ItemTreeData itemTreeData in data!) {
         tabs.add(Tab(
-          child: Text(itemTreeData.name),
+          child: Text(itemTreeData.name ?? ''),
         ));
       }
     }
@@ -81,9 +80,9 @@ class _ItemPageState extends State<ItemPage>
   /// 项目页面标题组件子项集合
   List<Widget> getContentItems() {
     var tabViewChildren = <ContentWidget>[];
-    if (data != null && data.length > 0) {
-      for (ItemTreeData itemTreeData in data) {
-        tabViewChildren.add(ContentWidget(id: itemTreeData.id));
+    if (data != null && (data?.length ?? 0) > 0) {
+      for (ItemTreeData itemTreeData in data!) {
+        tabViewChildren.add(ContentWidget(id: itemTreeData.id ?? 0));
       }
     }
     LogUtils.d("tabViewChildren的长度为:${tabViewChildren.length}");
@@ -106,9 +105,9 @@ enum LoadMoreStatue {
 
 /// 内容组件
 class ContentWidget extends StatefulWidget {
-  final int id;
+  final int? id;
 
-  const ContentWidget({Key key, @required this.id}) : super(key: key);
+  const ContentWidget({Key? key, @required this.id}) : super(key: key);
 
   @override
   _ContentWidgetState createState() => _ContentWidgetState();
@@ -121,8 +120,8 @@ class _ContentWidgetState extends State<ContentWidget> {
   ///当前页
   int curPageNum = 0;
 
-  ScrollController _scrollController;
-  VoidCallback _voidCallback;
+  late ScrollController _scrollController;
+  late VoidCallback _voidCallback;
 
   /// 加载更多的状态
   LoadMoreStatue curLoadMoreStatue = LoadMoreStatue.STATUE_IDEL;
@@ -132,7 +131,7 @@ class _ContentWidgetState extends State<ContentWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var length = contentList?.length ?? 0;
+    var length = contentList.length;
     return RefreshIndicator(
       onRefresh: () async {
         initData();
@@ -167,7 +166,7 @@ class _ContentWidgetState extends State<ContentWidget> {
                       child: Row(
                         children: <Widget>[
                           Image.network(
-                            contentList[index].envelopePic,
+                            contentList[index].envelopePic ?? '',
                             fit: BoxFit.contain,
                             width: 130.0,
                             height: 200.0,
@@ -223,14 +222,12 @@ class _ContentWidgetState extends State<ContentWidget> {
   void initData() async {
     curPageNum = 1;
     ItemListEntity itemListByCid = await ItemServiceImpl.getInstance()
-        .getItemListByCid(curPageNum, widget.id);
+        .getItemListByCid(curPageNum, widget.id ?? 0);
     if (mounted) {
       setState(() {
-        if (itemListByCid != null &&
-            itemListByCid.data != null &&
-            itemListByCid.data.datas != null) {
+        if (itemListByCid.data != null && itemListByCid.data?.datas != null) {
           contentList.clear();
-          contentList.addAll(itemListByCid.data.datas);
+          contentList.addAll(itemListByCid.data!.datas!);
         }
       });
     }
@@ -240,15 +237,14 @@ class _ContentWidgetState extends State<ContentWidget> {
     curPageNum++;
     LogUtils.d("加载更多-当前页码为:$curPageNum");
     ItemListEntity itemListByCid = await ItemServiceImpl.getInstance()
-        .getItemListByCid(curPageNum, widget.id);
+        .getItemListByCid(curPageNum, widget.id ?? 0);
     if (mounted) {
       setState(() {
-        if (itemListByCid != null &&
-            itemListByCid.data != null &&
-            itemListByCid.data.datas != null &&
-            itemListByCid.data.datas.length > 0) {
+        if (itemListByCid.data != null &&
+            itemListByCid.data!.datas != null &&
+            itemListByCid.data!.datas!.length > 0) {
           curLoadMoreStatue = LoadMoreStatue.STATUE_IDEL;
-          contentList.addAll(itemListByCid.data.datas);
+          contentList.addAll(itemListByCid.data!.datas!);
         } else {
           loadMoreMsg = "已经到底了!!";
           curLoadMoreStatue = LoadMoreStatue.STATUE_COMPLETE;
@@ -260,7 +256,7 @@ class _ContentWidgetState extends State<ContentWidget> {
 
 class LoadMoreWidget extends StatelessWidget {
   const LoadMoreWidget({
-    Key key,
+    Key? key,
     this.isVisibleProgress = false,
     this.loadMoreMsg = "",
   }) : super(key: key);
@@ -303,13 +299,13 @@ class LoadMoreWidget extends StatelessWidget {
 
 class ContentEndWidget extends StatelessWidget {
   const ContentEndWidget({
-    Key key,
+    Key? key,
     @required this.contentList,
     @required this.index,
   }) : super(key: key);
 
-  final List<ItemListDataData> contentList;
-  final int index;
+  final List<ItemListDataData>? contentList;
+  final int? index;
 
   @override
   Widget build(BuildContext context) {
@@ -320,7 +316,7 @@ class ContentEndWidget extends StatelessWidget {
         children: <Widget>[
           Padding(
             child: Text(
-              contentList[index].title,
+              contentList![index ?? 0].title ?? '',
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
@@ -332,7 +328,7 @@ class ContentEndWidget extends StatelessWidget {
           ),
           Padding(
             child: Text(
-              contentList[index].desc,
+              contentList![index ?? 0].desc ?? '',
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
@@ -348,7 +344,7 @@ class ContentEndWidget extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                     child: Text(
-                      "${contentList[index].niceDate}   ${contentList[index].author} ",
+                      "${contentList![index ?? 0].niceDate}   ${contentList![index ?? 0].author} ",
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -358,8 +354,8 @@ class ContentEndWidget extends StatelessWidget {
                     ),
                   ),
                   FavoriteButtonWidget(
-                    id: contentList[index].id,
-                    isFavorite: contentList[index]?.collect ?? false,
+                    id: contentList![index ?? 0].id,
+                    isFavorite: contentList![index ?? 0].collect ?? false,
                   ),
                 ],
               ),

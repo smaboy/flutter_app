@@ -16,7 +16,7 @@ loginEntityFromJson(LoginEntity data, Map<String, dynamic> json) {
 Map<String, dynamic> loginEntityToJson(LoginEntity entity) {
   final Map<String, dynamic> data = new Map<String, dynamic>();
   if (entity.data != null) {
-    data['data'] = entity.data.toJson();
+    data['data'] = entity.data?.toJson();
   }
   data['errorCode'] = entity.errorCode;
   data['errorMsg'] = entity.errorMsg;
@@ -29,7 +29,7 @@ loginDataFromJson(LoginData data, Map<String, dynamic> json) {
   }
   if (json['chapterTops'] != null) {
     data.chapterTops = <dynamic>[];
-    data.chapterTops.addAll(json['chapterTops']);
+    data.chapterTops?.addAll(json['chapterTops']);
   }
   if (json['coinCount'] != null) {
     data.coinCount = json['coinCount']?.toInt();

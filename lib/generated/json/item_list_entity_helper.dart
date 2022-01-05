@@ -16,7 +16,7 @@ itemListEntityFromJson(ItemListEntity data, Map<String, dynamic> json) {
 Map<String, dynamic> itemListEntityToJson(ItemListEntity entity) {
   final Map<String, dynamic> data = new Map<String, dynamic>();
   if (entity.data != null) {
-    data['data'] = entity.data.toJson();
+    data['data'] = entity.data?.toJson();
   }
   data['errorCode'] = entity.errorCode;
   data['errorMsg'] = entity.errorMsg;
@@ -30,7 +30,7 @@ itemListDataFromJson(ItemListData data, Map<String, dynamic> json) {
   if (json['datas'] != null) {
     data.datas = <ItemListDataData>[];
     (json['datas'] as List).forEach((v) {
-      data.datas.add(new ItemListDataData().fromJson(v));
+      data.datas?.add(new ItemListDataData().fromJson(v));
     });
   }
   if (json['offset'] != null) {
@@ -55,7 +55,7 @@ Map<String, dynamic> itemListDataToJson(ItemListData entity) {
   final Map<String, dynamic> data = new Map<String, dynamic>();
   data['curPage'] = entity.curPage;
   if (entity.datas != null) {
-    data['datas'] = entity.datas.map((v) => v.toJson()).toList();
+    data['datas'] = entity.datas?.map((v) => v.toJson()).toList();
   }
   data['offset'] = entity.offset;
   data['over'] = entity.over;
@@ -147,7 +147,7 @@ itemListDataDataFromJson(ItemListDataData data, Map<String, dynamic> json) {
   if (json['tags'] != null) {
     data.tags = <ItemListDataDatasTag>[];
     (json['tags'] as List).forEach((v) {
-      data.tags.add(new ItemListDataDatasTag().fromJson(v));
+      data.tags?.add(new ItemListDataDatasTag().fromJson(v));
     });
   }
   if (json['title'] != null) {
@@ -197,7 +197,7 @@ Map<String, dynamic> itemListDataDataToJson(ItemListDataData entity) {
   data['superChapterId'] = entity.superChapterId;
   data['superChapterName'] = entity.superChapterName;
   if (entity.tags != null) {
-    data['tags'] = entity.tags.map((v) => v.toJson()).toList();
+    data['tags'] = entity.tags?.map((v) => v.toJson()).toList();
   }
   data['title'] = entity.title;
   data['type'] = entity.type;

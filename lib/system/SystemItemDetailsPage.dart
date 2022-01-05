@@ -12,16 +12,16 @@ import 'entity/system_tree_entity.dart';
 /// 体系的一级标题详情页
 class SystemItemDetailsPage extends StatefulWidget {
   ///标题
-  final String title;
+  final String? title;
 
   ///页面数据
-  final List<SystemTreeDataChild> tabList;
+  final List<SystemTreeDataChild>? tabList;
 
   ///当前位置
-  final int position;
+  final int? position;
 
   const SystemItemDetailsPage(
-      {Key key, this.title, @required this.tabList, @required this.position})
+      {Key? key, this.title, @required this.tabList, @required this.position})
       : super(key: key);
 
   @override
@@ -31,31 +31,31 @@ class SystemItemDetailsPage extends StatefulWidget {
 class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
     with SingleTickerProviderStateMixin {
   ///当前的位置
-  int curPosition;
+  late int curPosition;
 
   ///当前tabs
-  List<Tab> myTabs;
+  late List<Tab> myTabs;
 
   ///当前页码,初始值为0
   int curPageNum = 0;
 
   // 2. 初始化控制器（一般定义变量后放在initState()中初始化）
-  TabController tabController;
+  late TabController tabController;
 
-  PageController pageController;
+  late PageController pageController;
 
   //页面标签数据
-  List<SystemListByCidDataData> contentList;
+  late List<SystemListByCidDataData> contentList;
 
   @override
   void initState() {
     super.initState();
 
     ///初始化位置设置
-    curPosition = widget.position;
+    curPosition = widget.position ?? 0;
 
     ///tabs设置
-    myTabs = widget.tabList
+    myTabs = widget.tabList!
         .map((systemTreeDataChild) => Tab(
               text: systemTreeDataChild.name,
             ))
@@ -63,10 +63,10 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
 
     // 2. 初始化控制器（一般定义变量后放在initState()中初始化）
     tabController = TabController(
-        length: widget.tabList.length,
+        length: widget.tabList?.length ?? 0,
         vsync: this,
-        initialIndex: widget.position);
-    pageController = PageController(initialPage: widget.position);
+        initialIndex: widget.position ?? 0);
+    pageController = PageController(initialPage: widget.position ?? 0);
 
     ///初始化网络数据
     intData();
@@ -82,7 +82,7 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
 //          },)
 //        ],
         centerTitle: true,
-        title: Text(widget.title),
+        title: Text(widget.title ?? ''),
         bottom: TabBar(
           controller: tabController,
           isScrollable: true,
@@ -111,7 +111,7 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
           controller: pageController,
           //禁止滑动
 //        physics: NeverScrollableScrollPhysics(),
-          itemCount: widget.tabList.length,
+          itemCount: widget.tabList?.length ?? 0,
           onPageChanged: (index) {
             LogUtils.d("system-pageview-onPageChanged-index-$index");
             curPosition = index;
@@ -130,29 +130,28 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
   void getListDataByCid() async {
     ///获取当前tab对应的数据
     SystemListByCidEntity systemListByCidEntity =
-        await SystemServiceImpl.getInstance()
-            .getSystemListByCid(curPageNum, widget.tabList[curPosition].id);
+        await SystemServiceImpl.getInstance().getSystemListByCid(
+            curPageNum, widget.tabList![curPosition].id ?? 0);
 
     LogUtils.d("当前选中的position==$curPosition");
 
     //设置数据
     setState(() {
-      if (systemListByCidEntity != null &&
-          systemListByCidEntity.data != null &&
-          systemListByCidEntity.data.datas != null) {
-        contentList = systemListByCidEntity.data.datas;
+      if (systemListByCidEntity.data != null &&
+          systemListByCidEntity.data!.datas != null) {
+        contentList = systemListByCidEntity.data!.datas!;
       } else {
         contentList = <SystemListByCidDataData>[];
       }
     });
 
-    LogUtils.d("第一个标题==${systemListByCidEntity.data.datas[0].title}");
+    LogUtils.d("第一个标题==${systemListByCidEntity.data!.datas![0].title}");
   }
 
   ///获取内容组件
   Widget getContentWidget() {
     var listView = ListView.builder(
-        itemCount: contentList?.length ?? 0,
+        itemCount: contentList.length,
         addAutomaticKeepAlives: true,
         itemBuilder: (buildContext, index) {
           return GestureDetector(
@@ -173,7 +172,7 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
                   boxShadow: [
                     //阴影
                     BoxShadow(
-                        color: Colors.grey[300],
+                        color: Colors.grey[300]!,
                         offset: Offset(2.0, 2.0),
                         blurRadius: 2.0)
                   ],
@@ -192,7 +191,7 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        contentList[index].title,
+                        contentList[index].title ?? '',
                         style: TextStyle(
                             fontWeight: FontWeight.w700,
                             color: Colors.black,
@@ -229,25 +228,25 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
     String desc = "";
 
     ///分享人
-    if (contentList.shareUser != null && contentList.shareUser.isNotEmpty) {
+    if (contentList.shareUser != null && contentList.shareUser!.isNotEmpty) {
       desc += " 分享人: ${contentList.shareUser}";
     }
 
     ///作者
-    if (contentList.author != null && contentList.author.isNotEmpty) {
+    if (contentList.author != null && contentList.author!.isNotEmpty) {
       desc += " 作者: ${contentList.author}";
     }
 
     ///分类
     if (contentList.superChapterName != null &&
-        contentList.superChapterName.isNotEmpty &&
+        contentList.superChapterName!.isNotEmpty &&
         contentList.chapterName != null &&
-        contentList.chapterName.isNotEmpty) {
+        contentList.chapterName!.isNotEmpty) {
       desc += " 分类: ${contentList.superChapterName}/${contentList.chapterName}";
     }
 
     ///时间
-    if (contentList.niceDate != null && contentList.niceDate.isNotEmpty) {
+    if (contentList.niceDate != null && contentList.niceDate!.isNotEmpty) {
       desc += " 时间: ${contentList.niceDate}";
     }
 

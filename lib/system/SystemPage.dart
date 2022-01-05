@@ -8,9 +8,9 @@ import 'package:flutterapp/system/service/system_service_impl.dart';
 
 class SystemPage extends StatefulWidget {
   ///标题
-  final String title;
+  final String? title;
 
-  const SystemPage({Key key, this.title}) : super(key: key);
+  const SystemPage({Key? key, this.title}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -21,7 +21,7 @@ class SystemPage extends StatefulWidget {
 class SystemPageState extends State<SystemPage>
     with AutomaticKeepAliveClientMixin {
   /// 标题数据
-  SystemTreeEntity _systemTreeEntity;
+  late SystemTreeEntity _systemTreeEntity;
 
   /// 被选中的一级标题,默认选中第一个
   int _selectedPosition = 0;
@@ -35,7 +35,7 @@ class SystemPageState extends State<SystemPage>
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(widget.title ?? ''),
         centerTitle: true,
       ),
       body: getTitleTreeWidget(),
@@ -57,10 +57,9 @@ class SystemPageState extends State<SystemPage>
       //设置标题数据
       _systemTreeEntity = data;
       //设置二级标题数据
-      if (_systemTreeEntity != null &&
-          _systemTreeEntity.data != null &&
-          _systemTreeEntity.data.length > 0) {
-        _secondTitleData = _systemTreeEntity.data[_selectedPosition];
+      if (_systemTreeEntity.data != null &&
+          _systemTreeEntity.data!.length > 0) {
+        _secondTitleData = _systemTreeEntity.data![_selectedPosition];
       }
     });
   }
@@ -68,14 +67,13 @@ class SystemPageState extends State<SystemPage>
   ///获取二级标题item组件集合
   List<Widget> getSecondTitleTreeItemWidgets(SystemTreeData systemTreeData) {
     var titleTreeWidgets = <Widget>[];
-    if (systemTreeData != null &&
-        systemTreeData.children != null &&
-        systemTreeData.children.length > 0) {
-      for (var i = 0; i < systemTreeData.children.length; i++) {
-        var child = systemTreeData.children[i];
+    if (systemTreeData.children != null &&
+        systemTreeData.children!.length > 0) {
+      for (var i = 0; i < systemTreeData.children!.length; i++) {
+        var child = systemTreeData.children![i];
         titleTreeWidgets.add(ElevatedButton(
             child: Text(
-              child.name,
+              child.name ?? '',
             ),
             // color: Theme.of(context).primaryColor == MyColors.white ? Colors.blueAccent : Theme.of(context).primaryColor,
             // highlightColor: Theme.of(context).primaryColor,
@@ -93,7 +91,7 @@ class SystemPageState extends State<SystemPage>
             }));
       }
 
-      LogUtils.d("第一个标题为:${systemTreeData.children[0].name}");
+      LogUtils.d("第一个标题为:${systemTreeData.children![0].name}");
     }
 
     LogUtils.d("titleTreeWidgets的长度为:${titleTreeWidgets.length}");
@@ -110,7 +108,7 @@ class SystemPageState extends State<SystemPage>
           Container(
             width: 100.0,
             child: ListView.separated(
-              itemCount: _systemTreeEntity?.data?.length ?? 0,
+              itemCount: _systemTreeEntity.data?.length ?? 0,
               separatorBuilder: (buildContext, index) {
                 return Divider(
                   height: 2.0,
@@ -137,7 +135,7 @@ class SystemPageState extends State<SystemPage>
                       ),
                       Expanded(
                         child: ListTile(
-                          title: Text(_systemTreeEntity?.data[index].name,
+                          title: Text(_systemTreeEntity.data![index].name ?? '',
                               style: TextStyle(
                                   color: index == _selectedPosition
                                       ? (Theme.of(context).primaryColor ==
@@ -151,7 +149,7 @@ class SystemPageState extends State<SystemPage>
                               //设置被点击位置
                               _selectedPosition = index;
                               //设置应该被展示的二级标题
-                              _secondTitleData = _systemTreeEntity.data[index];
+                              _secondTitleData = _systemTreeEntity.data![index];
                             });
                           },
                         ),
