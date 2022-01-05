@@ -17,6 +17,7 @@ import 'package:flutterapp/me/page/UpdateThemePage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'page/MeFavoritePage.dart';
 
@@ -241,17 +242,8 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin {
                     : Theme.of(context).primaryColor,
               ),
               title: Text("检测更新"),
-              onTap: () async {
-                //清理缓存
-                HttpUtils.getInstance().showProgressDialog(context, "清理中...");
-                bool result = await HttpUtils.getInstance().clearAllCache();
-                Navigator.pop(context);
-                if (result) {
-                  //清理成功
-                  Toast.show("清理成功", context);
-                } else {
-                  Toast.show("清理失败", context);
-                }
+              onTap: () {
+                launch("https://www.baidu.com");
               },
             ),
             Divider(
