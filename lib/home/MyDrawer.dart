@@ -6,6 +6,7 @@ import 'package:flutterapp/common/constant/API.dart';
 import 'package:flutterapp/common/util/RouteHelpUtils.dart';
 import 'package:flutterapp/common/util/SPUtils.dart';
 import 'package:flutterapp/common/util/event_bus_utils.dart';
+import 'package:flutterapp/common/util/toast_utils.dart';
 import 'package:flutterapp/common/widget/myIcons.dart';
 import 'package:flutterapp/common/widget/theme_data_color.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
@@ -220,9 +221,9 @@ class _MyDrawerState extends State<MyDrawer> {
                     Navigator.pop(context);
                     if (result) {
                       //清理成功
-                      print("清理成功");
+                      shortToast("清理成功");
                     } else {
-                      print("清理失败");
+                      shortToast("清理失败");
                     }
                   },
                 ),
@@ -280,7 +281,7 @@ class _MyDrawerState extends State<MyDrawer> {
       if (logoutBean['errorCode'] == 0) {
         //退出成功
         //弹窗提示
-        print("退出成功");
+        shortToast("退出成功");
         //重置本地数据状态
         SPUtils.getInstance().setValue(SPUtils.isLogin, false);
         if (!rememberPassword) {
@@ -293,10 +294,10 @@ class _MyDrawerState extends State<MyDrawer> {
             .fire(BusIEvent(busIEventID: BusIEventID.logout_success));
       } else {
         //退出失败
-        print(logoutBean['errorMsg'] ?? "退出失败");
+        shortToast(logoutBean['errorMsg'] ?? "退出失败");
       }
     }, onFailure: (msg) {
-      print(msg);
+      shortToast(msg);
     });
   }
 

@@ -7,6 +7,7 @@ import 'package:flutterapp/common/constant/API.dart';
 import 'package:flutterapp/common/util/SPUtils.dart';
 import 'package:flutterapp/common/util/event_bus_utils.dart';
 import 'package:flutterapp/common/util/log_utils.dart';
+import 'package:flutterapp/common/util/toast_utils.dart';
 import 'package:flutterapp/common/widget/theme_data_color.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
 import 'package:flutterapp/me/entity/register_entity.dart';
@@ -354,12 +355,12 @@ class _LoginPageState extends State<LoginPage> {
 
   bool loginCheck() {
     if (_userNameControl.text.isEmpty) {
-      print("用户名不能为空");
+      shortToast("用户名不能为空");
       userNameFocusNode.requestFocus();
 //      FocusScope.of(context).requestFocus(pw2FocusNode);
       return false;
     } else if (_pwControl.text.isEmpty) {
-      print("密码不能为空");
+      shortToast("密码不能为空");
       pwFocusNode.requestFocus();
 //      FocusScope.of(context).requestFocus(pw2FocusNode);
       return false;
@@ -376,7 +377,7 @@ class _LoginPageState extends State<LoginPage> {
       LoginEntity loginEntity =
           LoginEntity().fromJson(json.decode(response.toString()));
       if (loginEntity.errorCode == 0) {
-        print("登录成功");
+        shortToast("登录成功");
         SPUtils.getInstance().setValue(SPUtils.isLogin, true);
         SPUtils.getInstance().setValue(SPUtils.userName, _userNameControl.text);
         SPUtils.getInstance().setValue(SPUtils.password, _pwControl.text);
@@ -388,31 +389,31 @@ class _LoginPageState extends State<LoginPage> {
         EventBusUtils.instance
             .fire(BusIEvent(busIEventID: BusIEventID.login_success));
       } else {
-        print(loginEntity.errorMsg ?? "登录失败");
+        shortToast(loginEntity.errorMsg ?? "登录失败");
       }
     }, onFailure: (msg) {
-      print(msg);
+      shortToast(msg);
     }, isNeedCache: false);
   }
 
   bool registerCheck() {
     if (_userNameControl.text.isEmpty) {
-      print("用户名不能为空");
+      shortToast("用户名不能为空");
 //      userNameFocusNode.requestFocus();
       FocusScope.of(context).requestFocus(userNameFocusNode);
       return false;
     } else if (_pwControl.text.isEmpty) {
-      print("密码不能为空");
+      shortToast("密码不能为空");
 //      pwFocusNode.requestFocus();
       FocusScope.of(context).requestFocus(pwFocusNode);
       return false;
     } else if (_pw2Control.text.isEmpty) {
-      print("确认密码不能为空");
+      shortToast("确认密码不能为空");
 //      pwFocusNode.requestFocus();
       FocusScope.of(context).requestFocus(pw2FocusNode);
       return false;
     } else if (_pw2Control.text.isEmpty != _pwControl.text.isEmpty) {
-      print("确认密码和密码不一致,请确保两者一致");
+      shortToast("确认密码和密码不一致,请确保两者一致");
 //      pwFocusNode.requestFocus();
       FocusScope.of(context).requestFocus(pw2FocusNode);
       return false;
@@ -430,7 +431,7 @@ class _LoginPageState extends State<LoginPage> {
       RegisterEntity registerEntity =
           RegisterEntity().fromJson(json.decode(response.toString()));
       if (registerEntity.errorCode == 0) {
-        print("注册成功");
+        shortToast("注册成功");
         SPUtils.getInstance().setValue(SPUtils.isLogin, true);
         SPUtils.getInstance().setValue(SPUtils.userName, _userNameControl.text);
         SPUtils.getInstance().setValue(SPUtils.password, _pwControl.text);
@@ -438,10 +439,10 @@ class _LoginPageState extends State<LoginPage> {
         //关闭当前页面
         Navigator.pop(context, true);
       } else {
-        print(registerEntity.errorMsg ?? "注册失败");
+        shortToast(registerEntity.errorMsg ?? "注册失败");
       }
     }, onFailure: (msg) {
-      print(msg);
+      shortToast(msg);
     }, isNeedCache: false);
   }
 }

@@ -55,14 +55,11 @@ dependencies:
   # http缓存库
   dio_http_cache: ^0.3.0
 
-#  # 刷新框架
-#  flutter_easyrefresh: ^2.1.5
-
   # 刷新框架
   pull_to_refresh: ^2.0.0
 
-  # # toast框架
-  # toast: ^0.1.5
+  # toast框架
+  fluttertoast: ^8.0.8
 
   # 文件操作插件
   path_provider: ^2.0.4
@@ -71,14 +68,13 @@ dependencies:
   # NSUserDefaults on iOS and macOS, SharedPreferences on Android, etc.
   shared_preferences: ^2.0.7
 
-  # 集成分享 sharesdk
-#  sharesdk_plugin: ^1.2.8
-
   # 事件总线
   event_bus: ^2.0.0
 
   # 图片选择器
   image_picker: ^0.8.4+1
+
+  # url启动插件，启动系统浏览器、电话、短信、邮件等
   url_launcher: ^6.0.17
 
 

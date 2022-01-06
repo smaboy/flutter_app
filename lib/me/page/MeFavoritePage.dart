@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutterapp/common/constant/API.dart';
 import 'package:flutterapp/common/util/RouteHelpUtils.dart';
+import 'package:flutterapp/common/util/toast_utils.dart';
 import 'package:flutterapp/common/widget/webview_widget.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
 import 'package:flutterapp/me/entity/collect_article_list_entity.dart';
@@ -100,7 +101,7 @@ class _MeFavoritePageState extends State<MeFavoritePage> {
       //关闭弹窗
       Navigator.pop(context);
     }, onFailure: (msg) {
-      print(msg);
+      shortToast(msg);
       //关闭弹窗
       Navigator.pop(context);
     });

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutterapp/common/util/toast_utils.dart';
 
 class ShareWidget extends StatefulWidget {
   @override
@@ -17,7 +18,7 @@ class _ShareWidgetState extends State<ShareWidget> {
     return IconButton(
       icon: Icon(Icons.share),
       onPressed: () {
-        print("我是分享");
+        shortToast("我是分享");
       },
     );
   }

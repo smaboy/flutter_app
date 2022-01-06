@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterapp/common/util/toast_utils.dart';
 import 'package:image_picker/image_picker.dart';
 
 /// 图片选择工具类
@@ -101,7 +102,7 @@ class ImagePickerUtils {
           fit: BoxFit.fill,
         ));
     } else {
-      if (showError ?? false) print("No image selected.");
+      if (showError ?? false) shortToast("No image selected.");
     }
 
     //关闭弹窗
