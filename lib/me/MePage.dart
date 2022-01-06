@@ -242,10 +242,8 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin {
               ),
               title: Text("检测更新"),
               onTap: () {
-                launch("https://www.pgyer.com/apiv2/app/install?_api_key=cd5a3a29a9eed4a3006665846e58e074&appKey=4fb01f94765f2e351d1e5448ad6c2f66&buildKey=&buildPassword=")
-                    .catchError((e, stack) {
-                  LogUtils.e(e, e, stack);
-                });
+                launch(
+                    "https://www.pgyer.com/apiv2/app/install?_api_key=cd5a3a29a9eed4a3006665846e58e074&appKey=4fb01f94765f2e351d1e5448ad6c2f66&buildKey=&buildPassword=");
               },
             ),
             Divider(
