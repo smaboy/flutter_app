@@ -21,7 +21,7 @@ class SystemPage extends StatefulWidget {
 class SystemPageState extends State<SystemPage>
     with AutomaticKeepAliveClientMixin {
   /// 标题数据
-  late SystemTreeEntity _systemTreeEntity;
+  SystemTreeEntity? _systemTreeEntity;
 
   /// 被选中的一级标题,默认选中第一个
   int _selectedPosition = 0;
@@ -57,9 +57,9 @@ class SystemPageState extends State<SystemPage>
       //设置标题数据
       _systemTreeEntity = data;
       //设置二级标题数据
-      if (_systemTreeEntity.data != null &&
-          _systemTreeEntity.data!.length > 0) {
-        _secondTitleData = _systemTreeEntity.data![_selectedPosition];
+      if (_systemTreeEntity?.data != null &&
+          _systemTreeEntity!.data!.length > 0) {
+        _secondTitleData = _systemTreeEntity!.data![_selectedPosition];
       }
     });
   }
@@ -108,7 +108,7 @@ class SystemPageState extends State<SystemPage>
           Container(
             width: 100.0,
             child: ListView.separated(
-              itemCount: _systemTreeEntity.data?.length ?? 0,
+              itemCount: _systemTreeEntity?.data?.length ?? 0,
               separatorBuilder: (buildContext, index) {
                 return Divider(
                   height: 2.0,
@@ -135,7 +135,8 @@ class SystemPageState extends State<SystemPage>
                       ),
                       Expanded(
                         child: ListTile(
-                          title: Text(_systemTreeEntity.data![index].name ?? '',
+                          title: Text(
+                              _systemTreeEntity!.data![index].name ?? '',
                               style: TextStyle(
                                   color: index == _selectedPosition
                                       ? (Theme.of(context).primaryColor ==
@@ -149,7 +150,8 @@ class SystemPageState extends State<SystemPage>
                               //设置被点击位置
                               _selectedPosition = index;
                               //设置应该被展示的二级标题
-                              _secondTitleData = _systemTreeEntity.data![index];
+                              _secondTitleData =
+                                  _systemTreeEntity!.data![index];
                             });
                           },
                         ),

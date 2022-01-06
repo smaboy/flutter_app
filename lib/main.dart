@@ -28,8 +28,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late MaterialColor? primaryColor;
-  late MaterialColor primarySwatch;
+  MaterialColor primaryColor = MyColors.white;
+  MaterialColor primarySwatch = MyColors.white;
   late StreamSubscription _streamSubscription;
 
   @override
@@ -55,10 +55,8 @@ class _MyAppState extends State<MyApp> {
     } catch (e) {
       position = 0;
     }
-    setState(() {
-      primaryColor = MyColors.getColorByIndex(position);
-      primarySwatch = MyColors.getColorByIndex(position);
-    });
+    primaryColor = MyColors.getColorByIndex(position);
+    primarySwatch = MyColors.getColorByIndex(position);
     LogUtils.d("_MyAppState--init--获取到的主题位置为==$position");
 
     //设置监听

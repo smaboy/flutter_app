@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutterapp/common/constant/API.dart';
 import 'package:flutterapp/common/util/RouteHelpUtils.dart';
 import 'package:flutterapp/common/widget/webview_widget.dart';
@@ -38,9 +37,6 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
 
   /// 文章列表数据集合
   List<HomeArticleDataBean> _articleList = <HomeArticleDataBean>[];
-
-  /// 轮播图控制器
-  SwiperController _swiperController = SwiperController();
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -139,8 +135,6 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
   void dispose() {
     super.dispose();
 
-    _swiperController.stopAutoplay();
-    _swiperController.dispose();
     _refreshController.dispose();
     _controller.dispose();
   }
@@ -160,62 +154,34 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
       child: Listener(
         onPointerDown: (tapDown) {
           //手指按下
-          _swiperController.stopAutoplay();
         },
         onPointerUp: (tapUP) {
           //手指抬起
-          _swiperController.startAutoplay();
         },
-        child: Swiper(
+        child: PageView.builder(
           itemCount: homeBannerDataList?.length ?? 0,
           itemBuilder: (BuildContext context, int index) {
-            return Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular((10.0)), // 圆角度
-                image: DecorationImage(
-                  image:
-                      NetworkImage(homeBannerDataList![index].imagePath ?? ''),
-                  fit: BoxFit.fill,
+            return InkWell(
+              onTap: () {
+                RouteHelpUtils.push(
+                    context,
+                    WebViewWidget(
+                      url: homeBannerDataList![index].url,
+                      title: homeBannerDataList[index].title,
+                      des: homeBannerDataList[index].desc,
+                    ));
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular((10.0)), // 圆角度
+                  image: DecorationImage(
+                    image: NetworkImage(
+                        homeBannerDataList![index].imagePath ?? ''),
+                    fit: BoxFit.fill,
+                  ),
                 ),
               ),
             );
-          },
-          loop: false,
-          autoplay: false,
-          autoplayDelay: 3000,
-          //触发时是否停止播放
-          autoplayDisableOnInteraction: true,
-          duration: 1000,
-          //默认分页按钮
-//        control: SwiperControl(),
-          controller: _swiperController,
-          //默认指示器
-          pagination: SwiperPagination(
-            // SwiperPagination.fraction 数字1/5，默认点
-            builder: DotSwiperPaginationBuilder(size: 6, activeSize: 9),
-          ),
-
-          //视图宽度，即显示的item的宽度屏占比
-          viewportFraction: 0.8,
-          //两侧item的缩放比
-          scale: 0.9,
-
-          onTap: (int index) {
-            //点击事件，返回下标
-//            Navigator.of(context)
-//              ..push(MaterialPageRoute(builder: (context) {
-//                return WebViewWidget(
-//                  url: homeBannerDataList[index].url,
-//                  title: homeBannerDataList[index].title,
-//                );
-//              }));
-            RouteHelpUtils.push(
-                context,
-                WebViewWidget(
-                  url: homeBannerDataList![index].url,
-                  title: homeBannerDataList[index].title,
-                  des: homeBannerDataList[index].desc,
-                ));
           },
         ),
       ),
@@ -468,8 +434,6 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
             _homeBannerEntity, json.decode(responses.toString()));
       });
 
-      _swiperController.startAutoplay();
-
       //获取列表数据
       initArticleListData();
     }, onFailure: (msg) {
@@ -511,8 +475,7 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
         //置顶文章数据
         _articleList.addAll(homeArticleTopEntity.data!);
       }
-      if (homeArticleListEntity != null &&
-          homeArticleListEntity.data != null &&
+      if (homeArticleListEntity.data != null &&
           homeArticleListEntity.data!.datas != null) {
         //文章数据
         _articleList.addAll(homeArticleListEntity.data!.datas!);

@@ -45,7 +45,7 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
   late PageController pageController;
 
   //页面标签数据
-  late List<SystemListByCidDataData> contentList;
+  List<SystemListByCidDataData>? contentList;
 
   @override
   void initState() {
@@ -151,7 +151,7 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
   ///获取内容组件
   Widget getContentWidget() {
     var listView = ListView.builder(
-        itemCount: contentList.length,
+        itemCount: contentList?.length ?? 0,
         addAutomaticKeepAlives: true,
         itemBuilder: (buildContext, index) {
           return GestureDetector(
@@ -159,9 +159,9 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
               RouteHelpUtils.push(
                   context,
                   WebViewWidget(
-                    url: contentList[index].link,
-                    title: contentList[index].title,
-                    des: contentList[index].desc,
+                    url: contentList![index].link,
+                    title: contentList![index].title,
+                    des: contentList![index].desc,
                   ));
             },
             child: Container(
@@ -181,8 +181,8 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
                 children: <Widget>[
                   Center(
                     child: FavoriteButtonWidget(
-                      isFavorite: contentList[index].collect ?? false,
-                      id: contentList[index].id,
+                      isFavorite: contentList![index].collect ?? false,
+                      id: contentList![index].id,
                     ),
                   ),
                   Expanded(
@@ -191,14 +191,14 @@ class _SystemItemDetailsPageState extends State<SystemItemDetailsPage>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        contentList[index].title ?? '',
+                        contentList![index].title ?? '',
                         style: TextStyle(
                             fontWeight: FontWeight.w700,
                             color: Colors.black,
                             fontSize: 15.0),
                       ),
                       Padding(
-                        child: getListViewItemBottomWidget(contentList[index]),
+                        child: getListViewItemBottomWidget(contentList![index]),
                         padding: EdgeInsets.symmetric(
                             vertical: 5.0, horizontal: 0.0),
                       )

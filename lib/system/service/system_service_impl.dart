@@ -8,11 +8,11 @@ import 'package:flutterapp/system/entity/system_tree_entity.dart';
 import 'package:flutterapp/system/service/system_service.dart';
 
 class SystemServiceImpl extends SystemService {
-  static late SystemServiceImpl _instance;
+  static SystemServiceImpl? _instance;
 
   static SystemServiceImpl getInstance() {
     if (_instance == null) _instance = SystemServiceImpl();
-    return _instance;
+    return _instance!;
   }
 
   @override

@@ -30,7 +30,7 @@ class FileHelpUtils {
       File file = await _getLocalFile(fileName);
       // 读取字符串
       File fileTemp = await file.writeAsString(content);
-      return fileTemp != null && await fileTemp.exists();
+      return await fileTemp.exists();
     } on FileSystemException {
       return false;
     }

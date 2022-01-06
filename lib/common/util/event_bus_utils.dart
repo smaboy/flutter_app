@@ -6,30 +6,18 @@ import 'package:flutter/cupertino.dart';
 /// EventBus工具类
 class EventBusUtils {
   /// 实例
-  static late EventBus _eventBus;
+  EventBus _eventBus = EventBus(sync: true);
 
-  // 工厂模式
-  factory EventBusUtils() => _getInstance();
+  static EventBusUtils _instance = EventBusUtils._internal();
 
-  static EventBusUtils get instance => _getInstance();
-  static late EventBusUtils _instance;
+  EventBusUtils._internal();
 
-  EventBusUtils._internal() {
-    // 初始化
-    if (_eventBus == null) {
-      _eventBus = new EventBus(sync: true);
-    }
-  }
-
-  static EventBusUtils _getInstance() {
-    if (_instance == null) {
-      _instance = new EventBusUtils._internal();
-    }
+  static EventBusUtils get instance {
     return _instance;
   }
 
   /// 注册
-  StreamSubscription<BusIEvent> register(void onData(BusIEvent event),
+  StreamSubscription<BusIEvent> register(void Function(BusIEvent)? onData,
       {Function? onError, void Function()? onDone, bool? cancelOnError}) {
     return _eventBus.on<BusIEvent>().listen(onData,
         onError: onError, onDone: onDone, cancelOnError: cancelOnError);

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/common/widget/theme_data_color.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
 import 'package:flutterapp/me/page/LoginPage.dart';
-import 'package:toast/toast.dart';
 
 import '../constant/API.dart';
 import '../util/RouteHelpUtils.dart';
@@ -55,15 +54,16 @@ class _FavoriteButtonWidgetState extends State<FavoriteButtonWidget> {
               onSuccess: (responses) {
             Map<String, dynamic> map = jsonDecode(responses.toString());
             if (0 == map['errorCode']) {
-              Toast.show("取消收藏成功", context);
+              print("取消收藏成功");
+
               setState(() {
                 curIsFavorite = !(curIsFavorite ?? false);
               });
             } else {
-              Toast.show(map['errorMsg'] ?? "取消收藏失败", context);
+              print(map['errorMsg'] ?? "取消收藏失败");
             }
           }, onFailure: (msg) {
-            Toast.show(msg, context);
+            print(msg);
           });
         } else {
           //添加收藏
@@ -72,7 +72,7 @@ class _FavoriteButtonWidgetState extends State<FavoriteButtonWidget> {
                   onSuccess: (responses) {
             Map<String, dynamic> map = jsonDecode(responses.toString());
             if (0 == map['errorCode']) {
-              Toast.show("收藏成功", context);
+              print("收藏成功");
               setState(() {
                 curIsFavorite = !(curIsFavorite ?? false);
               });
@@ -80,10 +80,10 @@ class _FavoriteButtonWidgetState extends State<FavoriteButtonWidget> {
               //需要登录
               RouteHelpUtils.push(context, LoginPage());
             } else {
-              Toast.show(map['errorMsg'] ?? "收藏失败", context);
+              print(map['errorMsg'] ?? "收藏失败");
             }
           }, onFailure: (msg) {
-            Toast.show(msg, context);
+            print(msg);
           });
         }
       },

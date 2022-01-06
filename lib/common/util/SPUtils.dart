@@ -8,11 +8,13 @@ class SPUtils {
   static String rememberPassword = "rememberPassword";
   static String themeData = "themeData";
 
-  static late SPUtils _instance;
+  static SPUtils _instance = SPUtils._();
+
+  SPUtils._();
+
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   static SPUtils getInstance() {
-    if (null == _instance) _instance = SPUtils();
     return _instance;
   }
 

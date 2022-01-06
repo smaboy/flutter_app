@@ -17,7 +17,6 @@ import 'package:flutterapp/me/page/LoginPage.dart';
 import 'package:flutterapp/me/page/UpdateThemePage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'page/MeFavoritePage.dart';
@@ -137,11 +136,9 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin {
                   // getImage();
                   ImagePickerUtils.getInstance().showImagePickerDialog(context,
                       (image) {
-                    if (image != null) {
-                      _backGroundImage = image;
-                      EventBusUtils.instance.fire(BusIEvent(
-                          busIEventID: BusIEventID.update_head_back_ground));
-                    }
+                    _backGroundImage = image;
+                    EventBusUtils.instance.fire(BusIEvent(
+                        busIEventID: BusIEventID.update_head_back_ground));
                   }, showError: true);
                 },
               ),
@@ -226,9 +223,9 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin {
                 Navigator.pop(context);
                 if (result) {
                   //清理成功
-                  Toast.show("清理成功", context);
+                  print("清理成功");
                 } else {
-                  Toast.show("清理失败", context);
+                  print("清理失败");
                 }
               },
             ),
@@ -294,7 +291,7 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin {
           fit: BoxFit.fill,
         );
       } else {
-        Toast.show("No image selected.", context);
+        print("No image selected.");
       }
     });
   }
@@ -306,7 +303,7 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin {
       if (logoutBean['errorCode'] == 0) {
         //退出成功
         //弹窗提示
-        Toast.show("退出成功", context);
+        print("退出成功");
         //重置本地数据状态
         SPUtils.getInstance().setValue(SPUtils.isLogin, false);
         if (!rememberPassword) {
@@ -319,10 +316,10 @@ class _MePageState extends State<MePage> with AutomaticKeepAliveClientMixin {
             .fire(BusIEvent(busIEventID: BusIEventID.logout_success));
       } else {
         //退出失败
-        Toast.show(logoutBean['errorMsg'] ?? "退出失败", context);
+        print(logoutBean['errorMsg'] ?? "退出失败");
       }
     }, onFailure: (msg) {
-      Toast.show(msg, context);
+      print(msg);
     });
   }
 

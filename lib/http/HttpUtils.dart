@@ -15,7 +15,7 @@ import 'package:path_provider/path_provider.dart';
 /// dio的使用参考 https://github.com/flutterchina/dio/blob/master/README-ZH.md
 ///
 class HttpUtils {
-  static late HttpUtils? _instance;
+  static HttpUtils? _instance;
   late Dio dio;
   late DioCacheManager _dioCacheManager;
   late PersistCookieJar _cookieJar;

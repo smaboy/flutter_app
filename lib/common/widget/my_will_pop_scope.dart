@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:toast/toast.dart';
 
 /// 返回拦截
 /// 只有当用户在一秒之内点击两次返回才退出app
@@ -27,7 +26,7 @@ class _MyWillPopScopeState extends State<MyWillPopScope> {
           _lastPressedAt = DateTime.now();
 
           //提示
-          Toast.show("双击退出程序!!", context, duration: Toast.LENGTH_LONG);
+          print("双击退出程序!!");
           return false;
         } else {
           return true;

@@ -8,11 +8,11 @@ import 'package:flutterapp/item/entity/item_tree_entity.dart';
 import 'package:flutterapp/item/service/item_service.dart';
 
 class ItemServiceImpl extends ItemService {
-  static late ItemServiceImpl _instance;
+  static ItemServiceImpl? _instance;
 
   static ItemServiceImpl getInstance() {
     if (_instance == null) _instance = ItemServiceImpl();
-    return _instance;
+    return _instance!;
   }
 
   @override

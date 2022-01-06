@@ -98,7 +98,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void dispose() {
     //销毁控制器
-    if (_pageController != null) _pageController.dispose();
+    _pageController.dispose();
 
     super.dispose();
   }

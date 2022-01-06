@@ -3,13 +3,12 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:toast/toast.dart';
 
 /// 图片选择工具类
 class ImagePickerUtils {
-  static late ImagePicker _imagePicker;
+  static ImagePicker? _imagePicker;
 
-  static late ImagePickerUtils _instance;
+  static ImagePickerUtils? _instance;
 
   static ImagePickerUtils getInstance() {
     if (null == _instance) {
@@ -17,7 +16,7 @@ class ImagePickerUtils {
       _imagePicker = ImagePicker();
     }
 
-    return _instance;
+    return _instance!;
   }
 
   void showImagePickerDialog(BuildContext context, Function(Image) onSuccess,
@@ -90,10 +89,10 @@ class ImagePickerUtils {
 
   /// type :  0 --> camera ; 1 --> gallery
   Future getImageByCamera(
-      int type, BuildContext context, Function(Image) onSuccess,
+      int type, BuildContext context, Function(Image)? onSuccess,
       {bool? showError}) async {
     // PickedFile pickedFile = await _imagePicker.getImage(source: type == 0 ? ImageSource.gallery : ImageSource.camera);
-    XFile? pickedFile = await _imagePicker.pickImage(
+    XFile? pickedFile = await _imagePicker?.pickImage(
         source: type == 0 ? ImageSource.gallery : ImageSource.camera);
     if (pickedFile != null) {
       if (onSuccess != null)
@@ -102,7 +101,7 @@ class ImagePickerUtils {
           fit: BoxFit.fill,
         ));
     } else {
-      if (showError ?? false) Toast.show("No image selected.", context);
+      if (showError ?? false) print("No image selected.");
     }
 
     //关闭弹窗

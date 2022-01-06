@@ -7,7 +7,6 @@ import 'package:flutterapp/common/util/RouteHelpUtils.dart';
 import 'package:flutterapp/common/widget/webview_widget.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
 import 'package:flutterapp/me/entity/collect_article_list_entity.dart';
-import 'package:toast/toast.dart';
 
 class MeFavoritePage extends StatefulWidget {
   @override
@@ -101,7 +100,7 @@ class _MeFavoritePageState extends State<MeFavoritePage> {
       //关闭弹窗
       Navigator.pop(context);
     }, onFailure: (msg) {
-      Toast.show(msg, context);
+      print(msg);
       //关闭弹窗
       Navigator.pop(context);
     });
