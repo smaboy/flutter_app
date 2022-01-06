@@ -12,7 +12,7 @@ class UpdateThemePage extends StatefulWidget {
 
 class _UpdateThemePageState extends State<UpdateThemePage> {
   /// 当前选中的主题
-  late int _selectedIndex;
+  int _selectedIndex = 0;
 
   @override
   void initState() {
