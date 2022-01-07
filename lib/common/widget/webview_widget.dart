@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutterapp/common/base/base_page.dart';
 import 'package:flutterapp/common/util/log_utils.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -38,11 +39,9 @@ class _WebViewWidgetState extends State<WebViewWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title ?? ''),
-      ),
-      body: Stack(
+    return BasePage(
+      title: widget.title ?? '',
+      child: Stack(
         alignment: Alignment.center,
         children: [
           WebView(
@@ -73,7 +72,7 @@ class _WebViewWidgetState extends State<WebViewWidget> {
                 alignment: Alignment.center,
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.4),
+                  color: Colors.grey,
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Column(
