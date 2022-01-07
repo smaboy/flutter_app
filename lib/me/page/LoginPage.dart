@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutterapp/common/base/base_mode.dart';
 import 'package:flutterapp/common/base/base_page.dart';
 import 'package:flutterapp/common/constant/API.dart';
 import 'package:flutterapp/common/util/SPUtils.dart';
@@ -12,6 +13,7 @@ import 'package:flutterapp/common/util/toast_utils.dart';
 import 'package:flutterapp/common/widget/theme_data_color.dart';
 import 'package:flutterapp/http/HttpUtils.dart';
 import 'package:flutterapp/me/entity/register_entity.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../entity/login_entity.dart';
@@ -106,6 +108,13 @@ class _LoginPageState extends State<LoginPage> {
             },
           ),
         ],
+      ),
+      model: LoginModel(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Provider.of<LoginModel>(context).add();
+        },
+        child: Icon(Icons.add),
       ),
       child: SingleChildScrollView(
         child: Column(
@@ -445,5 +454,19 @@ class _LoginPageState extends State<LoginPage> {
     }, onFailure: (msg) {
       shortToast(msg);
     }, isNeedCache: false);
+  }
+}
+
+class LoginModel extends BaseModel {
+  @override
+  Future<bool> init() {
+    return Future.value(true);
+  }
+
+  int count = 0;
+
+  void add() {
+    count++;
+    notifyListeners();
   }
 }

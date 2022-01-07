@@ -74,6 +74,9 @@ dependencies:
   # url启动插件，启动系统浏览器、电话、短信、邮件等
   url_launcher: ^6.0.17
 
+  # 跨组件状态共享插件
+  provider: ^6.0.2
+
 
 dev_dependencies:
   flutter_test:

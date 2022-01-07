@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/common/base/base_mode.dart';
+import 'package:provider/provider.dart';
 
 /// 基础页面
+///
+/// 这是一个页面基础组件
 class BasePage extends StatefulWidget {
   /// 标题
   final String? title;
@@ -35,6 +39,9 @@ class BasePage extends StatefulWidget {
   /// 背景色
   final Color? backgroundColor;
 
+  /// 数据模型
+  final BaseModel? model;
+
   const BasePage(
       {Key? key,
       this.title,
@@ -47,7 +54,8 @@ class BasePage extends StatefulWidget {
       this.endDrawer,
       this.bottomNavigationBar,
       this.bottomSheet,
-      this.backgroundColor})
+      this.backgroundColor,
+      this.model})
       : super(key: key);
 
   @override
@@ -78,6 +86,28 @@ class _BasePageState extends State<BasePage> {
       bottomNavigationBar: widget.bottomNavigationBar,
       bottomSheet: widget.bottomSheet,
       backgroundColor: widget.backgroundColor,
+    );
+  }
+
+  /// 获取body
+  Widget getBody() {
+    return WillPopScope(
+      onWillPop: widget.onWillPop,
+      child: Stack(
+        children: [
+          //内容层
+          widget.model == null
+              ? widget.child
+              : ChangeNotifierProvider.value(
+                  value: widget.model,
+                  child: widget.child,
+                ),
+          //页面错误层(如网络错误、重试等)
+          ErrorPageWidget(),
+          //加载弹窗层
+          LoadingView(),
+        ],
+      ),
     );
   }
 
