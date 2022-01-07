@@ -8,7 +8,6 @@ import 'package:flutterapp/common/util/RouteHelpUtils.dart';
 import 'package:flutterapp/common/util/SPUtils.dart';
 import 'package:flutterapp/common/util/event_bus_utils.dart';
 import 'package:flutterapp/common/util/image_picker_utils.dart';
-import 'package:flutterapp/common/util/log_utils.dart';
 import 'package:flutterapp/common/util/toast_utils.dart';
 import 'package:flutterapp/common/widget/myIcons.dart';
 import 'package:flutterapp/common/widget/theme_data_color.dart';
