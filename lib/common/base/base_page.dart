@@ -11,7 +11,19 @@ class BasePage extends StatefulWidget {
   /// 内容
   final Widget child;
 
-  const BasePage({Key? key, this.title, this.appbar, required this.child})
+  /// appbar右侧功能按钮
+  final List<Widget>? actions;
+
+  /// 返回键和页面返回按钮
+  final Future<bool> Function()? onWillPop;
+
+  const BasePage(
+      {Key? key,
+      this.title,
+      this.appbar,
+      required this.child,
+      this.actions,
+      this.onWillPop})
       : super(key: key);
 
   @override
@@ -23,15 +35,21 @@ class _BasePageState extends State<BasePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: getAppBar(),
-      body: Stack(
-        children: [
-          //内容层
-          widget.child,
-          //页面错误层(如网络错误、重试等)
-          ErrorPageWidget(),
-          //加载弹窗层
-          LoadingView(),
-        ],
+      body: WillPopScope(
+        onWillPop: widget.onWillPop,
+        // onWillPop: () {
+        //   return Future.value(true);
+        // },
+        child: Stack(
+          children: [
+            //内容层
+            widget.child,
+            //页面错误层(如网络错误、重试等)
+            ErrorPageWidget(),
+            //加载弹窗层
+            LoadingView(),
+          ],
+        ),
       ),
     );
   }
@@ -39,9 +57,10 @@ class _BasePageState extends State<BasePage> {
   /// 获取appbar
   PreferredSizeWidget? getAppBar() {
     if (widget.appbar != null) return widget.appbar;
-    if (widget.title != null)
+    if (widget.title != null || widget.actions != null)
       return AppBar(
-        title: Text(widget.title!),
+        title: Text(widget.title ?? ''),
+        actions: widget.actions,
       );
 
     return null;

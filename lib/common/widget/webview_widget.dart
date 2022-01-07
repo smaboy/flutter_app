@@ -27,6 +27,8 @@ class _WebViewWidgetState extends State<WebViewWidget> {
   //加载进度
   int progress = 0;
 
+  WebViewController? _webViewController;
+
   @override
   void initState() {
     super.initState();
@@ -35,18 +37,41 @@ class _WebViewWidgetState extends State<WebViewWidget> {
   @override
   void dispose() {
     super.dispose();
+
+    _webViewController?.clearCache();
   }
 
   @override
   Widget build(BuildContext context) {
     return BasePage(
       title: widget.title ?? '',
+      actions: [
+        IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.home_outlined,
+            )),
+      ],
+      onWillPop: () async {
+        bool canGoBack = await _webViewController?.canGoBack() ?? false;
+        if (canGoBack) {
+          _webViewController?.goBack();
+        } else {
+          Navigator.pop(context);
+        }
+        return !canGoBack;
+      },
       child: Stack(
         alignment: Alignment.center,
         children: [
           WebView(
             initialUrl: widget.url ?? '',
             javascriptMode: JavascriptMode.unrestricted,
+            onWebViewCreated: (webViewController) {
+              _webViewController = webViewController;
+            },
             onProgress: (value) {
               setState(() {
                 progress = value;
