@@ -6,7 +6,7 @@ class BasePage extends StatefulWidget {
   final String? title;
 
   /// appbar优先级高于title
-  final PreferredSizeWidget? appbar;
+  final PreferredSizeWidget? appBar;
 
   /// 内容
   final Widget child;
@@ -17,13 +17,37 @@ class BasePage extends StatefulWidget {
   /// 返回键和页面返回按钮
   final Future<bool> Function()? onWillPop;
 
+  /// 悬浮按钮
+  final Widget? floatingActionButton;
+
+  /// 左侧抽屉组件
+  final Widget? drawer;
+
+  /// 右侧抽屉组件
+  final Widget? endDrawer;
+
+  /// 底部导航栏
+  final Widget? bottomNavigationBar;
+
+  /// 底部上拉框
+  final Widget? bottomSheet;
+
+  /// 背景色
+  final Color? backgroundColor;
+
   const BasePage(
       {Key? key,
       this.title,
-      this.appbar,
+      this.appBar,
       required this.child,
       this.actions,
-      this.onWillPop})
+      this.onWillPop,
+      this.floatingActionButton,
+      this.drawer,
+      this.endDrawer,
+      this.bottomNavigationBar,
+      this.bottomSheet,
+      this.backgroundColor})
       : super(key: key);
 
   @override
@@ -37,9 +61,6 @@ class _BasePageState extends State<BasePage> {
       appBar: getAppBar(),
       body: WillPopScope(
         onWillPop: widget.onWillPop,
-        // onWillPop: () {
-        //   return Future.value(true);
-        // },
         child: Stack(
           children: [
             //内容层
@@ -51,12 +72,18 @@ class _BasePageState extends State<BasePage> {
           ],
         ),
       ),
+      floatingActionButton: widget.floatingActionButton,
+      drawer: widget.drawer,
+      endDrawer: widget.endDrawer,
+      bottomNavigationBar: widget.bottomNavigationBar,
+      bottomSheet: widget.bottomSheet,
+      backgroundColor: widget.backgroundColor,
     );
   }
 
   /// 获取appbar
   PreferredSizeWidget? getAppBar() {
-    if (widget.appbar != null) return widget.appbar;
+    if (widget.appBar != null) return widget.appBar;
     if (widget.title != null || widget.actions != null)
       return AppBar(
         title: Text(widget.title ?? ''),
